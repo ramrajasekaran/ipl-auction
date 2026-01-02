@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const uri = 'mongodb://localhost:27017/ipl-auction';
+const uri = process.env.MONGODB_URI;
 
 async function showActualData() {
     try {

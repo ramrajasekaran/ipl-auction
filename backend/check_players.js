@@ -1,7 +1,9 @@
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
+dotenv.config();
 
 async function checkPlayers() {
-    const uri = 'mongodb://localhost:27017';
+    const uri = process.env.MONGODB_URI;
     const client = new MongoClient(uri);
 
     try {
