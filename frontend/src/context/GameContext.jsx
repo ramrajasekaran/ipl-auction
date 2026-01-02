@@ -65,6 +65,20 @@ export const GameProvider = ({ children }) => {
         history: [],
     });
 
+    // REFS to store latest state for Socket Reconnection logic (closure workaround)
+    const connectionRef = useRef({ auctionId: null, userId: null });
+
+    // Keep refs in sync with state
+    useEffect(() => {
+        connectionRef.current.auctionId = roomData.auctionId;
+    }, [roomData.auctionId]);
+
+    useEffect(() => {
+        // Resolve best user ID
+        const uid = currentUser?.userId || currentUser?.id || currentUser?._id;
+        if (uid) connectionRef.current.userId = uid;
+    }, [currentUser]);
+
     const [timerState, setTimerState] = useState({ remaining: 0, isRunning: false });
 
     // Track last sold player for announcement
@@ -74,6 +88,14 @@ export const GameProvider = ({ children }) => {
     useEffect(() => {
         function onConnect() {
             console.log('✅ Socket Connected!', { role: userRole });
+
+            // AUTO-REJOIN on Reconnect
+            // If socket disconnected and reconnected, we must re-emit join using refs
+            const { auctionId, userId } = connectionRef.current;
+            if (auctionId && userId) {
+                console.log('🔄 Re-joining auction after reconnect:', auctionId);
+                socket.emit('auction:join', { auctionId, userId });
+            }
         }
 
         function onDisconnect() {
