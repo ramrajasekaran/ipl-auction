@@ -4,8 +4,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
     plugins: [react()],
     define: {
-        // ⚠️ REPLACE THIS WITH YOUR HOSTED BACKEND URL
-        'import.meta.env.VITE_API_BASE': JSON.stringify('https://ipl-auction-8a8o.onrender.com/api'),
+        // Use relative path '/api' so it works with both Vite Proxy (Dev) and Netlify Proxy (Prod)
+        'import.meta.env.VITE_API_BASE': JSON.stringify('/api'),
     },
     server: {
         port: 5173,
