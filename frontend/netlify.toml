@@ -1,9 +1,9 @@
 [build]
+  base = "frontend"
   command = "npm run build"
-  publish = "dist"
+  publish = "frontend/dist"
 
 [build.environment]
   NODE_VERSION = "18"
 
 # Note: API redirects are handled by _redirects file
-# which supports environment variable substitution
