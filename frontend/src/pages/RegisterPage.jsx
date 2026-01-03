@@ -146,6 +146,11 @@ const RegisterPage = () => {
                                     required
                                 />
                             </div>
+                            <div className="mt-2 text-right">
+                                <Link to="/reset-password" className="text-sm text-green-500 hover:underline">
+                                    Forgot Password?
+                                </Link>
+                            </div>
                         </div>
 
                         {error && (
