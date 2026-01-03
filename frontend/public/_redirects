@@ -1,6 +1,5 @@
-# Proxy API requests to backend
-# BACKEND_URL must be set in Netlify Environment Variables
-/api/*  :BACKEND_URL/api/:splat  200
+# Proxy API requests to backend (hardcoded for Netlify)
+/api/*  https://ipl-auction-8a8o.onrender.com/api/:splat  200
 
 # SPA catch-all - serve index.html for all routes (must be LAST)
 /*  /index.html  200
