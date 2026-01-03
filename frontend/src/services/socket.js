@@ -1,9 +1,14 @@
 import { io } from 'socket.io-client';
 
-// Use dedicated Socket URL if available, otherwise fallback to API Base or localhost
-const URL = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_BASE || 'http://localhost:5000';
+// Socket URL logic:
+// - Production: MUST set VITE_SOCKET_URL to backend URL (e.g., https://your-backend.onrender.com)
+// - Development: Falls back to localhost:5000
+const URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+
+console.log('[Socket] Connecting to:', URL);
 
 export const socket = io(URL, {
     autoConnect: false,
-    transports: ['websocket']
+    transports: ['websocket', 'polling'], // Allow fallback to polling if websocket fails
+    withCredentials: true
 });
