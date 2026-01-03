@@ -1,5 +1,6 @@
 import Auction from '../models/Auction.js';
-import Player from '../models/Player.js';
+
+import RoomPlayer from '../models/RoomPlayer.js';
 import Team from '../models/Team.js';
 import Bid from '../models/Bid.js';
 
@@ -51,7 +52,7 @@ export const setupSocketHandlers = (io) => {
             console.log(`[Socket] handleSold: ${aId}`);
             const auction = await Auction.findById(aId);
             const team = await Team.findById(str(teamId));
-            const player = await Player.findById(str(playerId));
+            const player = await RoomPlayer.findById(str(playerId));
             if (!auction || !team || !player) return null;
 
             const priceInCr = price / 100;
@@ -72,7 +73,7 @@ export const setupSocketHandlers = (io) => {
 
             const updatedAuction = await getPopulatedAuction(aId);
             io.to(`auction:${aId}`).emit('auction:player-sold', {
-                player, team, price: priceInCr, timestamp: new Date(), auction: updatedAuction
+                player, team, price: price, timestamp: new Date(), auction: updatedAuction
             });
 
             if (timerIntervals[aId]) {
@@ -86,7 +87,7 @@ export const setupSocketHandlers = (io) => {
         const handleUnsold = async (auctionId, playerId) => {
             const aId = str(auctionId);
             console.log(`[Socket] handleUnsold: ${aId}`);
-            const player = await Player.findById(str(playerId));
+            const player = await RoomPlayer.findById(str(playerId));
             if (player) {
                 player.status = 'UNSOLD';
                 await player.save();
@@ -182,7 +183,7 @@ export const setupSocketHandlers = (io) => {
                     return;
                 }
 
-                const player = await Player.findById(pId);
+                const player = await RoomPlayer.findById(pId);
                 if (!player) return;
 
                 await Auction.findByIdAndUpdate(

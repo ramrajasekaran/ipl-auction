@@ -1,5 +1,3 @@
-# Proxy /api requests to the backend
-/api/*  https://ipl-auction-8a8o.onrender.com/api/:splat  200
-
-# SPA Catch-all (Must be last)
+# SPA Catch-all - serve index.html for all routes
+# API redirects are handled by netlify.toml
 /*  /index.html  200

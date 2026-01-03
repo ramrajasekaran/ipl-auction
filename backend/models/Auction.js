@@ -31,7 +31,7 @@ const auctionSchema = new mongoose.Schema({
     },
     currentPlayer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Player',
+        ref: 'RoomPlayer',
         default: null
     },
     currentBid: {

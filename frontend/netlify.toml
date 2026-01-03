@@ -1,0 +1,20 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirect /api/* to backend (uses environment variable BACKEND_URL)
+# Set BACKEND_URL in Netlify dashboard to your Render backend URL
+[[redirects]]
+  from = "/api/*"
+  to = ":BACKEND_URL/api/:splat"
+  status = 200
+  force = true
+
+# SPA catch-all - serve index.html for all routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

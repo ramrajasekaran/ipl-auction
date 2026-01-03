@@ -127,6 +127,13 @@ export const GameProvider = ({ children }) => {
             setLastSoldPlayer(null);
 
             if (auction) {
+                // ROBUSTNESS FIX: If backend population failed (schema mismatch) but we have the direct player object
+                if (!auction.currentPlayer && player) {
+                    console.warn('⚠️ auction.currentPlayer missing in payload, using direct player object fallback', player);
+                    auction.currentPlayer = player;
+                    // Also ensure status is Active if we have a player
+                    if (auction.status === 'IDLE') auction.status = 'ACTIVE';
+                }
                 updateLocalState(auction);
             } else {
                 setAuctionState(prev => ({
@@ -625,10 +632,22 @@ export const GameProvider = ({ children }) => {
     const startTurn = (player) => {
         // Just emit selection, backend handles state
         if (roomData.auctionId) {
+            console.log('📡 [startTurn] Emitting auction:player-selected', {
+                auctionId: roomData.auctionId,
+                playerId: player._id,
+                playerName: player.name
+            });
+            if (!player._id) {
+                console.error('❌ [startTurn] Player ID is missing!', player);
+                alert('Internal Error: Player ID missing. Cannot select.');
+                return;
+            }
             socket.emit('auction:player-selected', {
                 auctionId: roomData.auctionId,
                 playerId: player._id
             });
+        } else {
+            console.error('❌ [startTurn] No auctionId found in roomData');
         }
     };
 

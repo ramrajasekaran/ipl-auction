@@ -1,0 +1,362 @@
+player-name,country,position,base-price
+Ruturaj Gaikwad,India,BATTER,2C
+Matheesha Pathirana,Srilanka,BOWLER,2C
+Shivam Dube,India,ALL ROUNDER,2C
+Ravindra Jadeja,India,ALL ROUNDER,2C
+MS Dhoni,India,WICKETKEEPER,50L
+Axar Patel,India,ALL ROUNDER,2C
+Kuldeep Yadav,India,BOWLER,2C
+Tristan Stubbs,South Africa,WICKETKEEPER,75L
+Abishek Porel,India,WICKETKEEPER,50L
+Rashid Khan,Afghanistan,ALL ROUNDER,2C
+Shubman Gill,India,BATTER,2C
+Sai Sudharson,India,BATTER,1.5C
+Rahul Tewatia,India,ALL ROUNDER,75L
+Shahrukh Khan,India,ALL ROUNDER,20L
+Rinku Singh,India,BATTER,2C
+C V Varun,India,BOWLER,2C
+Sunil Narine,West Indies,ALL ROUNDER,2C
+Andre Russell,West Indies,ALL ROUNDER,2C
+Harshit Rana,India,BOWLER,1C
+Ramandeep Singh,India,ALL ROUNDER,75L
+Nicholas Pooran,West Indies,WICKETKEEPER,2C
+Ravi Bishnoi,India,BOWLER,2C
+Mayank Yadav,India,BOWLER,1C
+Moshin Khan,India,BOWLER,75L
+Ayush Badoni,India,BATTER,2C
+Rohit Sharma,India,BATTER,2C
+Surya Kumar Yadav,India,BATTER,2C
+Jasprit Bumrah,India,BOWLER,2C
+Hardik Pandya,India,ALL ROUNDER,2C
+Tilak verma,India,BATTER,1C
+Arshdeep Singh,India,BOWLER,2C
+Shashank Singh,India,BATTER,1C
+Prabhsimran Singh,India,WICKETKEEPER,1C
+Sanju Samson ,India,WICKETKEEPER,2C
+YB Jaiswal,India,BATTER,2C
+Riyan Parag,India,ALL ROUNDER,2C
+Dhruv Jurel,India,WICKETKEEPER,2C
+Shimron Hetmyer,West Indies,BATTER,2C
+Sandeep Sharma,India,BOWLER,1C
+Virat Kohli,India,BATTER,2C
+Rajat Paditar,India,BATTER,1C
+Yash Dayal,India,BOWLER,75L
+Pat Cummins,Australia,ALL ROUNDER,2C
+Abishek Sharma,India,ALL ROUNDER,2C
+Nitish Kumar Reddy,India,ALL ROUNDER,1C
+Heinrich Klassen,South Africa,WICKETKEEPER,2C
+Travis Head,Australia,ALL ROUNDER,2C
+Jos Buttler,England,WICKETKEEPER,2C
+Shreyas Iyer,India,BATTER,2C
+Rishabh Pant,India,BATTER,2C
+Kagiso Rabada,South Africa,BOWLER,2C
+Mitchell Starc,Australia,BOWLER,2C
+Yuzvendra Chahal,India,BOWLER,2C
+Liam Livingstone,England,ALL ROUNDER,2C
+David Miller,West Indies,BATTER,1.5C
+KL Rahul,India,WICKETKEEPER,2C
+Mohammad Shami,India,BOWLER,2C
+Mohammad Siraj,India,BOWLER,2C
+Harry Brook,England,BATTER,2C
+Devon Conway,New Zealand,BATTER,2C
+Jake Fraser Mcgurk,Australia,BATTER,2C
+Aiden Markram,South Africa,BATTER,2C
+Devdutt Padikkal,India,BATTER,2C
+Rahul Tripathi,India,BATTER,75L
+David Warner,Australia,BATTER,2C
+Ravichandaran Ashwin,India,ALL ROUNDER,2C
+Venkatesh Iyer,India,ALL ROUNDER,2C
+Mitchell Marsh,Australia,ALL ROUNDER,2C
+Glenn Maxwell,Australia,ALL ROUNDER,2C
+Harshal Patel,India,ALL ROUNDER,2C
+Rachin Ravindra,New Zealand,ALL ROUNDER,1.5C
+Marcus Stoinis,Australia,ALL ROUNDER,2C
+Jonny Bairstow,England,WICKETKEEPER,2C
+Quinton De Kock,South Africa,WICKETKEEPER,2C
+Rahmanullah Gurbaz,Afghanistan,WICKETKEEPER,2C
+Ishan Kishan,India,WICKETKEEPER,2C
+Phil Salt,England,WICKETKEEPER,2C
+Jitesh Sharma,India,WICKETKEEPER,1C
+Syed Khaleel Ahmed,India,BOWLER,2C
+Trent Boult,New Zealand,BOWLER,2C
+Josh Hazlewood,Australia,BOWLER,2C
+Avesh Khan,India,BOWLER,2C
+Prasidh Krishna,India,BOWLER,2C
+T  Natarajan,India,BOWLER,2C
+Anrich Nortje,South Africa,BOWLER,2C
+Noor Ahmad,Afghanistan,BOWLER,2C
+Rahul Chahar,India,BOWLER,1C
+Wanindu Hasaranga,Sri Lanka,BOWLER,2C
+Waqar Salamkheil,Afghanistan,BOWLER,75L
+Maheesh Theekshana,Sri Lanka,BOWLER,2C
+Adam Zampa,Australia,BOWLER,2C
+Yash Dhull,India,BATTER,30L
+Abhinav Manohar,India,BATTER,30L
+Karun Nair,India,BATTER,30L
+Angkrish Raghuvanshi,India,BATTER,30L
+Anmolpreet Singh,India,BATTER,30L
+Atharva Taide,India,BATTER,30L
+Nehal Wadhera,India,BATTER,30L
+Harpreet Brar,India,ALL ROUNDER,30L
+Naman Dhir,India,ALL ROUNDER,30L
+Mahipal Lomror,India,ALL ROUNDER,50L
+Sameer Rizvi,India,ALL ROUNDER,30L
+Abdul Samad,India,ALL ROUNDER,30L
+Vijay Shankar,India,ALL ROUNDER,30L
+Ashutosh Sharma,India,ALL ROUNDER,30L
+Nishant Sindhu,India,ALL ROUNDER,30L
+Utkarsh Singh,India,ALL ROUNDER,30L
+Aryan Juyal,India,WICKETKEEPER,30L
+Kumar Kushagra,India,WICKETKEEPER,30L
+Robin Minz,India,WICKETKEEPER,30L
+Anuj Rawat,India,WICKETKEEPER,30L
+Luvnith Sisodia,India,WICKETKEEPER,30L
+Vishnu Vinod,India,WICKETKEEPER,30L
+Upendra Singh Yadav,India,WICKETKEEPER,30L
+Vaibhav Arora,India,BOWLER,30L
+Rasikh Dar,India,BOWLER,30L
+Akash Madhwal,India,BOWLER,30L
+Mohit Sharma,India,BOWLER,50L
+Simarjeet Singh,India,BOWLER,30L
+Yash Thakur,India,BOWLER,30L
+Kartik Tyagi,India,BOWLER,40L
+Vyshak Vijaykumar,India,BOWLER,30L
+Piyush Chawla,India,BOWLER,50L
+Shreyas Gopal,India,BOWLER,30L
+Mayank Markande,India,BOWLER,30L
+Suyash Sharma,India,BOWLER,30L
+Karn Sharma,India,BOWLER,50L
+Kumar Kartikeya Singh,India,BOWLER,30L
+Manav Suthar,India,BOWLER,30L
+Mayank Agarawal,India,BATTER,1C
+Faf Du Plessis,South Africa,BATTER,2C
+Glenn Phillips,New Zealand,BATTER,2C
+Rovman Powell,West Indies,BATTER,1.5C
+Ajinkya Rahane,India,BATTER,1.5C
+Prithvi Shaw,India,BATTER,75L
+Kane Williamson,New Zealand,BATTER,2C
+Sam Curran,England,ALL ROUNDER,2C
+Marco Jansen,South Africa,ALL ROUNDER,50L
+Daryl Mitchell,New Zealand,ALL ROUNDER,2C
+Krunal Pandya,India,ALL ROUNDER,2C
+Nitish Rana,India,ALL ROUNDER,1.5C
+Washington Sundar,India,ALL ROUNDER,2C
+Shardul Thakur,India,ALL ROUNDER,2C
+K S Bharat,India,WICKETKEEPER,75L
+Alex Carey,Australia,WICKETKEEPER,1C
+Donovan Ferreira,South Africa,WICKETKEEPER,75L
+Shai Hope,West Indies,WICKETKEEPER,50L
+Josh Inglis,Australia,WICKETKEEPER,2C
+Ryan Rickelton,South Africa,WICKETKEEPER,1C
+Deepak Chahar,India,BOWLER,2C
+Gerald Coetzee,South Africa,BOWLER,50L
+Akash Deep,India,BOWLER,1C
+Tushar Deshpande,India,BOWLER,1C
+Lockie Ferguson,New Zealand,BOWLER,2C
+Bhuvneshwar Kumar,India,BOWLER,2C
+Mukesh Kumar,India,BOWLER,2C
+Allah Ghazanfar,Afghanistan,BOWLER,75L
+Akeal Hosein,West Indies,BOWLER,1.5C
+Keshav Maharaj,South Africa,BOWLER,75L
+Mujeeb Ur Rahman,Afghanistan,BOWLER,2C
+Adil Rashid,England,BOWLER,2C
+Vijayakanth Viyaskanth,Sri Lanka,BOWLER,75L
+Ricky Bhui,India,BATTER,30L
+Swastik Chhikara,India,BATTER,30L
+Aarya Desai,India,BATTER,30L
+Shubham Dubey,India,BATTER,30L
+Madhav Kaushik,India,BATTER,30L
+Pukhraj Mann,India,BATTER,30L
+Shaik Rasheed,India,BATTER,30L
+Himmat Singh,India,BATTER,30L
+Mayank Dagar,India,ALL ROUNDER,30L
+Anshul Kamboj,India,ALL ROUNDER,30L
+Mohd  Arshad Khan,India,ALL ROUNDER,30L
+Darshan Nalkande,India,ALL ROUNDER,30L
+Suyash Prabhudessai,India,ALL ROUNDER,30L
+Anukul Roy,India,ALL ROUNDER,30L
+Swapnil Singh,India,ALL ROUNDER,30L
+Sanvir Singh,India,ALL ROUNDER,30L
+Avanish Aravelly,India,WICKETKEEPER,30L
+Vansh Bedi,India,WICKETKEEPER,30L
+Saurav Chauhan,India,WICKETKEEPER,30L
+Harvik Desai,India,WICKETKEEPER,30L
+Tom Kohler Cadmore,England,WICKETKEEPER,50L
+Kunal Rathore,India,WICKETKEEPER,30L
+B R Sharath,India,WICKETKEEPER,30L
+Gurnoor Singh Brar,India,BOWLER,30L
+Mukesh Choudhary,India,BOWLER,30L
+Sakib Hussain,India,BOWLER,30L
+Vidwath Kaverappa,India,BOWLER,30L
+Rajan Kumar,India,BOWLER,30L
+Sushant Mishra,India,BOWLER,30L
+Arjun Tendulkar,India,BOWLER,30L
+Zeeshan Ansari,India,BOWLER,30L
+Prince Choudhary,India,BOWLER,30L
+Himanshu Sharma,India,BOWLER,30L
+M  Siddharth,India,BOWLER,30L
+Digvesh Singh,India,BOWLER,30L
+Prashant Solanki,India,BOWLER,30L
+Jhathavedh Subramanyan,India,BOWLER,30L
+Finn Allen,New Zealand,BATTER,2C
+Dewald Brevis,South Africa,BATTER,75L
+Ben Duckett,England,BATTER,2C
+Manish Pandey,India,BATTER,75L
+Rilee Rossouw,South Africa,BATTER,2C
+Sherfane Rutherford,West Indies,BATTER,1.5C
+Ashton Turner,Australia,BATTER,1C
+James Vince,England,BATTER,2C
+Shahbaz Ahamad,India,ALL ROUNDER,1C
+Moeen Ali,England,ALL ROUNDER,2C
+Tim David,Australia,ALL ROUNDER,2C
+Deepak Hooda,India,ALL ROUNDER,75L
+Will Jacks,England,ALL ROUNDER,2C
+Azmatullah Omarzai,Afghanistan,ALL ROUNDER,1.5C
+R  Sai Kishore,India,ALL ROUNDER,75L
+Romario Shepherd,West Indies,ALL ROUNDER,1.5C
+Tom Banton,England,WICKETKEEPER,2C
+Sam Billings,England,WICKETKEEPER,1.5C
+Jordan Cox,England,WICKETKEEPER,20L
+Ben McDermott,Australia,WICKETKEEPER,75L
+Kusal Mendis,Sri Lanka,WICKETKEEPER,75L
+Kusal Perera,Sri Lanka,WICKETKEEPER,75L
+Josh Philippe,Australia,WICKETKEEPER,75L
+Tim Seifert,New Zealand,WICKETKEEPER,20L
+Nandre Burger,South Africa,BOWLER,30L
+Spencer Johnson,Australia,BOWLER,2C
+Umran Malik,India,BOWLER,75L
+Mustafizur Rahman,Bangladesh,BOWLER,2C
+Ishant Sharma,India,BOWLER,75L
+Nuwan Thushara,Sri Lanka,BOWLER,75L
+Naveen Ul Haq,Afghanistan,BOWLER,2C
+Jaydev Unadkat,India,BOWLER,1C
+Umesh Yadav,India,BOWLER,2C
+Rishad Hossain,Bangladesh,BOWLER,75L
+Zahir Khan Pakten,Afghanistan,BOWLER,75L
+Nqabayomzi Peter,South Africa,BOWLER,75L
+Tanveer Sangha,Australia,BOWLER,75L
+Tabraiz Shamsi,South Africa,BOWLER,2C
+Andre Siddarth,India,BATTER,30L
+Avneesh Sudha,India,BATTER,30L
+Apoorv Wankhade,India,BATTER,30L
+Yudhvir Charak,India,ALL ROUNDER,30L
+Rishi Dhawan,India,ALL ROUNDER,30L
+Rajvardhan Hangargekar,India,ALL ROUNDER,30L
+Tanush Kotian,India,ALL ROUNDER,30L
+Arshin Kulkarni,India,ALL ROUNDER,30L
+Shams Mulani,India,ALL ROUNDER,30L
+Shivam Singh,India,ALL ROUNDER,30L
+Lalit Yadav,India,ALL ROUNDER,30L
+Mohammed Azharuddeen,India,WICKETKEEPER,30L
+L R Chethan,India,WICKETKEEPER,30L
+Aryaman Singh Dhaliwal,India,WICKETKEEPER,30L
+Urvil Patel,India,WICKETKEEPER,30L
+Ashwani Kumar,India,BOWLER,30L
+Ishan Porel,India,BOWLER,30L
+Murugan Ashwin,India,BOWLER,30L
+Shreyas Chavan,India,BOWLER,30L
+Chintal Gandhi,India,BOWLER,30L
+Jagadeesha Suchith,India,BOWLER,30L
+Sediqullah Atal,Afghanistan,BATTER,75L
+Matthew Breetzke,South Africa,BATTER,75L
+Mark Chapman,New Zealand,BATTER,1.5C
+Brandon King,West Indies,BATTER,75L
+Evin Lewis,West Indies,BATTER,2C
+Pathum Nissanka,Sri Lanka,BATTER,75L
+Bhanuka Rajapaksa,Sri Lanka,BATTER,75L
+Steve Smith,Australia,BATTER,2C
+Gus Atkinson,England,ALL ROUNDER,2C
+Tom Curran,England,ALL ROUNDER,2C
+Krishnappa Gowtham,India,ALL ROUNDER,1C
+Mohammad Nabi,Afghanistan,ALL ROUNDER,1.5C
+Gulbadin Naib,Afghanistan,ALL ROUNDER,1C
+Sikandar Raza,Zimbabwe,ALL ROUNDER,30L
+Mitchell Santner,New Zealand,ALL ROUNDER,2C
+Jayant Yadav,India,ALL ROUNDER,75L
+Johnson Charles,West Indies,WICKETKEEPER,75L
+Litton Das,Bangladesh,WICKETKEEPER,75L
+Andre Fletcher,West Indies,WICKETKEEPER,75L
+Tom Latham,New Zealand,WICKETKEEPER,1.5C
+Ollie Pope,England,WICKETKEEPER,75L
+Kyle Verreynne,South Africa,WICKETKEEPER,75L
+Fazalhaq Farooqi,Afghanistan,BOWLER,2C
+Richard Gleeson,England,BOWLER,75L
+Matt Henry,New Zealand,BOWLER,2C
+Alzarri Joseph,West Indies,BOWLER,2C
+Kwena Maphaka,South Africa,BOWLER,75L
+Kuldeep Sen,India,BOWLER,75L
+Reece Topley,England,BOWLER,75L
+Lizaad Williams,South Africa,BOWLER,75L
+Luke Wood,England,BOWLER,75L
+Sachin Dhas,India,BATTER,30L
+Leus Du Plooy,England,BATTER,50L
+Priyansh Arya,India,ALL ROUNDER,30L
+Manoj Bhandage,India,ALL ROUNDER,30L
+Pravin Dubey,India,ALL ROUNDER,30L
+Ajay Mandal,India,ALL ROUNDER,30L
+Prerak Mankad,India,ALL ROUNDER,30L
+Vipraj Nigam,India,ALL ROUNDER,30L
+Rassie Van Der Dussen,South Africa,BATTER,2C
+Will Young,New Zealand,BATTER,30L
+Najibullah Zadran,Afghanistan,BATTER,75L
+Ibrahim Zadran,Afghanistan,BATTER,75L
+Sean Abbott,Australia,ALL ROUNDER,2C
+Brydon Carse,England,ALL ROUNDER,1C
+Aaron Hardie,Australia,ALL ROUNDER,50L
+Sarfaraz Khan,India,ALL ROUNDER,75L
+Kyle Mayers,West Indies,ALL ROUNDER,1.5C
+Kamindu Mendis,Sri Lanka,ALL ROUNDER,75L
+Matthew Short,Australia,ALL ROUNDER,75L
+Jason Behrendorff,Australia,BOWLER,1.5C
+Dushmantha Chameera,Sri Lanka,BOWLER,75L
+Nathan Ellis,Australia,BOWLER,50L
+Shamar Joseph,West Indies,BOWLER,75L
+Josh Little,Ireland,BOWLER,75L
+Shivam Mavi,India,BOWLER,75L
+Jhye Richardson,Australia,BOWLER,1.5C
+Navdeep Saini,India,BOWLER,75L
+Tanmay Agarwal,India,BATTER,30L
+Amandeep Khare,India,BATTER,30L
+Ayush Mhatre,India,BATTER,30L
+Salman Nizar,India,BATTER,30L
+Aniket Verma,India,BATTER,30L
+Manan Vohra,India,BATTER,30L
+Raj Angad Bawa,India,ALL ROUNDER,30L
+Suryansh Shedge,India,ALL ROUNDER,30L
+Hritik Shokeen,India,ALL ROUNDER,30L
+Akash Singh,India,WICKETKEEPER,30L
+Prince Yadav,India,BOWLER,30L
+Qais Ahmad,Afghanistan,ALL ROUNDER,75L
+Charith Asalanka,Sri Lanka,ALL ROUNDER,75L
+Michael Bracewell,New Zealand,ALL ROUNDER,1.5C
+Gudakesh Motie,West Indies,ALL ROUNDER,75L
+Daniel Mousley,England,ALL ROUNDER,75L
+Jamie Overton,England,ALL ROUNDER,1.5C
+Dunith Wellalage,Sri Lanka,ALL ROUNDER,75L
+Ottneil Baartman,South Africa,BOWLER,75L
+Xavier Bartlett,Australia,BOWLER,75L
+Dilshan Madushanka,Sri Lanka,BOWLER,75L
+Adam Milne,New Zealand,BOWLER,2C
+Lungisani Ngidi,South Africa,BOWLER,1C
+William O'Rourke,New Zealand,BOWLER,1.5C
+Chetan Sakariya,India,BOWLER,75L
+Sandeep Warrier,India,BOWLER,75L
+Jason Holder,West Indies,ALL ROUNDER,2C
+Karim Janat,Afghanistan,ALL ROUNDER,75L
+Jimmy Neesham,New Zealand,ALL ROUNDER,1.5C
+Daniel Sams,Australia,ALL ROUNDER,1.5C
+Chris Green,Australia,ALL ROUNDER,1C
+Shakib Al Hasan,Bangladesh,ALL ROUNDER,1C
+Wiaan Mulder,South Africa,ALL ROUNDER,75L
+Dwaine Pretorius,South Africa,ALL ROUNDER,75L
+Dasun Shanaka,Sri Lanka,ALL ROUNDER,75L
+Blessing Muzarabani,Zimbabwe,BOWLER,75L
+Tim Southee,New Zealand,BOWLER,1.5C
+Bevan John Jacobs,New Zealand,BATTER,30L
+James Anderson,England,BOWLER,1.5C
+Kyle Jamieson,New Zealand,BOWLER,1.5C
+Chris Jordan,England,BOWLER,2C
+Chetan Sharma,India,BOWLER,30L
+Eshan Malinga,Sri Lanka,BOWLER,30L
+Vignesh Puthur,India,ALL ROUNDER,30L
+Jofra Archer,England,BOWLER,2C
