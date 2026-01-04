@@ -31,6 +31,7 @@ const AuctioneerDashboard = () => {
     const [selectedPlayerId, setSelectedPlayerId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [auction, setAuction] = useState(null);
+    const [selectedTeam, setSelectedTeam] = useState(null); // For mobile team modal
     const hammerRef = useRef(null);
 
     useEffect(() => {
@@ -316,14 +317,67 @@ const AuctioneerDashboard = () => {
                     </div>
                 </div>
 
-                {/* Teams Overview */}
+                {/* Teams Overview - Mobile Responsive */}
                 <div className="glass-card">
                     <h3 className="text-xl font-bold text-white mb-4">Teams</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                    {/* Desktop View - Full Team Cards */}
+                    <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {teams.map((team) => (
                             <TeamCard key={team._id} team={team} />
                         ))}
                     </div>
+
+                    {/* Mobile View - Compact Team Logos */}
+                    <div className="md:hidden grid grid-cols-4 gap-3">
+                        {teams.map((team) => (
+                            <button
+                                key={team._id}
+                                onClick={() => setSelectedTeam(team)}
+                                className="glass-panel p-3 rounded-xl hover:border-green-500/50 transition-all group"
+                            >
+                                <div className="flex flex-col items-center gap-2">
+                                    {/* Team Logo/Icon */}
+                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
+                                        {team.name.substring(0, 2).toUpperCase()}
+                                    </div>
+                                    {/* Team Name (abbreviated) */}
+                                    <span className="text-xs text-gray-400 text-center line-clamp-1">
+                                        {team.name.length > 8 ? team.name.substring(0, 8) + '...' : team.name}
+                                    </span>
+                                    {/* Purse */}
+                                    <span className="text-xs font-bold text-green-400">
+                                        ₹{(team.purseRemaining / 100).toFixed(1)}Cr
+                                    </span>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Mobile Team Details Modal */}
+                    {selectedTeam && (
+                        <div className="md:hidden fixed inset-0 bg-black/80 z-50 flex items-end sm:items-center justify-center p-4"
+                            onClick={() => setSelectedTeam(null)}>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 100, opacity: 0 }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="glass-card w-full max-w-md"
+                            >
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-xl font-bold text-white">{selectedTeam.name}</h3>
+                                    <button
+                                        onClick={() => setSelectedTeam(null)}
+                                        className="text-gray-400 hover:text-white"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                                <TeamCard team={selectedTeam} />
+                            </motion.div>
+                        </div>
+                    )}
                 </div>
             </div>
         </motion.div>
