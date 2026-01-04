@@ -181,9 +181,9 @@ const AuctionRoom = () => {
                 {/* VIEW MODES */}
                 {viewMode === 'AUCTION' && (
                     <main className="flex-1 p-6 flex flex-col md:flex-row items-center justify-center gap-8 overflow-y-auto">
-                        {/* Left Side: Manager Controls only */}
+                        {/* Left Side: Manager Controls - NOW VISIBLE ON MOBILE */}
                         {isManager && (
-                            <div className="hidden md:flex flex-col gap-4 w-80 h-full">
+                            <div className="flex flex-col gap-4 w-full md:w-80 md:h-full">
                                 <AuctioneerControls
                                     onSelectPlayer={startTurn}
                                     onSold={sellPlayer}
