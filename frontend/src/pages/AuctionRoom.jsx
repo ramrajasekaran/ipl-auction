@@ -180,8 +180,8 @@ const AuctionRoom = () => {
 
                 {/* VIEW MODES */}
                 {viewMode === 'AUCTION' && (
-                    <main className="flex-1 p-6 flex flex-col md:flex-row items-center justify-center gap-8 overflow-y-auto">
-                        {/* Left Side: Manager Controls - NOW VISIBLE ON MOBILE */}
+                    <main className="flex-1 p-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-8 overflow-y-auto">
+                        {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE */}
                         {isManager && (
                             <div className="flex flex-col gap-4 w-full md:w-80 md:h-full">
                                 <AuctioneerControls
@@ -194,8 +194,8 @@ const AuctionRoom = () => {
                             </div>
                         )}
 
-                        {/* Center: Player Card + Bid Controls + Leading Bid */}
-                        <div className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl gap-4 overflow-hidden px-4">
+                        {/* Center: Player Card + Bid Controls + Leading Bid - HIDDEN ON MOBILE FOR MANAGERS */}
+                        <div className={`flex-1 flex flex-col items-center justify-center w-full max-w-2xl gap-4 overflow-hidden px-4 ${isManager ? 'hidden md:flex' : 'flex'}`}>
                             <PlayerCard
                                 player={auctionState.currentPlayer}
                                 currentBid={auctionState.currentBid}
