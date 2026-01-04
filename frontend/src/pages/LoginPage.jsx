@@ -83,12 +83,7 @@ const LoginPage = () => {
                         </div>
 
                         <div>
-                            <div className="flex justify-between items-center mb-2">
-                                <label className="block text-sm font-medium text-slate-400">Password</label>
-                                <Link to="/reset-password?type=user" className="text-xs text-primary hover:underline">
-                                    Forgot Password?
-                                </Link>
-                            </div>
+                            <label className="block text-sm font-medium text-slate-400 mb-2">Password</label>
                             <div className="relative">
                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                 <input
@@ -99,6 +94,11 @@ const LoginPage = () => {
                                     placeholder="Your password"
                                     required
                                 />
+                            </div>
+                            <div className="mt-2 text-right">
+                                <Link to="/reset-password?type=user" className="text-xs text-primary hover:underline">
+                                    Forgot Password?
+                                </Link>
                             </div>
                         </div>
 
