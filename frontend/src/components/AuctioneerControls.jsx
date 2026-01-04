@@ -74,7 +74,7 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
     };
 
     return (
-        <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 p-4 w-full h-full flex flex-col">
+        <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 p-4 w-full min-h-[500px] md:h-full flex flex-col">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-white font-bold flex items-center gap-2">
                     <Gavel size={18} className="text-primary" />
@@ -163,7 +163,7 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
                     )}
                 </div>
 
-                <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar max-h-[400px] md:max-h-none">
                     {filteredPlayers.length > 0 ? (
                         filteredPlayers.map((player, idx) => (
                             <div
