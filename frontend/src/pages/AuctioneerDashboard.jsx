@@ -63,7 +63,7 @@ const AuctioneerDashboard = () => {
             // If no existing auction, create one
             if (!auctionData) {
                 const response = await auctionAPI.create({
-                    name: 'IPL Auction 2024',
+                    name: 'IPL AUCTION ARENA',
                     initialPurse: 100,
                     minBidIncrement: 0.5,
                     timerDuration: 60,

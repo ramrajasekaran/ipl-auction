@@ -82,9 +82,10 @@ const LandingPage = () => {
             </div>
 
             <br />
-            <Link to="/admin" className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors text-xs border border-white/5">
+            {/* Admin Panel link hidden - only accessible via direct URL */}
+            {/* <Link to="/admin" className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors text-xs border border-white/5">
                 <Gavel size={14} /> Admin Panel
-            </Link>
+            </Link> */}
             <footer className="mt-8 text-slate-500 text-sm">
                 IPL Auction Simulator &copy; 2024
             </footer>

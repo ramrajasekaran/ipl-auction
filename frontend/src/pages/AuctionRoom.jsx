@@ -112,7 +112,7 @@ const AuctionRoom = () => {
                 <header className="h-16 border-b border-white/10 flex items-center justify-between px-6 bg-black/20 backdrop-blur-sm">
                     <div className="flex items-center gap-3">
                         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                        <h1 className="text-white font-bold tracking-wide uppercase">IPL Auction 2024</h1>
+                        <h1 className="text-white font-bold tracking-wide uppercase">IPL AUCTION ARENA</h1>
                         <span className="text-slate-500 text-sm">Room: {urlRoomCode}</span>
                     </div>
 
