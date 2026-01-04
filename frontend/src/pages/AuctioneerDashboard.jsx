@@ -242,8 +242,32 @@ const AuctioneerDashboard = () => {
 
                 {/* Main Controls */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Current Player & Timer */}
-                    <div className="lg:col-span-1 space-y-4">
+                    {/* Player Selection Grid - FIRST on mobile for easy access */}
+                    <div className="lg:col-span-2 order-2 lg:order-2">
+                        <div className="glass-card">
+                            <h3 className="text-xl font-bold text-white mb-4">Available Players</h3>
+
+                            {loading ? (
+                                <div className="text-center py-12">
+                                    <p className="text-gray-400">Loading players...</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-[600px] overflow-y-auto pr-2">
+                                    {players.map((player) => (
+                                        <PlayerCard
+                                            key={player._id}
+                                            player={player}
+                                            onClick={() => handleSelectPlayer(player)}
+                                            isSelected={player._id === selectedPlayerId}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Current Player & Timer - SECOND on mobile */}
+                    <div className="lg:col-span-1 space-y-4 order-1 lg:order-1">
                         {currentPlayer ? (
                             <div className="glass-card">
                                 <h3 className="text-lg font-bold text-white mb-4">Current Player</h3>
@@ -290,30 +314,6 @@ const AuctioneerDashboard = () => {
                                 </button>
                             </div>
                         )}
-                    </div>
-
-                    {/* Player Selection Grid */}
-                    <div className="lg:col-span-2">
-                        <div className="glass-card">
-                            <h3 className="text-xl font-bold text-white mb-4">Available Players</h3>
-
-                            {loading ? (
-                                <div className="text-center py-12">
-                                    <p className="text-gray-400">Loading players...</p>
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[600px] overflow-y-auto pr-2">
-                                    {players.map((player) => (
-                                        <PlayerCard
-                                            key={player._id}
-                                            player={player}
-                                            onClick={() => handleSelectPlayer(player)}
-                                            isSelected={player._id === selectedPlayerId}
-                                        />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
                     </div>
                 </div>
 
