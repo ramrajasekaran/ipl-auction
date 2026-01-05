@@ -3,7 +3,15 @@ import { Gavel, XCircle, Search, UserPlus, Database, Loader2 } from 'lucide-reac
 import { useGame } from '../context/GameContext';
 import { formatCurrency } from '../utils/formatters';
 
-const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBiddingActive }) => {
+const AuctioneerControls = ({
+    onSelectPlayer,
+    onSold,
+    onUnsold,
+    currentBid,
+    isBiddingActive,
+    showList = true,
+    showSearch = true
+}) => {
     const { roomData, searchGlobalPlayers, activateGlobalPlayer, timerState, triggerTimer, stopTimer, refreshState, auctionState } = useGame();
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -78,19 +86,21 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
             {/* Actions Zone: Search + Final Call */}
             <div className="sticky top-0 z-30 bg-[#0f172a] shadow-xl p-4 border-b border-white/10 flex-shrink-0">
                 {/* Player Search Bar - ALWAYS VISIBLE AT TOP */}
-                <div className="relative mb-2 md:mb-4">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                    <input
-                        type="text"
-                        placeholder="Search players..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-white/10 border-2 border-white/20 rounded-lg py-3 pl-10 pr-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-primary/70 focus:bg-white/15"
-                    />
-                    {isSearchingGlobal && (
-                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={16} />
-                    )}
-                </div>
+                {showSearch && (
+                    <div className="relative mb-2 md:mb-4">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                        <input
+                            type="text"
+                            placeholder="Search players..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full bg-white/10 border-2 border-white/20 rounded-lg py-3 pl-10 pr-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-primary/70 focus:bg-white/15"
+                        />
+                        {isSearchingGlobal && (
+                            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={16} />
+                        )}
+                    </div>
+                )}
 
                 {/* Actions for current player - DESKTOP ONLY (will be fixed at bottom on mobile) */}
                 {(isBiddingActive || auctionState?.currentPlayer) && (
@@ -148,32 +158,34 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
             </div>
 
             {/* Player Selection List - Flowing area */}
-            <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar md:max-h-none">
-                {filteredPlayers.length > 0 ? (
-                    filteredPlayers.map((player, idx) => (
-                        <div
-                            key={player._id || `p-${idx}`}
-                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group border border-transparent hover:border-white/5"
-                            onClick={() => handlePlayerClick(player)}
-                        >
-                            <img src={player.image || 'https://via.placeholder.com/100'} alt={player.name} className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover bg-slate-800" />
-                            <div className="flex-1 min-w-0">
-                                <h4 className="text-white font-medium text-xs md:text-sm truncate">{player.name}</h4>
-                                <div className="text-[10px] md:text-xs text-slate-500">{player.role} • {formatCurrency(player.basePrice).replace('₹ ', '')}</div>
+            {showList && (
+                <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar md:max-h-none">
+                    {filteredPlayers.length > 0 ? (
+                        filteredPlayers.map((player, idx) => (
+                            <div
+                                key={player._id || `p-${idx}`}
+                                className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group border border-transparent hover:border-white/5"
+                                onClick={() => handlePlayerClick(player)}
+                            >
+                                <img src={player.image || 'https://via.placeholder.com/100'} alt={player.name} className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover bg-slate-800" />
+                                <div className="flex-1 min-w-0">
+                                    <h4 className="text-white font-medium text-xs md:text-sm truncate">{player.name}</h4>
+                                    <div className="text-[10px] md:text-xs text-slate-500">{player.role} • {formatCurrency(player.basePrice).replace('₹ ', '')}</div>
+                                </div>
+                                <button className="p-1 text-primary md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                    <UserPlus size={14} />
+                                </button>
                             </div>
-                            <button className="p-1 text-primary md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                                <UserPlus size={14} />
-                            </button>
+                        ))
+                    ) : (
+                        <div className="text-center py-6 px-4 flex flex-col items-center">
+                            <div className="text-slate-600 text-[10px] md:text-sm italic">
+                                {searchTerm.length > 0 ? "No players found matching search" : "No available players in room."}
+                            </div>
                         </div>
-                    ))
-                ) : (
-                    <div className="text-center py-6 px-4 flex flex-col items-center">
-                        <div className="text-slate-600 text-[10px] md:text-sm italic">
-                            {searchTerm.length > 0 ? "No players found matching search" : "No available players in room."}
-                        </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
