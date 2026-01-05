@@ -243,10 +243,10 @@ const AuctionRoom = () => {
 
                 {/* VIEW MODES */}
                 {(viewMode === 'AUCTION' || viewMode === 'PLAYERS') && (
-                    <main className="flex-1 p-2 md:p-6 pb-40 md:pb-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-4 md:gap-8 overflow-y-auto">
+                    <main className={`flex-1 p-2 md:p-6 pb-40 md:pb-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-4 md:gap-8 ${viewMode === 'PLAYERS' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
                         {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE (PLAYERS TAB) / SIDEBAR ON DESKTOP */}
                         {isManager && (
-                            <div className={`flex flex-col gap-4 w-full md:w-80 md:h-full flex-shrink-0 ${viewMode === 'PLAYERS' ? 'flex h-full' : 'hidden md:flex'}`}>
+                            <div className={`flex flex-col gap-4 w-full md:w-80 md:h-full flex-shrink-0 ${viewMode === 'PLAYERS' ? 'flex flex-1 h-full' : 'hidden md:flex'}`}>
                                 <AuctioneerControls
                                     onSelectPlayer={(p) => {
                                         startTurn(p);

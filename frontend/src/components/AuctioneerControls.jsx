@@ -74,7 +74,7 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
     };
 
     return (
-        <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 w-full md:min-h-[500px] md:h-full flex flex-col overflow-hidden">
+        <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 w-full h-full md:min-h-[500px] flex flex-col overflow-hidden">
             {/* Actions Zone: Search + Final Call */}
             <div className="sticky top-0 z-30 bg-[#0f172a] shadow-xl p-4 border-b border-white/10 flex-shrink-0">
                 {/* Player Search Bar - ALWAYS VISIBLE AT TOP */}
