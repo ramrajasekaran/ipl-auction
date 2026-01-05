@@ -9,6 +9,7 @@ import TeamDashboard from '../components/TeamDashboard';
 import TradeCenter from '../components/TradeCenter';
 import MiniTradeCenter from '../components/MiniTradeCenter';
 import Timer from '../components/Timer';
+import AllTeamsView from '../components/AllTeamsView';
 import { Gavel, LayoutDashboard, Users, LogOut, XCircle } from 'lucide-react';
 import { getDynamicIncrement } from '../utils/formatters';
 import { getTeamTrades } from '../services/miniAuctionAPI';
@@ -36,7 +37,7 @@ const AuctionRoom = () => {
         stopTimer
     } = useGame();
 
-    const [viewMode, setViewMode] = useState('AUCTION'); // AUCTION | DASHBOARD | TRADE
+    const [viewMode, setViewMode] = useState('AUCTION'); // AUCTION | DASHBOARD | TRADE | ALL_TEAMS
     const [pendingTradeCount, setPendingTradeCount] = useState(0);
 
     // Sync state with URL if they don't match
@@ -166,6 +167,12 @@ const AuctionRoom = () => {
                                 <LayoutDashboard size={14} /> MY SQUAD
                             </button>
                             <button
+                                onClick={() => setViewMode('ALL_TEAMS')}
+                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-green-500 text-white' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                <Users size={14} /> TEAMS
+                            </button>
+                            <button
                                 onClick={() => setViewMode('TRADE')}
                                 className={`relative px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'TRADE' ? 'bg-purple-500 text-white' : 'text-slate-400 hover:text-white'}`}
                             >
@@ -180,8 +187,19 @@ const AuctionRoom = () => {
                     )}
 
                     {isManager && (
-                        <div className="text-gold text-sm font-medium px-3 py-1 bg-gold/10 rounded-full border border-gold/20">
-                            MANAGER VIEW
+                        <div className="flex bg-white/5 rounded-lg p-1 gap-1">
+                            <button
+                                onClick={() => setViewMode('AUCTION')}
+                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'AUCTION' ? 'bg-gold text-black' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                <Gavel size={14} /> AUCTION
+                            </button>
+                            <button
+                                onClick={() => setViewMode('ALL_TEAMS')}
+                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-green-500 text-white' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                <Users size={14} /> TEAMS
+                            </button>
                         </div>
                     )}
 
@@ -297,6 +315,12 @@ const AuctionRoom = () => {
                             allTeams={roomData.teams || []}
                             onClose={() => setViewMode('AUCTION')}
                         />
+                    </div>
+                )}
+
+                {viewMode === 'ALL_TEAMS' && (
+                    <div className="flex-1 overflow-hidden">
+                        <AllTeamsView teams={roomData.teams || []} />
                     </div>
                 )}
 
