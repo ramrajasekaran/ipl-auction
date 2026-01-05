@@ -195,6 +195,12 @@ const AuctionRoom = () => {
                                 <Gavel size={14} /> AUCTION
                             </button>
                             <button
+                                onClick={() => setViewMode('PLAYERS')}
+                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'PLAYERS' ? 'bg-cyan-500 text-white' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                <UserPlus size={14} /> PLAYERS
+                            </button>
+                            <button
                                 onClick={() => setViewMode('ALL_TEAMS')}
                                 className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-green-500 text-white' : 'text-slate-400 hover:text-white'}`}
                             >
@@ -236,13 +242,16 @@ const AuctionRoom = () => {
                 </header>
 
                 {/* VIEW MODES */}
-                {viewMode === 'AUCTION' && (
+                {(viewMode === 'AUCTION' || viewMode === 'PLAYERS') && (
                     <main className="flex-1 p-2 md:p-6 pb-40 md:pb-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-4 md:gap-8 overflow-y-auto">
-                        {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE */}
+                        {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE (PLAYERS TAB) / SIDEBAR ON DESKTOP */}
                         {isManager && (
-                            <div className="flex flex-col gap-4 w-full md:w-80 md:h-full flex-shrink-0">
+                            <div className={`flex flex-col gap-4 w-full md:w-80 md:h-full flex-shrink-0 ${viewMode === 'PLAYERS' ? 'flex h-full' : 'hidden md:flex'}`}>
                                 <AuctioneerControls
-                                    onSelectPlayer={startTurn}
+                                    onSelectPlayer={(p) => {
+                                        startTurn(p);
+                                        setViewMode('AUCTION');
+                                    }}
                                     onSold={sellPlayer}
                                     onUnsold={unsoldPlayer}
                                     currentBid={auctionState.currentBid}
@@ -251,8 +260,8 @@ const AuctionRoom = () => {
                             </div>
                         )}
 
-                        {/* Center: Player Card + Bid Controls + Leading Bid */}
-                        <div className={`flex-1 flex flex-col items-center justify-start w-full max-w-2xl gap-4 px-1 md:px-4 flex`}>
+                        {/* Center: Player Card + Bid Controls + Leading Bid (HIDDEN IN PLAYERS MODE ON MOBILE) */}
+                        <div className={`flex-1 flex-col items-center justify-start w-full max-w-2xl gap-4 px-1 md:px-4 ${viewMode === 'PLAYERS' ? 'hidden md:flex' : 'flex'}`}>
 
                             {/* Unified Timer State - MOVED TOP for Mobile Visibility */}
                             {(() => {

@@ -76,7 +76,7 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
     return (
         <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 w-full md:min-h-[500px] md:h-full flex flex-col overflow-hidden">
             {/* Actions Zone: Search + Final Call */}
-            <div className="fixed top-[60px] left-0 right-0 md:static z-50 bg-[#0f172a] shadow-xl p-4 border-b border-white/10 md:border-none flex-shrink-0">
+            <div className="sticky top-0 z-30 bg-[#0f172a] shadow-xl p-4 border-b border-white/10 flex-shrink-0">
                 {/* Player Search Bar - ALWAYS VISIBLE AT TOP */}
                 <div className="relative mb-2 md:mb-4">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
@@ -141,14 +141,14 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
                 )}
 
                 {!isBiddingActive && !auctionState?.currentPlayer && (
-                    <div className="py-3 px-4 bg-white/5 rounded-xl text-center text-slate-400 text-xs border border-white/5 hidden md:block">
+                    <div className="py-3 px-4 bg-white/5 rounded-xl text-center text-slate-400 text-xs border border-white/5 md:block">
                         Select a player to start bidding
                     </div>
                 )}
             </div>
 
-            {/* Player Selection List - Flowing area with spacer */}
-            <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar max-h-[250px] md:max-h-none mt-[80px] md:mt-0">
+            {/* Player Selection List - Flowing area */}
+            <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar max-h-[250px] md:max-h-none">
                 {filteredPlayers.length > 0 ? (
                     filteredPlayers.map((player, idx) => (
                         <div
