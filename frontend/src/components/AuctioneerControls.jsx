@@ -10,7 +10,8 @@ const AuctioneerControls = ({
     currentBid,
     isBiddingActive,
     showList = true,
-    showSearch = true
+    showSearch = true,
+    showActions = true
 }) => {
     const { roomData, searchGlobalPlayers, activateGlobalPlayer, timerState, triggerTimer, stopTimer, refreshState, auctionState } = useGame();
     const [searchTerm, setSearchTerm] = useState('');
