@@ -10,7 +10,7 @@ const StatsPanel = ({ teams, currentBidderId }) => {
     };
 
     return (
-        <div className="h-full bg-black/40 backdrop-blur-md border-l border-white/10 flex flex-col w-80">
+        <div className="h-full bg-black/40 backdrop-blur-md border-l border-white/10 flex flex-col w-full md:w-80">
             <div className="p-4 border-b border-white/10">
                 <h3 className="text-white font-bold flex items-center gap-2">
                     <Users size={18} className="text-blue-400" />

@@ -1,5 +1,5 @@
 import express from 'express';
-import { createGame, joinGame, resumeGame, rejoinTeam, addDefaultPlayers, uploadPlayers, uploadGlobalPlayers, getGlobalPlayers, clearGlobalPlayers, releasePlayer, resetManagerPassword, resetTeamPassword } from '../controllers/gameController.js';
+import { createGame, joinGame, resumeGame, rejoinTeam, addDefaultPlayers, uploadPlayers, uploadGlobalPlayers, getGlobalPlayers, clearGlobalPlayers, releasePlayer, resetManagerPassword, resetTeamPassword, getTeamDetails } from '../controllers/gameController.js';
 import multer from 'multer';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -19,6 +19,7 @@ router.post('/players/admin/upload', upload.single('file'), uploadGlobalPlayers)
 router.get('/players/admin/global', getGlobalPlayers); // NEW VIEW ROUTE
 router.delete('/players/admin/global', clearGlobalPlayers); // NEW DELETE ROUTE
 router.post('/players/release', releasePlayer);
+router.get('/team/:teamId', getTeamDetails); // Validate team and get squad
 
 // Password Reset Routes
 router.post('/reset-manager-password', resetManagerPassword);

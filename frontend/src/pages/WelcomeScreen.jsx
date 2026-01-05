@@ -88,7 +88,7 @@ const WelcomeScreen = () => {
                 <motion.div
                     onHoverStart={() => setHovered('mini')}
                     onHoverEnd={() => setHovered(null)}
-                    onClick={() => navigate('/mini-auction')} // Placeholder route
+                    onClick={() => navigate('/continue-game')}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="relative cursor-pointer group"

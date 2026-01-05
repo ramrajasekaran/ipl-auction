@@ -12,6 +12,7 @@ import gameRoutes from './routes/gameRoutes.js'; // Added
 import auctionRoutes from './routes/auctionRoutes.js';
 import playerRoutes from './routes/playerRoutes.js';
 import tradeRoutes from './routes/tradeRoutes.js';
+import miniAuctionRoutes from './routes/miniAuctionRoutes.js'; // Mini Auction Routes
 import setupSocketHandlers from './socket/socketHandlers.js';
 
 // Load environment variables
@@ -81,6 +82,7 @@ app.use('/api/games', gameRoutes); // New Game Logic
 app.use('/api/auction', auctionRoutes);
 app.use('/api/players', playerRoutes);
 app.use('/api/trades', tradeRoutes);
+app.use('/api/mini-auction', miniAuctionRoutes); // Mini Auction Routes
 
 // Health check route
 app.get('/api/health', (req, res) => {

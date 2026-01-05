@@ -9,7 +9,7 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
 
     // Get available and unsold players from roomData
     const allSelectableRoomPlayers = (roomData.players || []).filter(p =>
-        p.status === 'AVAILABLE' || p.status === 'UNSOLD'
+        p.status === 'AVAILABLE' || p.status === 'UNSOLD' || p.status === 'RELEASED'
     );
 
     console.log('[AuctioneerControls] Room Players:', roomData.players?.length, 'Selectable:', allSelectableRoomPlayers.length);
@@ -74,121 +74,122 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
     };
 
     return (
-        <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 p-4 w-full min-h-[500px] md:h-full flex flex-col">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-bold flex items-center gap-2">
-                    <Gavel size={18} className="text-primary" />
-                    Auctioneer Panel ({allSelectableRoomPlayers.length} Players)
-                </h3>
-            </div>
-
-            {/* Actions for current player */}
-            {isBiddingActive && (
-                <div className="mb-6 space-y-3">
-                    <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                        <div className="text-slate-400 text-xs mb-2">Current Bid</div>
-                        <div className="text-3xl font-black text-gold">
-                            ₹{currentBid >= 100 ? (currentBid / 100).toFixed(2) + ' Cr' : currentBid + ' L'}
-                        </div>
-                    </div>
-
-                    {timerState.isRunning ? (
-                        <div className="relative">
-                            <button
-                                onClick={stopTimer}
-                                className="w-full py-4 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-red-900/40 flex items-center justify-center gap-3 animate-pulse-slow"
-                            >
-                                <Gavel size={24} className="animate-bounce" />
-                                <div>
-                                    <div className="text-xs opacity-80">FINAL CALL</div>
-                                    <div className="text-2xl font-black">{timerState.remaining}s</div>
-                                </div>
-                                <Gavel size={24} className="animate-bounce" />
-                            </button>
-                            <div className="absolute -top-1 -left-1 -right-1 -bottom-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl blur-md opacity-50 animate-pulse" />
-                        </div>
-                    ) : (auctionState?.currentBid?.team && timerState.remaining === 0 && !timerState.isRunning) ? (
-                        <button
-                            onClick={triggerTimer}
-                            className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-900/40 hover:scale-105 flex items-center justify-center gap-2"
-                        >
-                            <Gavel size={20} />
-                            RESUME BIDDING
-                        </button>
-                    ) : (
-                        <button
-                            onClick={triggerTimer}
-                            disabled={!isBiddingActive}
-                            className="group relative w-full h-24 bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600 text-black rounded-2xl font-black transition-all shadow-xl shadow-amber-900/50 hover:shadow-2xl hover:shadow-amber-500/50 hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden flex items-center justify-center gap-4"
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                            <Gavel
-                                size={48}
-                                className="relative z-10 drop-shadow-2xl group-hover:rotate-[-15deg] group-active:rotate-[-35deg] group-active:translate-y-3 transition-all duration-150"
-                            />
-                            <div className="relative z-10 text-left">
-                                <div className="text-sm font-semibold opacity-80">FINAL CALL</div>
-                                <div className="text-xs opacity-60">Start 10s Countdown</div>
+        <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 w-full md:min-h-[500px] md:h-full flex flex-col overflow-hidden">
+            {/* Actions Zone: Final Call + Search */}
+            <div className="sticky top-0 z-30 bg-[#0f172a] shadow-xl p-4 border-b border-white/10 flex-shrink-0">
+                {/* Actions for current player - DESKTOP ONLY (will be fixed at bottom on mobile) */}
+                {(isBiddingActive || auctionState?.currentPlayer) && (
+                    <div className="hidden md:block mb-4 space-y-3">
+                        {timerState.isRunning ? (
+                            <div className="relative">
+                                <button
+                                    onClick={stopTimer}
+                                    className="w-full py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-red-900/40 flex items-center justify-center gap-3 animate-pulse-slow"
+                                >
+                                    <Gavel size={20} className="animate-bounce" />
+                                    <div>
+                                        <div className="text-[10px] opacity-80 uppercase tracking-tighter">FINAL CALL</div>
+                                        <div className="text-xl font-black leading-none">{timerState.remaining}s</div>
+                                    </div>
+                                    <Gavel size={20} className="animate-bounce" />
+                                </button>
+                                <div className="absolute -top-1 -left-1 -right-1 -bottom-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl blur-md opacity-50 animate-pulse" />
                             </div>
-                        </button>
-                    )}
+                        ) : (auctionState?.currentBid?.team && timerState.remaining === 0 && !timerState.isRunning) ? (
+                            <button
+                                onClick={triggerTimer}
+                                className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-900/40 hover:scale-105 flex items-center justify-center gap-2"
+                            >
+                                <Gavel size={18} />
+                                RESUME BIDDING
+                            </button>
+                        ) : (
+                            <div className="flex flex-col gap-2">
+                                <button
+                                    onClick={triggerTimer}
+                                    disabled={!auctionState?.currentPlayer}
+                                    className="group relative w-full h-14 bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600 text-black rounded-xl font-black transition-all shadow-xl shadow-amber-900/50 hover:shadow-2xl hover:shadow-amber-500/50 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden flex items-center justify-center gap-4"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                                    <Gavel
+                                        size={28}
+                                        className="relative z-10 drop-shadow-2xl group-hover:rotate-[-15deg] group-active:rotate-[-35deg] group-active:translate-y-2 transition-all duration-150"
+                                    />
+                                    <div className="relative z-10 text-left">
+                                        <div className="text-xs font-bold opacity-90 uppercase tracking-tighter">FINAL CALL</div>
+                                        <div className="text-[10px] opacity-70 leading-none">START 10s COUNTDOWN</div>
+                                    </div>
+                                </button>
 
-                    <div className="text-center text-xs text-slate-500 italic px-2">
-                        {currentBid > 0
-                            ? "Auto-SOLD when timer ends"
-                            : "Auto-UNSOLD if no bids when timer ends"}
+                                {/* MANUAL CONFIRM SOLD / UNSOLD BUTTONS */}
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={onSold}
+                                        disabled={!auctionState.currentBidder}
+                                        className="flex-1 py-2.5 bg-green-600/20 hover:bg-green-600/40 text-green-400 border border-green-500/30 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all disabled:opacity-30 disabled:grayscale"
+                                    >
+                                        <Gavel size={14} /> CONFIRM SOLD
+                                    </button>
+                                    <button
+                                        onClick={onUnsold}
+                                        className="flex-1 py-2.5 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/30 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                                    >
+                                        <XCircle size={14} /> UNSOLD
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>
-            )}
+                )}
 
-            {!isBiddingActive && (
-                <div className="mb-6 p-4 bg-white/5 rounded-xl text-center text-slate-400 text-sm">
-                    Select a player to start bidding
-                </div>
-            )}
+                {!isBiddingActive && !auctionState?.currentPlayer && (
+                    <div className="mb-4 py-3 px-4 bg-white/5 rounded-xl text-center text-slate-400 text-xs border border-white/5">
+                        Select a player to start bidding
+                    </div>
+                )}
 
-            {/* Player Selection */}
-            <div className="flex-1 flex flex-col min-h-0">
-                <div className="relative mb-3">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                {/* Player Search Bar - INSIDE STICKY HEADER */}
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14} />
                     <input
                         type="text"
-                        placeholder="Search room players..."
+                        placeholder="Search players..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-lg py-2 pl-9 pr-3 text-sm text-white focus:outline-none focus:border-primary/50"
+                        className="w-full bg-black/30 border border-white/10 rounded-lg py-2.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-primary/50"
                     />
                     {isSearchingGlobal && (
-                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={16} />
+                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={14} />
                     )}
                 </div>
+            </div>
 
-                <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar max-h-[400px] md:max-h-none">
-                    {filteredPlayers.length > 0 ? (
-                        filteredPlayers.map((player, idx) => (
-                            <div
-                                key={player._id || `p-${idx}`}
-                                className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group"
-                                onClick={() => handlePlayerClick(player)}
-                            >
-                                <img src={player.image || 'https://via.placeholder.com/100'} alt={player.name} className="w-10 h-10 rounded-full object-cover bg-slate-800" />
-                                <div className="flex-1 min-w-0">
-                                    <h4 className="text-white font-medium text-sm truncate">{player.name}</h4>
-                                    <div className="text-xs text-slate-500">{player.role} • {formatCurrency(player.basePrice).replace('₹ ', '')}</div>
-                                </div>
-                                <button className="p-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <UserPlus size={16} />
-                                </button>
+            {/* Player Selection List - Flowing area */}
+            <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar max-h-[250px] md:max-h-none">
+                {filteredPlayers.length > 0 ? (
+                    filteredPlayers.map((player, idx) => (
+                        <div
+                            key={player._id || `p-${idx}`}
+                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group border border-transparent hover:border-white/5"
+                            onClick={() => handlePlayerClick(player)}
+                        >
+                            <img src={player.image || 'https://via.placeholder.com/100'} alt={player.name} className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover bg-slate-800" />
+                            <div className="flex-1 min-w-0">
+                                <h4 className="text-white font-medium text-xs md:text-sm truncate">{player.name}</h4>
+                                <div className="text-[10px] md:text-xs text-slate-500">{player.role} • {formatCurrency(player.basePrice).replace('₹ ', '')}</div>
                             </div>
-                        ))
-                    ) : (
-                        <div className="text-center py-8 px-4 flex flex-col items-center">
-                            <div className="text-slate-600 text-sm italic mb-4">
-                                {searchTerm.length > 0 ? "No players found matching search" : "No available players in room. Load players from PlayerSelection page."}
-                            </div>
+                            <button className="p-1 text-primary md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                <UserPlus size={14} />
+                            </button>
                         </div>
-                    )}
-                </div>
+                    ))
+                ) : (
+                    <div className="text-center py-6 px-4 flex flex-col items-center">
+                        <div className="text-slate-600 text-[10px] md:text-sm italic">
+                            {searchTerm.length > 0 ? "No players found matching search" : "No available players in room."}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

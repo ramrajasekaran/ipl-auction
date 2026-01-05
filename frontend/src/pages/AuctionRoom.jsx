@@ -7,12 +7,15 @@ import AuctioneerControls from '../components/AuctioneerControls';
 import StatsPanel from '../components/StatsPanel';
 import TeamDashboard from '../components/TeamDashboard';
 import TradeCenter from '../components/TradeCenter';
+import MiniTradeCenter from '../components/MiniTradeCenter';
 import Timer from '../components/Timer';
 import { Gavel, LayoutDashboard, Users, LogOut } from 'lucide-react';
 import { getDynamicIncrement } from '../utils/formatters';
+import { getTeamTrades } from '../services/miniAuctionAPI';
 
 const AuctionRoom = () => {
-    const { roomId: urlRoomCode } = useParams();
+    const { roomId, miniAuctionId } = useParams();
+    const urlRoomCode = roomId || miniAuctionId;
     const navigate = useNavigate();
 
     const {
@@ -28,28 +31,58 @@ const AuctionRoom = () => {
         lastSoldPlayer,
         refreshState,
         logout,
-        leaveGame
+        leaveGame,
+        triggerTimer,
+        stopTimer
     } = useGame();
 
     const [viewMode, setViewMode] = useState('AUCTION'); // AUCTION | DASHBOARD | TRADE
+    const [pendingTradeCount, setPendingTradeCount] = useState(0);
 
     // Sync state with URL if they don't match
+    // Robust Team Finder: Match by Team ID OR Owner ID (User ID)
+    const myTeam = (roomData.teams || []).find(t => {
+        const tId = (t._id || t.id)?.toString();
+        const tOwner = (t.owner?._id || t.owner || '').toString();
+        const myTeamId = currentUser?.teamId?.toString();
+        const myUserId = currentUser?.userId?.toString();
+
+        return (myTeamId && tId === myTeamId) || (myUserId && tOwner === myUserId);
+    });
+
+    // Trade Notification Polling
     React.useEffect(() => {
-        // PREVENTION: If we are already active in a room, and the URL changes (e.g. back button),
-        // we should prioritize the CURRENT STATE and revert the URL, rather than clearing state.
+        if (!myTeam || !roomData.auctionId) return;
+
+        const fetchTradeCount = async () => {
+            try {
+                const res = await getTeamTrades(roomData.auctionId, myTeam._id);
+                if (res.success) {
+                    const count = res.trades.filter(t => t.status === 'PENDING' && (t.receivingTeam._id || t.receivingTeam) === myTeam._id).length;
+                    setPendingTradeCount(count);
+                }
+            } catch (e) { console.error('Trade Poll Failed', e); }
+        };
+
+        fetchTradeCount();
+        const interval = setInterval(fetchTradeCount, 10000);
+        return () => clearInterval(interval);
+    }, [myTeam?._id, roomData.auctionId]);
+
+    // Sync state with URL
+    React.useEffect(() => {
         if (roomData.roomId && roomData.isActive && urlRoomCode && roomData.roomId.toUpperCase() !== urlRoomCode.toUpperCase()) {
             console.warn(`[AuctionRoom] URL mismatch prevented. State=${roomData.roomId}, URL=${urlRoomCode}. Forcing URL sync.`);
-            // Force URL to match state (replace history to avoid stack loop)
             window.history.replaceState(null, document.title, `/auction/${roomData.roomId}`);
             return;
         }
 
-        // Only refresh state if we are NOT active or if we really need to load from URL (fresh load)
         if ((!roomData.roomId || !roomData.isActive) && urlRoomCode) {
-            console.log(`[AuctionRoom] Fresh load or empty state. syncing from URL: ${urlRoomCode}`);
             refreshState(urlRoomCode);
         }
     }, [urlRoomCode, roomData.roomId, roomData.isActive]);
+
+
 
     // Ref to track if navigation is intentional (Leave/Logout buttons)
     const isIntentionalLeave = React.useRef(false);
@@ -95,7 +128,9 @@ const AuctionRoom = () => {
     }
 
     const isManager = userRole === 'MANAGER' || userRole === 'AUCTIONEER';
-    const teamId = currentUser?.teamId;
+
+
+    const teamId = myTeam?._id || currentUser?.teamId;
     const currentWinningTeam = (roomData.teams || []).find(t => (t._id || t.id)?.toString() === auctionState.currentBidder?.toString());
 
     return (
@@ -109,15 +144,15 @@ const AuctionRoom = () => {
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col relative z-10 h-full min-w-0">
                 {/* Header */}
-                <header className="h-16 border-b border-white/10 flex items-center justify-between px-6 bg-black/20 backdrop-blur-sm">
+                <header className="h-auto min-h-16 py-2 border-b border-white/10 flex flex-wrap items-center justify-between px-4 bg-black/20 backdrop-blur-sm gap-2">
                     <div className="flex items-center gap-3">
                         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                         <h1 className="text-white font-bold tracking-wide uppercase">IPL AUCTION ARENA</h1>
-                        <span className="text-slate-500 text-sm">Room: {urlRoomCode}</span>
+                        <span className="text-slate-500 text-sm">Room: {roomData?.roomId || urlRoomCode}</span>
                     </div>
 
                     {!isManager && currentUser && (
-                        <div className="hidden md:flex bg-white/5 rounded-lg p-1 mr-4">
+                        <div className="flex bg-white/5 rounded-lg p-1 mr-4 order-3 md:order-none w-full md:w-auto justify-center mt-2 md:mt-0">
                             <button
                                 onClick={() => setViewMode('AUCTION')}
                                 className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'AUCTION' ? 'bg-amber-500 text-black' : 'text-slate-400 hover:text-white'}`}
@@ -130,14 +165,17 @@ const AuctionRoom = () => {
                             >
                                 <LayoutDashboard size={14} /> MY SQUAD
                             </button>
-                            {/* Trade option disabled for mega auctions - only for mini auctions
                             <button
                                 onClick={() => setViewMode('TRADE')}
-                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'TRADE' ? 'bg-purple-500 text-white' : 'text-slate-400 hover:text-white'}`}
+                                className={`relative px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'TRADE' ? 'bg-purple-500 text-white' : 'text-slate-400 hover:text-white'}`}
                             >
                                 <Users size={14} /> TRADE
+                                {pendingTradeCount > 0 && (
+                                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-slate-900 animate-pulse">
+                                        {pendingTradeCount}
+                                    </div>
+                                )}
                             </button>
-                            */}
                         </div>
                     )}
 
@@ -159,7 +197,8 @@ const AuctionRoom = () => {
                         className="ml-4 px-3 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"
                         title="Leave Room"
                     >
-                        Leave Room
+                        <span className="hidden md:inline">Leave Room</span>
+                        <span className="md:hidden"><LogOut size={16} className="rotate-180" /></span>
                     </button>
 
                     {/* Logout Button */}
@@ -180,10 +219,10 @@ const AuctionRoom = () => {
 
                 {/* VIEW MODES */}
                 {viewMode === 'AUCTION' && (
-                    <main className="flex-1 p-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-8 overflow-y-auto">
+                    <main className="flex-1 p-2 md:p-6 pb-40 md:pb-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-4 md:gap-8 overflow-y-auto">
                         {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE */}
                         {isManager && (
-                            <div className="flex flex-col gap-4 w-full md:w-80 md:h-full">
+                            <div className="flex flex-col gap-4 w-full md:w-80 md:h-full flex-shrink-0">
                                 <AuctioneerControls
                                     onSelectPlayer={startTurn}
                                     onSold={sellPlayer}
@@ -194,8 +233,18 @@ const AuctionRoom = () => {
                             </div>
                         )}
 
-                        {/* Center: Player Card + Bid Controls + Leading Bid - HIDDEN ON MOBILE FOR MANAGERS */}
-                        <div className={`flex-1 flex flex-col items-center justify-center w-full max-w-2xl gap-4 overflow-hidden px-4 ${isManager ? 'hidden md:flex' : 'flex'}`}>
+                        {/* Center: Player Card + Bid Controls + Leading Bid */}
+                        <div className={`flex-1 flex flex-col items-center justify-start w-full max-w-2xl gap-4 px-1 md:px-4 flex`}>
+
+                            {/* Unified Timer State - MOVED TOP for Mobile Visibility */}
+                            {(() => {
+                                // show timer if it's running OR if there's time remaining on a selected player
+                                const showTimer = timerState.isRunning || (timerState.remaining > 0);
+                                return showTimer && (
+                                    <Timer remaining={timerState.remaining} isRunning={timerState.isRunning} />
+                                );
+                            })()}
+
                             <PlayerCard
                                 player={auctionState.currentPlayer}
                                 currentBid={auctionState.currentBid}
@@ -216,20 +265,11 @@ const AuctionRoom = () => {
                                     }
                                 />
                             )}
-
-                            {/* Unified Timer State */}
-                            {(() => {
-                                // show timer if it's running OR if there's time remaining on a selected player
-                                const showTimer = timerState.isRunning || (timerState.remaining > 0);
-                                return showTimer && (
-                                    <Timer remaining={timerState.remaining} isRunning={timerState.isRunning} />
-                                );
-                            })()}
                         </div>
 
 
                         {/* Right Side: Stats Panel (Teams & Squads) */}
-                        <div className="hidden md:flex flex-col gap-4 w-80 h-full">
+                        <div className="flex flex-col gap-4 w-full md:w-80 h-auto md:h-full">
                             <StatsPanel
                                 teams={roomData.teams || []}
                                 currentBidderId={auctionState.currentBidder}
@@ -240,8 +280,8 @@ const AuctionRoom = () => {
 
                 {viewMode === 'DASHBOARD' && (
                     <div className="flex-1 p-6 overflow-hidden">
-                        {currentUser?.teamId ? (
-                            <TeamDashboard team={(roomData.teams || []).find(t => (t._id || t.id)?.toString() === currentUser.teamId?.toString())} />
+                        {myTeam ? (
+                            <TeamDashboard team={myTeam} />
                         ) : (
                             <div className="text-center text-slate-400 mt-20">Access Restricted to Team Owners</div>
                         )}
@@ -250,7 +290,73 @@ const AuctionRoom = () => {
 
                 {viewMode === 'TRADE' && (
                     <div className="flex-1 p-6 overflow-hidden max-w-4xl mx-auto w-full">
-                        <TradeCenter />
+                        {/* Use MiniTradeCenter for Mini Auctions */}
+                        <MiniTradeCenter
+                            miniAuctionId={roomData.auctionId}
+                            currentTeam={myTeam}
+                            allTeams={roomData.teams || []}
+                            onClose={() => setViewMode('AUCTION')}
+                        />
+                    </div>
+                )}
+
+                {/* Fixed Mobile Controls for Manager */}
+                {isManager && (auctionState.isBiddingActive || auctionState.currentPlayer) && viewMode === 'AUCTION' && (
+                    <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#0f172a] via-[#0f172a] to-transparent z-40 md:hidden flex flex-col gap-3">
+                        {timerState.isRunning ? (
+                            <div className="relative">
+                                <button
+                                    onClick={stopTimer}
+                                    className="w-full py-4 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-2xl font-bold transition-all shadow-xl shadow-red-900/40 flex items-center justify-center gap-3 animate-pulse-slow active:scale-95"
+                                >
+                                    <Gavel size={24} className="animate-bounce" />
+                                    <div className="text-left">
+                                        <div className="text-[10px] opacity-80 uppercase tracking-tighter leading-none mb-1">FINAL CALL</div>
+                                        <div className="text-2xl font-black leading-none">{timerState.remaining}s</div>
+                                    </div>
+                                    <Gavel size={24} className="animate-bounce" />
+                                </button>
+                                <div className="absolute -top-1 -left-1 -right-1 -bottom-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl blur-md opacity-30 animate-pulse pointer-events-none" />
+                            </div>
+                        ) : (auctionState?.currentBid?.team && timerState.remaining === 0 && !timerState.isRunning) ? (
+                            <button
+                                onClick={triggerTimer}
+                                className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-bold transition-all shadow-xl shadow-blue-900/40 flex items-center justify-center gap-3 active:scale-95"
+                            >
+                                <Gavel size={20} />
+                                <div className="text-xl">RESUME BIDDING</div>
+                            </button>
+                        ) : (
+                            <div className="flex flex-col gap-3">
+                                <button
+                                    onClick={triggerTimer}
+                                    disabled={!auctionState.currentPlayer}
+                                    className="group relative w-full h-16 bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 text-black rounded-2xl font-black transition-all shadow-xl shadow-amber-900/50 flex items-center justify-center gap-4 active:scale-95"
+                                >
+                                    <Gavel size={32} className="relative z-10" />
+                                    <div className="relative z-10 text-left">
+                                        <div className="text-xs font-bold opacity-80 uppercase tracking-tighter leading-none mb-1">FINAL CALL</div>
+                                        <div className="text-sm font-bold opacity-70 leading-none">START 10s COUNTDOWN</div>
+                                    </div>
+                                </button>
+
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={sellPlayer}
+                                        disabled={!auctionState.currentBidder}
+                                        className="flex-1 py-3.5 bg-green-600/20 hover:bg-green-600/30 text-green-400 border border-green-500/30 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-lg disabled:opacity-30 disabled:grayscale transition-all active:scale-95"
+                                    >
+                                        <Gavel size={18} /> CONFIRM SOLD
+                                    </button>
+                                    <button
+                                        onClick={unsoldPlayer}
+                                        className="flex-1 py-3.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95"
+                                    >
+                                        <XCircle size={18} /> UNSOLD
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

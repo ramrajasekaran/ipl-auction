@@ -127,13 +127,22 @@ const LoginPage = () => {
                         </button>
                     </form>
 
-                    <div className="mt-6 text-center">
+                    <div className="mt-6 text-center space-y-3">
                         <p className="text-slate-500 text-sm">
                             Don't have an account?{' '}
                             <Link to="/register" className="text-primary hover:underline font-medium">
                                 Create one
                             </Link>
                         </p>
+                        <div className="pt-3 border-t border-white/10">
+                            <Link
+                                to="/continue-game"
+                                className="text-sm text-green-500 hover:text-green-400 font-medium flex items-center justify-center gap-2 transition-colors"
+                            >
+                                <span>🏆</span>
+                                Continue to Mini Auction
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </motion.div>

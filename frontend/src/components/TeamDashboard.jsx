@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, TrendingUp, DollarSign, Users } from 'lucide-react';
+import { Trophy, TrendingUp, DollarSign, Users, Shield, Trash2 } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
 import { useGame } from '../context/GameContext';
 
@@ -28,7 +28,8 @@ const TeamDashboard = ({ team }) => {
         }
     };
 
-    const isMyTeam = currentUser?.teamId === team._id;
+    const isMyTeam = (currentUser?.teamId && currentUser.teamId === team._id) ||
+        (currentUser?.userId && (team.owner === currentUser.userId || team.owner?._id === currentUser.userId));
 
     return (
         <div className="bg-slate-900/50 rounded-2xl p-6 border border-white/10 h-full overflow-hidden flex flex-col">
@@ -55,40 +56,26 @@ const TeamDashboard = ({ team }) => {
                             return (
                                 <motion.div
                                     key={p._id || p}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, height: 0 }}
-                                    className="bg-white/5 p-3 rounded-xl flex items-center justify-between group hover:bg-white/10 transition-colors"
+                                    className="bg-white/5 p-3 rounded-lg flex items-center gap-4 hover:bg-white/10 transition-colors border border-white/5"
                                 >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold ${p.role === 'BATSMAN' ? 'bg-blue-500/20 text-blue-400' : 'bg-green-500/20 text-green-400'}`}>
-                                            {p.role ? p.role[0] : '?'}
-                                        </div>
-                                        <div>
-                                            <h4 className="font-semibold text-white">{p.name}</h4>
-                                            <p className="text-xs text-slate-400">
-                                                {p.country} • {
-                                                    (() => {
-                                                        const val = item.boughtPrice || p.soldPrice || 0;
-                                                        // item.boughtPrice is in Cr in the DB.
-                                                        const lakhs = val * 100; // Convert Cr to Lakhs for formatCurrency
-                                                        return formatCurrency(lakhs);
-                                                    })()
-                                                }
-                                            </p>
-                                        </div>
+                                    <div className="flex-1 font-semibold text-white tracking-wide">{p.name}</div>
+
+                                    <div className="w-24 text-xs font-bold text-slate-400 uppercase tracking-wider text-center bg-black/20 py-1.5 rounded">
+                                        {p.role}
                                     </div>
 
-                                    {isMyTeam && (
-                                        <button
-                                            onClick={() => handleRelease(p._id)}
-                                            disabled={processing === p._id}
-                                            className="p-2 rounded-lg bg-red-500/10 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/20"
-                                            title="Release Player"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
-                                    )}
+                                    <div className="w-28 text-right font-mono text-green-400 font-bold">
+                                        {(() => {
+                                            const val = item.boughtPrice || p.soldPrice || 0;
+                                            const lakhs = val * 100;
+                                            return formatCurrency(lakhs);
+                                        })()}
+                                    </div>
+
+
                                 </motion.div>
                             );
                         })}

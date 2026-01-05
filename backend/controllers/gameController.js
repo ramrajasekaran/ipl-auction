@@ -573,8 +573,6 @@ export const releasePlayer = async (req, res) => {
 
         // Remove from players list
         team.players = team.players.filter(p => (p.player?.toString() || p.toString()) !== playerId);
-        await team.save();
-
         // Update Player Status
         player.status = 'AVAILABLE';
         player.soldTo = null;
@@ -590,6 +588,41 @@ export const releasePlayer = async (req, res) => {
 
     } catch (error) {
         console.error("Release Error:", error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+// Get Team Details (Validated)
+export const getTeamDetails = async (req, res) => {
+    try {
+        const { teamId } = req.params;
+
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Authentication required' });
+        }
+
+        const team = await Team.findById(teamId).populate('players.player');
+
+        if (!team) {
+            return res.status(404).json({ success: false, message: 'Team not found' });
+        }
+
+        // Security: Ensure user is owner OR manager of the auction
+        const auction = await Auction.findById(team.auctionId);
+        const isManager = auction && auction.auctioneer.toString() === req.user._id.toString();
+        const isOwner = team.owner.toString() === req.user._id.toString();
+
+        if (!isManager && !isOwner) {
+            return res.status(403).json({ success: false, message: 'Access denied' });
+        }
+
+        res.status(200).json({
+            success: true,
+            team: team
+        });
+
+    } catch (error) {
+        console.error('Get Team Details Error:', error);
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -837,4 +870,56 @@ export const clearGlobalPlayers = async (req, res) => {
         console.error("Clear Global Players Error:", error);
         res.status(500).json({ success: false, message: 'Server Error' });
     }
+};
+
+// Get Team Details (Validated)
+const getTeamDetails_Ignored = async (req, res) => {
+    try {
+        const { teamId } = req.params;
+
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Authentication required' });
+        }
+
+        const team = await Team.findById(teamId).populate('players.player');
+
+        if (!team) {
+            return res.status(404).json({ success: false, message: 'Team not found' });
+        }
+
+        // Security: Ensure user is owner OR manager of the auction
+        const auction = await Auction.findById(team.auctionId);
+        const isManager = auction && auction.auctioneer.toString() === req.user._id.toString();
+        const isOwner = team.owner.toString() === req.user._id.toString();
+
+        if (!isManager && !isOwner) {
+            return res.status(403).json({ success: false, message: 'Access denied' });
+        }
+
+        res.status(200).json({
+            success: true,
+            team: team
+        });
+
+    } catch (error) {
+        console.error('Get Team Details Error:', error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+// Export all together
+export default {
+    createGame,
+    joinGame,
+    resumeGame,
+    rejoinTeam,
+    addDefaultPlayers,
+    uploadPlayers,
+    uploadGlobalPlayers,
+    getGlobalPlayers,
+    clearGlobalPlayers,
+    releasePlayer,
+    resetManagerPassword,
+    resetTeamPassword,
+    getTeamDetails
 };

@@ -37,13 +37,16 @@ export const placeBid = async (req, res) => {
             });
         }
 
-        // Get team
-        const team = await Team.findOne({ owner: req.user.id });
+        // Get team - must be in THIS auction
+        const team = await Team.findOne({
+            owner: req.user._id,
+            auctionId: auctionId
+        }).populate('players.player');
 
         if (!team) {
             return res.status(404).json({
                 success: false,
-                message: 'Team not found'
+                message: 'Team not found in this auction'
             });
         }
 
@@ -70,6 +73,15 @@ export const placeBid = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: `Insufficient purse balance. You have ₹${team.currentPurse} CR`
+            });
+        }
+
+        // Check squad size limit (maximum 25 players)
+        const currentSquadSize = team.players ? team.players.length : 0;
+        if (currentSquadSize >= 25) {
+            return res.status(400).json({
+                success: false,
+                message: `Squad full! Maximum 25 players allowed. You have ${currentSquadSize} players.`
             });
         }
 

@@ -1,0 +1,195 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ArrowRight, Trophy, Lock, Users } from 'lucide-react';
+import { continueGame } from '../services/miniAuctionAPI';
+
+const ContinueGamePage = () => {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        roomId: '',
+        teamName: '',
+        password: '',
+        budget: ''
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+
+        try {
+            const response = await continueGame(
+                formData.roomId,
+                formData.teamName,
+                formData.password,
+                formData.budget ? parseFloat(formData.budget) : undefined
+            );
+
+            if (response.success) {
+                // Store mini auction data
+                localStorage.setItem('miniAuctionId', response.miniAuctionId);
+                localStorage.setItem('teamId', response.teamId);
+
+                // Navigate to player release page
+                navigate(`/mini-auction/${response.miniAuctionId}/release`);
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to continue game');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-gradient-bg flex items-center justify-center p-4">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="w-full max-w-md"
+            >
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 200 }}
+                        className="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-500/30"
+                    >
+                        <Trophy size={40} className="text-white" />
+                    </motion.div>
+                    <h1 className="text-3xl font-bold text-white mb-2">Continue to Mini Auction</h1>
+                    <p className="text-slate-400">Enter your mega auction room details</p>
+                </div>
+
+                {/* Form */}
+                <div className="glass-panel p-8 rounded-2xl">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-2">
+                                Mega Auction Room ID
+                            </label>
+                            <div className="relative">
+                                <Trophy className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                                <input
+                                    type="text"
+                                    value={formData.roomId}
+                                    onChange={(e) => setFormData({ ...formData, roomId: e.target.value.toUpperCase() })}
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600 uppercase"
+                                    placeholder="ABC123"
+                                    required
+                                    maxLength={6}
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-2">
+                                Team Name
+                            </label>
+                            <div className="relative">
+                                <Users className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                                <input
+                                    type="text"
+                                    value={formData.teamName}
+                                    onChange={(e) => setFormData({ ...formData, teamName: e.target.value })}
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    placeholder="Your team name"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-2">
+                                Password
+                            </label>
+                            <div className="relative">
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                                <input
+                                    type="password"
+                                    value={formData.password}
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    placeholder="Your team password"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-2">
+                                Mini Auction Budget (Optional - Manager Only)
+                            </label>
+                            <div className="relative">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                                <input
+                                    type="number"
+                                    value={formData.budget || ''}
+                                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-8 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    placeholder="25"
+                                    min="1"
+                                    max="25"
+                                />
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">Cr</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-1">Default: 25 Cr (Max: 25 Cr)</p>
+                        </div>
+
+                        {error && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm"
+                            >
+                                {error}
+                            </motion.div>
+                        )}
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-green-900/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                            {loading ? (
+                                <>
+                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    Validating...
+                                </>
+                            ) : (
+                                <>
+                                    Continue to Mini Auction
+                                    <ArrowRight size={20} />
+                                </>
+                            )}
+                        </button>
+                    </form>
+
+                    <div className="mt-6 text-center">
+                        <button
+                            onClick={() => navigate('/')}
+                            className="text-sm text-slate-400 hover:text-white transition-colors"
+                        >
+                            ← Back to Home
+                        </button>
+                    </div>
+                </div>
+
+                {/* Info Box */}
+                <div className="mt-6 glass-panel p-4 rounded-xl">
+                    <h3 className="text-sm font-bold text-white mb-2">Requirements:</h3>
+                    <ul className="text-xs text-slate-400 space-y-1">
+                        <li>✓ Mega auction must be completed</li>
+                        <li>✓ Team must have 15-25 players</li>
+                        <li>✓ Use same credentials from mega auction</li>
+                    </ul>
+                </div>
+            </motion.div>
+        </div>
+    );
+};
+
+export default ContinueGamePage;

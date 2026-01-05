@@ -14,7 +14,7 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
                     : 'bg-gradient-to-br from-green-900/50 to-emerald-900/50 border-green-500/50'
                     }`}>
                     <div className={`text-2xl font-black mb-2 ${lastSoldPlayer.isUnsold ? 'text-red-400' : 'text-green-400'}`}>
-                        {lastSoldPlayer.isUnsold ? '😞 UNSOLD!' : '🎉 SOLD!'}
+                        {lastSoldPlayer.isUnsold ? 'UNSOLD!' : 'SOLD!'}
                     </div>
                     <div className="text-white font-bold text-lg truncate max-w-full">{lastSoldPlayer.player?.name}</div>
                     {!lastSoldPlayer.isUnsold && (
@@ -46,7 +46,7 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-xs relative group"
+            className="w-full max-w-xs relative group flex-shrink-0"
         >
             <div className="absolute inset-0 bg-gradient-to-b from-primary/20 to-purple-600/20 rounded-2xl blur-lg group-hover:blur-xl transition-all duration-500" />
 
@@ -54,13 +54,13 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
                 <div className="w-full aspect-[4/3] bg-gradient-to-br from-slate-800 to-black rounded-xl mb-2 relative overflow-hidden">
                     {/* Placeholder logic for image */}
                     {player.image ? (
-                        <img src={player.image} alt={player.name} className="w-full h-full object-cover" />
+                        <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" />
                     ) : (
-                        <div className="flex items-center justify-center h-full text-slate-700">
+                        <div className="flex items-center justify-center h-full text-slate-700 bg-slate-200">
                             <img
                                 src={`https://ui-avatars.com/api/?name=${player.name}&background=random&size=200`}
                                 alt={player.name}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-contain p-2"
                             />
                         </div>
                     )}

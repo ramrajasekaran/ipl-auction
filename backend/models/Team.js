@@ -48,6 +48,33 @@ const teamSchema = new mongoose.Schema({
         type: String,
         default: '#3B82F6' // Default blue color
     },
+    // Mini Auction Fields
+    miniAuctionBudget: {
+        type: Number,
+        default: 25 // 25 Cr for mini auction
+    },
+    releasedPlayers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'RoomPlayer'
+    }],
+    tradedPlayers: [{
+        playerId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'RoomPlayer'
+        },
+        tradedWith: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Team'
+        },
+        tradedFor: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'RoomPlayer'
+        },
+        timestamp: {
+            type: Date,
+            default: Date.now
+        }
+    }],
     logo: {
         type: String,
         default: ''

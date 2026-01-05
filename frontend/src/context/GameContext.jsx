@@ -345,7 +345,7 @@ export const GameProvider = ({ children }) => {
             ...prev,
             roomId: auction.roomId,
             auctionId: auction._id,
-            budget: auction.settings.initialPurse,
+            budget: auction.budget || auction.settings?.initialPurse || 0,
             teams: auction.teams || [],
             players: auction.players || [],
             isActive: true
@@ -716,6 +716,28 @@ export const GameProvider = ({ children }) => {
                     userId: currentUser?.userId || 'manager'
                 });
             }
+            return;
+        }
+
+        // MINI AUCTION FIX: If rId is an ObjectId, it's a direct auction ID, not a room code.
+        // Skip API lookup and join socket directly.
+        const isObjectId = /^[0-9a-fA-F]{24}$/.test(rId);
+        if (isObjectId) {
+            console.log('[GameContext] Detected direct Auction ID (Mini Auction). Connecting socket directly...');
+
+            // Set auctionId immediately so socket listeners know where to update
+            setRoomData(prev => ({
+                ...prev,
+                auctionId: rId,
+                isActive: true
+            }));
+
+            if (!socket.connected) socket.connect();
+
+            socket.emit('auction:join', {
+                auctionId: rId,
+                userId: currentUser?.userId || 'manager'
+            });
             return;
         }
 

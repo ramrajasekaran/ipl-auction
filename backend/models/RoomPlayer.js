@@ -42,7 +42,7 @@ const roomPlayerSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['UNSOLD', 'SOLD', 'AVAILABLE'],
+        enum: ['UNSOLD', 'SOLD', 'AVAILABLE', 'RELEASED'],
         default: 'AVAILABLE'
     },
     soldTo: {

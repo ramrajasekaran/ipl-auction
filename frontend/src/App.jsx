@@ -13,6 +13,8 @@ import ResetPassword from './pages/ResetPassword';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminPanel from './pages/AdminPanel'; // Import
+import ContinueGamePage from './pages/ContinueGamePage'; // Mini Auction
+import PlayerReleasePage from './pages/PlayerReleasePage'; // Mini Auction
 
 // ... imports remain the same
 
@@ -86,6 +88,12 @@ function App() {
                         <Route path="/reset-password" element={<ResetPassword />} />
                         <Route path="/setup-players/:roomId" element={<ProtectedRoute><PlayerSelection /></ProtectedRoute>} />
                         <Route path="/auction/:roomId" element={<ProtectedRoute><AuctionRoom /></ProtectedRoute>} />
+
+                        {/* Mini Auction Routes */}
+                        <Route path="/continue-game" element={<ProtectedRoute><MiniAuctionPage /></ProtectedRoute>} />
+                        <Route path="/mini-auction/:miniAuctionId/release" element={<ProtectedRoute><PlayerReleasePage /></ProtectedRoute>} />
+                        <Route path="/mini-auction/:miniAuctionId" element={<ProtectedRoute><AuctionRoom /></ProtectedRoute>} />
+
                         <Route path="*" element={<Navigate to="/login" replace />} />
                     </Routes>
                 </Router>

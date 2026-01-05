@@ -1,4 +1,5 @@
 import Auction from '../models/Auction.js';
+import MiniAuction from '../models/MiniAuction.js';
 
 import RoomPlayer from '../models/RoomPlayer.js';
 import Team from '../models/Team.js';
@@ -7,7 +8,8 @@ import Bid from '../models/Bid.js';
 let timerIntervals = {}; // Store timer intervals for each auction
 
 const getPopulatedAuction = async (auctionId) => {
-    const auction = await Auction.findById(auctionId)
+    // Try Standard Auction
+    let auction = await Auction.findById(auctionId)
         .populate('currentPlayer')
         .populate('currentBid.team')
         .populate('currentBid.placedBy', 'name')
@@ -19,7 +21,46 @@ const getPopulatedAuction = async (auctionId) => {
         })
         .populate('players');
 
-    return auction;
+    if (auction) return auction;
+
+    // Try Mini Auction
+    const mini = await MiniAuction.findById(auctionId)
+        .populate('currentPlayer')
+        .populate('currentBid.team')
+        .populate('currentBid.placedBy', 'name')
+        .populate({
+            path: 'teams',
+            populate: {
+                path: 'players.player'
+            }
+        })
+        .populate('playerPool'); // Use playerPool instead of players
+
+    if (mini) {
+        // Dynamic Player Fetch: Ignore stored pool, fetch all eligible players directly from DB
+        // This ensures UNSOLD, AVAILABLE, and RELEASED players are always visible
+        const players = await RoomPlayer.find({
+            auctionId: mini.megaAuctionId,
+            status: { $in: ['UNSOLD', 'AVAILABLE', 'RELEASED'] }
+        });
+
+        // Manual construction to ensure all fields are present and strings
+        return {
+            _id: mini._id,
+            roomId: mini.roomId,
+            status: mini.status,
+            budget: mini.budget,
+            settings: mini.settings || { initialPurse: mini.budget }, // Polyfill settings for frontend safety
+            teams: mini.teams || [],
+            players: players || [], // Use dynamic list
+            currentPlayer: mini.currentPlayer,
+            currentBid: mini.currentBid,
+            timer: mini.timer,
+            megaAuctionId: mini.megaAuctionId
+        };
+    }
+
+    return null;
 };
 
 export const setupSocketHandlers = (io) => {
@@ -34,53 +75,94 @@ export const setupSocketHandlers = (io) => {
                 if (emitError) socket.emit('error', { message: 'Identity missing. Please rejoin.' });
                 return false;
             }
-            const auction = await Auction.findById(aId);
+
+            let auction = await Auction.findById(aId);
+            let authorized = false;
+
+            if (auction) {
+                authorized = auction.auctioneer.toString() === socket.userId.toString();
+            } else {
+                auction = await MiniAuction.findById(aId).populate('megaAuctionId');
+                if (auction && auction.megaAuctionId) {
+                    authorized = auction.megaAuctionId.auctioneer.toString() === socket.userId.toString();
+                }
+            }
+
             if (!auction) {
                 if (emitError) socket.emit('error', { message: 'Auction not found' });
                 return false;
             }
-            const authorized = auction.auctioneer.toString() === socket.userId.toString();
+
             if (!authorized && emitError) {
                 socket.emit('error', { message: 'Unauthorized. Only the Auctioneer can perform this action.' });
             }
             return authorized;
         };
 
+        // Helper to find any auction doc
+        const findAnyAuction = async (id) => {
+            return (await Auction.findById(id)) || (await MiniAuction.findById(id));
+        };
+
+        // Helper to update any auction
+        const updateAnyAuction = async (id, update, options = {}) => {
+            const a = await Auction.findByIdAndUpdate(id, update, options);
+            if (a) return a;
+            return await MiniAuction.findByIdAndUpdate(id, update, options);
+        };
+
         // Helper for Sold logic
         const handleSold = async (auctionId, playerId, teamId, price) => {
             const aId = str(auctionId);
-            console.log(`[Socket] handleSold: ${aId}`);
-            const auction = await Auction.findById(aId);
-            const team = await Team.findById(str(teamId));
-            const player = await RoomPlayer.findById(str(playerId));
-            if (!auction || !team || !player) return null;
+            console.log(`[Socket] handleSold Triggered: Auction=${aId}, Player=${playerId}, Team=${teamId}, Price=${price}`);
 
-            const priceInCr = price / 100;
-            team.currentPurse -= priceInCr;
-            team.players.push({ player: player._id, boughtPrice: priceInCr });
-            await team.save();
+            try {
+                const auction = await findAnyAuction(aId);
+                const team = await Team.findById(str(teamId));
+                const player = await RoomPlayer.findById(str(playerId));
 
-            player.status = 'SOLD';
-            player.soldTo = team._id;
-            player.soldPrice = priceInCr;
-            await player.save();
+                if (!auction) { console.error('HandleSold: Auction not found'); return null; }
+                if (!team) { console.error('HandleSold: Team not found'); return null; }
+                if (!player) { console.error('HandleSold: Player not found'); return null; }
 
-            auction.currentPlayer = null;
-            auction.currentBid = { amount: 0, team: null, placedBy: null };
-            auction.status = 'IDLE';
-            auction.timer = { isRunning: false, remaining: 0, startedAt: null };
-            await auction.save();
+                // Idempotency Check: Prevent duplicate sales
+                if (player.status === 'SOLD') {
+                    console.log(`[Socket] Skipped Sold: Player ${player.name} already sold.`);
+                    return null;
+                }
 
-            const updatedAuction = await getPopulatedAuction(aId);
-            io.to(`auction:${aId}`).emit('auction:player-sold', {
-                player, team, price: price, timestamp: new Date(), auction: updatedAuction
-            });
+                const priceInCr = price / 100;
+                team.currentPurse -= priceInCr;
+                team.players.push({ player: player._id, boughtPrice: priceInCr });
+                await team.save();
 
-            if (timerIntervals[aId]) {
-                clearInterval(timerIntervals[aId]);
-                delete timerIntervals[aId];
+                player.status = 'SOLD';
+                player.soldTo = team._id;
+                player.soldPrice = priceInCr;
+                await player.save();
+
+                auction.currentPlayer = null;
+                auction.currentBid = { amount: 0, team: null, placedBy: null };
+                auction.status = 'IDLE';
+                auction.timer = { isRunning: false, remaining: 0, startedAt: null };
+                await auction.save();
+
+                const updatedAuction = await getPopulatedAuction(aId);
+                console.log(`[Socket] Sold Success. Emitting event.`);
+                io.to(`auction:${aId}`).emit('auction:player-sold', {
+                    player, team, price: price, timestamp: new Date(), auction: updatedAuction
+                });
+
+                if (timerIntervals[aId]) {
+                    clearInterval(timerIntervals[aId]);
+                    delete timerIntervals[aId];
+                }
+                return updatedAuction;
+            } catch (err) {
+                console.error('HandleSold Exception:', err);
+                io.to(`auction:${aId}`).emit('error', { message: `Sold Action Failed: ${err.message}` });
+                return null;
             }
-            return updatedAuction;
         };
 
         // Helper for Unsold logic
@@ -93,7 +175,7 @@ export const setupSocketHandlers = (io) => {
                 await player.save();
             }
 
-            const auction = await Auction.findByIdAndUpdate(
+            const auction = await updateAnyAuction(
                 aId,
                 {
                     currentPlayer: null,
@@ -139,7 +221,7 @@ export const setupSocketHandlers = (io) => {
                 // Send current auction state
                 const auction = await getPopulatedAuction(aId);
 
-                socket.emit('auction:state', { auction });
+                io.to(`auction:${aId}`).emit('auction:state', { auction });
                 console.log(`State sent for auction ${aId}. Players count: ${auction.players?.length}`);
 
                 // Send current timer state if timer is running
@@ -186,7 +268,7 @@ export const setupSocketHandlers = (io) => {
                 const player = await RoomPlayer.findById(pId);
                 if (!player) return;
 
-                await Auction.findByIdAndUpdate(
+                await updateAnyAuction(
                     aId,
                     {
                         currentPlayer: pId,
@@ -221,14 +303,14 @@ export const setupSocketHandlers = (io) => {
                     return;
                 }
 
-                const auction = await Auction.findById(aId);
+                const auction = await findAnyAuction(aId);
                 if (!auction || !auction.currentPlayer) {
                     console.log(`[Timer] Cannot start timer: no current player in auction ${aId}`);
                     return;
                 }
 
                 let remaining = 10;
-                await Auction.findByIdAndUpdate(aId, {
+                await updateAnyAuction(aId, {
                     'timer.remaining': remaining,
                     'timer.isRunning': true,
                     'timer.startedAt': new Date()
@@ -251,7 +333,7 @@ export const setupSocketHandlers = (io) => {
                         delete timerIntervals[aId];
                         console.log(`[Timer] Finishing auction: ${aId}`);
 
-                        const finalAuction = await Auction.findById(aId);
+                        const finalAuction = await findAnyAuction(aId);
                         if (finalAuction && finalAuction.currentBid?.team) {
                             await handleSold(aId, finalAuction.currentPlayer, finalAuction.currentBid.team, finalAuction.currentBid.amount);
                         } else {
@@ -270,7 +352,7 @@ export const setupSocketHandlers = (io) => {
             try {
                 const aId = str(auctionId);
                 if (!(await isAuctioneer(aId))) return;
-                await Auction.findByIdAndUpdate(aId, { 'timer.isRunning': false, 'timer.remaining': 0 });
+                await updateAnyAuction(aId, { 'timer.isRunning': false, 'timer.remaining': 0 });
                 if (timerIntervals[aId]) { clearInterval(timerIntervals[aId]); delete timerIntervals[aId]; }
                 io.to(`auction:${aId}`).emit('auction:timer-update', { remaining: 0, isRunning: false });
             } catch (error) { console.error('Error stopping timer:', error); }
@@ -282,7 +364,7 @@ export const setupSocketHandlers = (io) => {
             try {
                 const aId = str(auctionId);
                 const tId = str(teamId);
-                const auction = await Auction.findById(aId);
+                const auction = await findAnyAuction(aId);
                 const team = await Team.findById(tId);
                 if (!auction || !team) return;
 
