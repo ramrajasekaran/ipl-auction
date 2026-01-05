@@ -10,8 +10,9 @@ import TradeCenter from '../components/TradeCenter';
 import MiniTradeCenter from '../components/MiniTradeCenter';
 import Timer from '../components/Timer';
 import AllTeamsView from '../components/AllTeamsView';
-import { Gavel, LayoutDashboard, Users, LogOut, XCircle, UserPlus } from 'lucide-react';
+import { Gavel, LayoutDashboard, Users, LogOut, XCircle, UserPlus, UserMinus } from 'lucide-react';
 import AuctionActionButtons from '../components/AuctionActionButtons';
+import ReleasePlayerPanel from '../components/ReleasePlayerPanel';
 import { getDynamicIncrement } from '../utils/formatters';
 import { getTeamTrades } from '../services/miniAuctionAPI';
 
@@ -210,6 +211,33 @@ const AuctionRoom = () => {
                         </div>
                     )}
 
+                    {/* Team Owner Controls */}
+                    {!isManager && (
+                        <div className="flex bg-white/5 rounded-lg p-1 gap-1">
+                            <button
+                                onClick={() => setViewMode('AUCTION')}
+                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'AUCTION' ? 'bg-gold text-black' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                <Gavel size={14} /> <span className="hidden sm:inline">AUCTION</span>
+                            </button>
+                            <button
+                                onClick={() => setViewMode('DASHBOARD')}
+                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'DASHBOARD' ? 'bg-purple-500 text-white' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                <LayoutDashboard size={14} /> <span className="hidden sm:inline">MY SQUAD</span>
+                            </button>
+                            {/* Release Button - Only for Mini Auctions */}
+                            {miniAuctionId && (
+                                <button
+                                    onClick={() => setViewMode('RELEASE')}
+                                    className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'RELEASE' ? 'bg-red-500 text-white' : 'text-slate-400 hover:text-white'}`}
+                                >
+                                    <UserMinus size={14} /> <span className="hidden sm:inline">RELEASE</span>
+                                </button>
+                            )}
+                        </div>
+                    )}
+
                     {/* Leave Room Button (Keep Session) */}
                     <button
                         onClick={() => {
@@ -340,6 +368,14 @@ const AuctionRoom = () => {
                     <div className="flex-1 overflow-hidden">
                         <AllTeamsView teams={roomData.teams || []} />
                     </div>
+                )}
+
+                {viewMode === 'RELEASE' && (
+                    <ReleasePlayerPanel
+                        miniAuctionId={miniAuctionId || roomData.auctionId}
+                        teamId={myTeam?._id}
+                        onClose={() => setViewMode('AUCTION')}
+                    />
                 )}
 
                 {/* Fixed Mobile Controls for Manager - REMOVED (Replaced by sticky buttons in main flow) */}
