@@ -9,7 +9,7 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
         // Show sold/unsold announcement if available
         if (lastSoldPlayer) {
             return (
-                <div className={`h-[160px] md:h-[200px] w-full max-w-[200px] md:max-w-xs glass-panel rounded-2xl flex items-center justify-center flex-col p-4 border-2 ${lastSoldPlayer.isUnsold
+                <div className={`min-h-[300px] w-full max-w-sm glass-panel rounded-2xl flex items-center justify-center flex-col p-4 border-2 ${lastSoldPlayer.isUnsold
                     ? 'bg-gradient-to-br from-red-900/50 to-rose-900/50 border-red-500/50'
                     : 'bg-gradient-to-br from-green-900/50 to-emerald-900/50 border-green-500/50'
                     }`}>
@@ -35,7 +35,7 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
         }
 
         return (
-            <div className="h-[160px] md:h-[200px] w-full max-w-[200px] md:max-w-xs glass-panel rounded-2xl flex items-center justify-center flex-col text-slate-500 animate-pulse">
+            <div className="min-h-[300px] w-full max-w-sm glass-panel rounded-2xl flex items-center justify-center flex-col text-slate-500 animate-pulse">
                 <Trophy size={32} className="mb-2 opacity-50 block" />
                 <p className="text-sm">Waiting for Auctioneer...</p>
             </div>
@@ -46,7 +46,7 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-[200px] md:max-w-xs relative group flex-shrink-0"
+            className="w-full max-w-sm relative group flex-shrink-0"
         >
             <div className="absolute inset-0 bg-gradient-to-b from-primary/20 to-purple-600/20 rounded-2xl blur-lg group-hover:blur-xl transition-all duration-500" />
 
