@@ -135,7 +135,7 @@ const AuctionRoom = () => {
     const currentWinningTeam = (roomData.teams || []).find(t => (t._id || t.id)?.toString() === auctionState.currentBidder?.toString());
 
     return (
-        <div className="flex h-screen bg-background overflow-hidden relative">
+        <div className="flex h-[100dvh] bg-background overflow-hidden relative">
             {/* Background Effects */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-[-20%] left-[20%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full" />
