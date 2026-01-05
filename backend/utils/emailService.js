@@ -19,10 +19,10 @@ const transporter = nodemailer.createTransport({
     },
     debug: true, // Show debug output for troubleshooting
     logger: true, // Log to console
-    // Timeouts to prevent hanging requests
-    connectionTimeout: 10000,
-    greetingTimeout: 5000,
-    socketTimeout: 10000
+    // Timeouts (increased for cloud environments like Render)
+    connectionTimeout: 30000,
+    greetingTimeout: 15000,
+    socketTimeout: 30000
 });
 
 // Verify transporter configuration
