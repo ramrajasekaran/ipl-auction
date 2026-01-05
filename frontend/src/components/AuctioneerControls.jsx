@@ -79,16 +79,16 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
             <div className="sticky top-0 z-30 bg-[#0f172a] shadow-xl p-4 border-b border-white/10 flex-shrink-0">
                 {/* Player Search Bar - ALWAYS VISIBLE AT TOP */}
                 <div className="relative mb-4">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14} />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                     <input
                         type="text"
                         placeholder="Search players..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-lg py-2.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-primary/50"
+                        className="w-full bg-white/10 border-2 border-white/20 rounded-lg py-3 pl-10 pr-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-primary/70 focus:bg-white/15"
                     />
                     {isSearchingGlobal && (
-                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={14} />
+                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={16} />
                     )}
                 </div>
 
