@@ -257,7 +257,8 @@ const AuctionRoom = () => {
                             {/* Unified Timer State - MOVED TOP for Mobile Visibility */}
                             {(() => {
                                 // show timer if it's running OR if there's time remaining on a selected player
-                                const showTimer = timerState.isRunning || (timerState.remaining > 0);
+                                // HIDE for Manager because they have the timer inside their control buttons
+                                const showTimer = !isManager && (timerState.isRunning || (timerState.remaining > 0));
                                 return showTimer && (
                                     <Timer remaining={timerState.remaining} isRunning={timerState.isRunning} />
                                 );
