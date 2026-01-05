@@ -258,6 +258,7 @@ const AuctionRoom = () => {
                                     isBiddingActive={auctionState.isBiddingActive}
                                     showList={viewMode === 'PLAYERS'}
                                     showSearch={viewMode === 'PLAYERS'}
+                                    showActions={viewMode !== 'PLAYERS'}
                                 />
                             </div>
                         )}

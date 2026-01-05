@@ -103,7 +103,7 @@ const AuctioneerControls = ({
                 )}
 
                 {/* Actions for current player - DESKTOP ONLY (will be fixed at bottom on mobile) */}
-                {(isBiddingActive || auctionState?.currentPlayer) && (
+                {showActions && (isBiddingActive || auctionState?.currentPlayer) && (
                     <div className="hidden md:block space-y-3">
                         {timerState.isRunning ? (
                             <div className="relative">
