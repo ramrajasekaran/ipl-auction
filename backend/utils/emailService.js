@@ -11,7 +11,11 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
-    }
+    },
+    // Timeouts to prevent hanging requests (fixes 502 Gateway Timeout)
+    connectionTimeout: 10000,
+    greetingTimeout: 5000,
+    socketTimeout: 10000
 });
 
 // Verify transporter configuration
