@@ -240,7 +240,7 @@ const AuctionRoom = () => {
                     <main className="flex-1 p-2 md:p-6 pb-40 md:pb-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-4 md:gap-8 overflow-y-auto">
                         {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE */}
                         {isManager && (
-                            <div className="flex flex-col gap-4 w-full md:w-80 md:h-full flex-shrink-0 sticky top-14 md:static z-40 md:z-auto">
+                            <div className="flex flex-col gap-4 w-full md:w-80 md:h-full flex-shrink-0">
                                 <AuctioneerControls
                                     onSelectPlayer={startTurn}
                                     onSold={sellPlayer}
