@@ -134,15 +134,7 @@ const LoginPage = () => {
                                 Create one
                             </Link>
                         </p>
-                        <div className="pt-3 border-t border-white/10">
-                            <Link
-                                to="/continue-game"
-                                className="text-sm text-green-500 hover:text-green-400 font-medium flex items-center justify-center gap-2 transition-colors"
-                            >
-                                <span>🏆</span>
-                                Continue to Mini Auction
-                            </Link>
-                        </div>
+
                     </div>
                 </div>
             </motion.div>
