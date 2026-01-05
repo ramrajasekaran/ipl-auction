@@ -244,7 +244,7 @@ const AuctionRoom = () => {
 
                 {/* VIEW MODES */}
                 {(viewMode === 'AUCTION' || viewMode === 'PLAYERS') && (
-                    <main className={`flex-1 p-2 md:p-6  md:pb-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-4 md:gap-8 ${viewMode === 'PLAYERS' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+                    <main className={`flex-1 p-2 pb-28 md:p-6 md:pb-6 flex flex-col md:flex-row items-center md:items-center justify-start md:justify-center gap-4 md:gap-8 ${viewMode === 'PLAYERS' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
                         {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE (PLAYERS TAB) / SIDEBAR ON DESKTOP */}
                         {isManager && (
                             <div className={`flex flex-col gap-4 flex-shrink-0 ${viewMode === 'PLAYERS' ? 'w-full h-full flex flex-1' : 'hidden'}`}>
