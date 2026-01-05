@@ -170,7 +170,7 @@ const AuctionRoom = () => {
                                 onClick={() => setViewMode('ALL_TEAMS')}
                                 className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-green-500 text-white' : 'text-slate-400 hover:text-white'}`}
                             >
-                                <Users size={14} /> TEAMS
+                                <Users size={14} /> TEAMS & PURSE
                             </button>
                             <button
                                 onClick={() => setViewMode('TRADE')}
@@ -198,7 +198,7 @@ const AuctionRoom = () => {
                                 onClick={() => setViewMode('ALL_TEAMS')}
                                 className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-green-500 text-white' : 'text-slate-400 hover:text-white'}`}
                             >
-                                <Users size={14} /> TEAMS
+                                <Users size={14} /> TEAMS & PURSE
                             </button>
                         </div>
                     )}
@@ -291,6 +291,7 @@ const AuctionRoom = () => {
                             <StatsPanel
                                 teams={roomData.teams || []}
                                 currentBidderId={auctionState.currentBidder}
+                                onViewAll={() => setViewMode('ALL_TEAMS')}
                             />
                         </div>
                     </main>

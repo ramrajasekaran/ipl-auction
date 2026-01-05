@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Wallet, ChevronRight, ChevronDown } from 'lucide-react';
 
-const StatsPanel = ({ teams, currentBidderId }) => {
+const StatsPanel = ({ teams, currentBidderId, onViewAll }) => {
     const [expandedTeamId, setExpandedTeamId] = useState(null);
 
     const toggleTeam = (teamId) => {
@@ -11,10 +11,15 @@ const StatsPanel = ({ teams, currentBidderId }) => {
 
     return (
         <div className="h-full bg-black/40 backdrop-blur-md border-l border-white/10 flex flex-col w-full md:w-80">
-            <div className="p-4 border-b border-white/10">
-                <h3 className="text-white font-bold flex items-center gap-2">
-                    <Users size={18} className="text-blue-400" />
+            <div
+                className="p-4 border-b border-white/10 cursor-pointer hover:bg-white/10 transition-colors group"
+                onClick={onViewAll}
+                title="View All Teams & Purses"
+            >
+                <h3 className="text-white font-bold flex items-center gap-2 group-hover:text-primary transition-colors">
+                    <Users size={18} className="text-blue-400 group-hover:text-primary" />
                     Teams & Squads
+                    <span className="ml-auto text-xs text-slate-400 group-hover:text-white">View All &rarr;</span>
                 </h3>
             </div>
 
