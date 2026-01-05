@@ -11,6 +11,7 @@ import MiniTradeCenter from '../components/MiniTradeCenter';
 import Timer from '../components/Timer';
 import AllTeamsView from '../components/AllTeamsView';
 import { Gavel, LayoutDashboard, Users, LogOut, XCircle, UserPlus } from 'lucide-react';
+import AuctionActionButtons from '../components/AuctionActionButtons';
 import { getDynamicIncrement } from '../utils/formatters';
 import { getTeamTrades } from '../services/miniAuctionAPI';
 
@@ -282,6 +283,16 @@ const AuctionRoom = () => {
                                 lastSoldPlayer={lastSoldPlayer}
                                 currentBidderName={currentWinningTeam?.name}
                             />
+
+                            {/* Manager Actions (Final Call, Resume) - Moved below card */}
+                            {isManager && (
+                                <AuctionActionButtons
+                                    timerState={timerState}
+                                    stopTimer={stopTimer}
+                                    triggerTimer={triggerTimer}
+                                    auctionState={auctionState}
+                                />
+                            )}
 
                             {/* Bid Controls for Team Owners - between player and leading bid */}
                             {!isManager && (auctionState.isBiddingActive || auctionState.currentPlayer) && (

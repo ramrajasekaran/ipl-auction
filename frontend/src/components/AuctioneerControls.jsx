@@ -10,8 +10,7 @@ const AuctioneerControls = ({
     currentBid,
     isBiddingActive,
     showList = true,
-    showSearch = true,
-    showActions = true
+    showSearch = true
 }) => {
     const { roomData, searchGlobalPlayers, activateGlobalPlayer, timerState, triggerTimer, stopTimer, refreshState, auctionState } = useGame();
     const [searchTerm, setSearchTerm] = useState('');
@@ -104,53 +103,6 @@ const AuctioneerControls = ({
                 )}
 
                 {/* Actions for current player - DESKTOP ONLY (will be fixed at bottom on mobile) */}
-                {showActions && (isBiddingActive || auctionState?.currentPlayer) && (
-                    <div className="hidden md:block space-y-3">
-                        {timerState.isRunning ? (
-                            <div className="relative">
-                                <button
-                                    onClick={stopTimer}
-                                    className="w-full py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-red-900/40 flex items-center justify-center gap-3 animate-pulse-slow"
-                                >
-                                    <Gavel size={20} className="animate-bounce" />
-                                    <div>
-                                        <div className="text-[10px] opacity-80 uppercase tracking-tighter">FINAL CALL</div>
-                                        <div className="text-xl font-black leading-none">{timerState.remaining}s</div>
-                                    </div>
-                                    <Gavel size={20} className="animate-bounce" />
-                                </button>
-                                <div className="absolute -top-1 -left-1 -right-1 -bottom-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl blur-md opacity-50 animate-pulse" />
-                            </div>
-                        ) : (auctionState?.currentBid?.team && timerState.remaining === 0 && !timerState.isRunning) ? (
-                            <button
-                                onClick={triggerTimer}
-                                className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-900/40 hover:scale-105 flex items-center justify-center gap-2"
-                            >
-                                <Gavel size={18} />
-                                RESUME BIDDING
-                            </button>
-                        ) : (
-                            <div className="flex flex-col gap-2">
-                                <button
-                                    onClick={triggerTimer}
-                                    disabled={!auctionState?.currentPlayer}
-                                    className="group relative w-full h-14 bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600 text-black rounded-xl font-black transition-all shadow-xl shadow-amber-900/50 hover:shadow-2xl hover:shadow-amber-500/50 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden flex items-center justify-center gap-4"
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                                    <Gavel
-                                        size={28}
-                                        className="relative z-10 drop-shadow-2xl group-hover:rotate-[-15deg] group-active:rotate-[-35deg] group-active:translate-y-2 transition-all duration-150"
-                                    />
-                                    <div className="relative z-10 text-left">
-                                        <div className="text-xs font-bold opacity-90 uppercase tracking-tighter">FINAL CALL</div>
-                                        <div className="text-[10px] opacity-70 leading-none">START 10s COUNTDOWN</div>
-                                    </div>
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                )}
-
                 {!isBiddingActive && !auctionState?.currentPlayer && (
                     <div className="py-3 px-4 bg-white/5 rounded-xl text-center text-slate-400 text-xs border border-white/5 md:block">
                         Select a player to start bidding
