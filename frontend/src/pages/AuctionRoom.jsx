@@ -246,7 +246,7 @@ const AuctionRoom = () => {
                     <main className={`flex-1 p-2 md:p-6  md:pb-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-4 md:gap-8 ${viewMode === 'PLAYERS' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
                         {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE (PLAYERS TAB) / SIDEBAR ON DESKTOP */}
                         {isManager && (
-                            <div className={`flex flex-col gap-4 w-full md:w-80 md:h-full flex-shrink-0 ${viewMode === 'PLAYERS' ? 'flex flex-1 h-full' : 'hidden md:flex'}`}>
+                            <div className={`flex flex-col gap-4 flex-shrink-0 ${viewMode === 'PLAYERS' ? 'w-full h-full flex flex-1' : 'w-full md:w-80 md:h-full hidden md:flex'}`}>
                                 <AuctioneerControls
                                     onSelectPlayer={(p) => {
                                         startTurn(p);
@@ -260,8 +260,8 @@ const AuctionRoom = () => {
                             </div>
                         )}
 
-                        {/* Center: Player Card + Bid Controls + Leading Bid (HIDDEN IN PLAYERS MODE ON MOBILE) */}
-                        <div className={`flex-1 flex-col items-center justify-start w-full max-w-2xl gap-4 px-1 md:px-4 ${viewMode === 'PLAYERS' ? 'hidden md:flex' : 'flex'}`}>
+                        {/* Center: Player Card + Bid Controls + Leading Bid (HIDDEN IN PLAYERS MODE) */}
+                        <div className={`flex-1 flex-col items-center justify-start w-full max-w-2xl gap-4 px-1 md:px-4 ${viewMode === 'PLAYERS' ? 'hidden' : 'flex'}`}>
 
                             {/* Unified Timer State - MOVED TOP for Mobile Visibility */}
                             {(() => {
