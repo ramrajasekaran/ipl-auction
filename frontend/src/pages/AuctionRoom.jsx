@@ -246,7 +246,7 @@ const AuctionRoom = () => {
                 {(viewMode === 'AUCTION' || viewMode === 'PLAYERS') && (
                     <main className={`flex-1 p-2 md:p-6  md:pb-6 flex flex-col md:flex-row items-start md:items-center justify-center gap-4 md:gap-8 ${viewMode === 'PLAYERS' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
                         {/* Left Side: Manager Controls - FULL WIDTH ON MOBILE (PLAYERS TAB) / SIDEBAR ON DESKTOP */}
-                        {isManager && (
+                        {/* {isManager && (
                             <div className={`flex flex-col gap-4 flex-shrink-0 ${viewMode === 'PLAYERS' ? 'w-full h-full flex flex-1' : 'w-full md:w-80 md:h-full hidden md:flex'}`}>
                                 <AuctioneerControls
                                     onSelectPlayer={(p) => {
@@ -262,7 +262,7 @@ const AuctionRoom = () => {
                                     showActions={viewMode !== 'PLAYERS'}
                                 />
                             </div>
-                        )}
+                        )} */}
 
                         {/* Center: Player Card + Bid Controls + Leading Bid (HIDDEN IN PLAYERS MODE) */}
                         <div className={`flex-1 flex-col items-center justify-start w-full max-w-2xl gap-4 px-1 md:px-4 ${viewMode === 'PLAYERS' ? 'hidden' : 'flex'}`}>
@@ -343,47 +343,7 @@ const AuctionRoom = () => {
                     </div>
                 )}
 
-                {/* Fixed Mobile Controls for Manager */}
-                {isManager && (auctionState.isBiddingActive || auctionState.currentPlayer) && viewMode === 'AUCTION' && (
-                    <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#0f172a] via-[#0f172a] to-transparent z-40 md:hidden flex flex-col gap-3">
-                        {timerState.isRunning ? (
-                            <div className="relative">
-                                <button
-                                    onClick={stopTimer}
-                                    className="w-full py-4 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-2xl font-bold transition-all shadow-xl shadow-red-900/40 flex items-center justify-center gap-3 animate-pulse-slow active:scale-95"
-                                >
-                                    <Gavel size={24} className="animate-bounce" />
-                                    <div className="text-left">
-                                        <div className="text-[10px] opacity-80 uppercase tracking-tighter leading-none mb-1">FINAL CALL</div>
-                                        <div className="text-2xl font-black leading-none">{timerState.remaining}s</div>
-                                    </div>
-                                    <Gavel size={24} className="animate-bounce" />
-                                </button>
-                                <div className="absolute -top-1 -left-1 -right-1 -bottom-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl blur-md opacity-30 animate-pulse pointer-events-none" />
-                            </div>
-                        ) : (auctionState?.currentBid?.team && timerState.remaining === 0 && !timerState.isRunning) ? (
-                            <button
-                                onClick={triggerTimer}
-                                className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-bold transition-all shadow-xl shadow-blue-900/40 flex items-center justify-center gap-3 active:scale-95"
-                            >
-                                <Gavel size={20} />
-                                <div className="text-xl">RESUME BIDDING</div>
-                            </button>
-                        ) : (
-                            <button
-                                onClick={triggerTimer}
-                                disabled={!auctionState.currentPlayer}
-                                className="group relative w-full h-16 bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 text-black rounded-2xl font-black transition-all shadow-xl shadow-amber-900/50 flex items-center justify-center gap-4 active:scale-95 disabled:opacity-50"
-                            >
-                                <Gavel size={32} className="relative z-10" />
-                                <div className="relative z-10 text-left">
-                                    <div className="text-xs font-bold opacity-80 uppercase tracking-tighter leading-none mb-1">FINAL CALL</div>
-                                    <div className="text-[10px] font-semibold opacity-60 leading-none">Auto-sells when timer ends</div>
-                                </div>
-                            </button>
-                        )}
-                    </div>
-                )}
+                {/* Fixed Mobile Controls for Manager - REMOVED (Replaced by sticky buttons in main flow) */}
             </div>
         </div>
     );
