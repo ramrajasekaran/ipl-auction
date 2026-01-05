@@ -10,7 +10,7 @@ import TradeCenter from '../components/TradeCenter';
 import MiniTradeCenter from '../components/MiniTradeCenter';
 import Timer from '../components/Timer';
 import AllTeamsView from '../components/AllTeamsView';
-import { Gavel, LayoutDashboard, Users, LogOut, XCircle } from 'lucide-react';
+import { Gavel, LayoutDashboard, Users, LogOut, XCircle, UserPlus } from 'lucide-react';
 import { getDynamicIncrement } from '../utils/formatters';
 import { getTeamTrades } from '../services/miniAuctionAPI';
 
