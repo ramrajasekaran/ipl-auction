@@ -4,15 +4,22 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Create transporter with Gmail SMTP settings
+// Create transporter with Gmail SMTP settings
+const smtpPort = parseInt(process.env.SMTP_PORT) || 587;
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT) || 587,
-    secure: false, // true for 465, false for other ports
+    port: smtpPort,
+    secure: smtpPort === 465, // true for 465, false for other ports
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
     },
-    // Timeouts to prevent hanging requests (fixes 502 Gateway Timeout)
+    tls: {
+        rejectUnauthorized: false // Bypass SSL check for hosted environments (Render/Vercel)
+    },
+    debug: true, // Show debug output for troubleshooting
+    logger: true, // Log to console
+    // Timeouts to prevent hanging requests
     connectionTimeout: 10000,
     greetingTimeout: 5000,
     socketTimeout: 10000
