@@ -287,13 +287,7 @@ const AuctionRoom = () => {
 
 
                         {/* Right Side: Stats Panel (Teams & Squads) */}
-                        <div className="flex flex-col gap-4 w-full md:w-80 h-auto md:h-full">
-                            <StatsPanel
-                                teams={roomData.teams || []}
-                                currentBidderId={auctionState.currentBidder}
-                                onViewAll={() => setViewMode('ALL_TEAMS')}
-                            />
-                        </div>
+
                     </main>
                 )}
 
