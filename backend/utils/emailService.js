@@ -73,7 +73,7 @@ export const sendOTPEmail = async (email, code, type = 'password reset') => {
                     </div>
                     
                     <div class="footer">
-                        © 2024 IPL Auction Platform
+                        © 2026 IPL Auction Platform
                     </div>
                 </div>
             </body>

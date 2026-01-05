@@ -27,7 +27,7 @@ const LandingPage = () => {
             >
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gold text-sm font-medium mb-4">
                     <Trophy size={14} />
-                    <span>Premier League Auction 2024</span>
+                    <span>IPL ARENA</span>
                 </div>
                 <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-2">
                     Build Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">Dream Team</span>
@@ -87,7 +87,7 @@ const LandingPage = () => {
                 <Gavel size={14} /> Admin Panel
             </Link> */}
             <footer className="mt-8 text-slate-500 text-sm">
-                IPL Auction Simulator &copy; 2024
+                IPL Arena &copy; 2026
             </footer>
         </div>
     );
