@@ -136,22 +136,7 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
                                     </div>
                                 </button>
 
-                                {/* MANUAL CONFIRM SOLD / UNSOLD BUTTONS */}
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={onSold}
-                                        disabled={!auctionState.currentBidder}
-                                        className="flex-1 py-2.5 bg-green-600/20 hover:bg-green-600/40 text-green-400 border border-green-500/30 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all disabled:opacity-30 disabled:grayscale"
-                                    >
-                                        <Gavel size={14} /> CONFIRM SOLD
-                                    </button>
-                                    <button
-                                        onClick={onUnsold}
-                                        className="flex-1 py-2.5 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/30 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
-                                    >
-                                        <XCircle size={14} /> UNSOLD
-                                    </button>
-                                </div>
+
                             </div>
                         )}
                     </div>
