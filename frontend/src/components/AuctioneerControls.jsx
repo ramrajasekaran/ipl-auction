@@ -148,7 +148,7 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
             </div>
 
             {/* Player Selection List - Flowing area */}
-            <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar max-h-[250px] md:max-h-none">
+            <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar md:max-h-none">
                 {filteredPlayers.length > 0 ? (
                     filteredPlayers.map((player, idx) => (
                         <div
