@@ -327,35 +327,17 @@ const AuctionRoom = () => {
                                 <div className="text-xl">RESUME BIDDING</div>
                             </button>
                         ) : (
-                            <div className="flex flex-col gap-3">
-                                <button
-                                    onClick={triggerTimer}
-                                    disabled={!auctionState.currentPlayer}
-                                    className="group relative w-full h-16 bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 text-black rounded-2xl font-black transition-all shadow-xl shadow-amber-900/50 flex items-center justify-center gap-4 active:scale-95"
-                                >
-                                    <Gavel size={32} className="relative z-10" />
-                                    <div className="relative z-10 text-left">
-                                        <div className="text-xs font-bold opacity-80 uppercase tracking-tighter leading-none mb-1">FINAL CALL</div>
-                                        <div className="text-sm font-bold opacity-70 leading-none">START 10s COUNTDOWN</div>
-                                    </div>
-                                </button>
-
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={sellPlayer}
-                                        disabled={!auctionState.currentBidder}
-                                        className="flex-1 py-3.5 bg-green-600/20 hover:bg-green-600/30 text-green-400 border border-green-500/30 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-lg disabled:opacity-30 disabled:grayscale transition-all active:scale-95"
-                                    >
-                                        <Gavel size={18} /> CONFIRM SOLD
-                                    </button>
-                                    <button
-                                        onClick={unsoldPlayer}
-                                        className="flex-1 py-3.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95"
-                                    >
-                                        <XCircle size={18} /> UNSOLD
-                                    </button>
+                            <button
+                                onClick={triggerTimer}
+                                disabled={!auctionState.currentPlayer}
+                                className="group relative w-full h-16 bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 text-black rounded-2xl font-black transition-all shadow-xl shadow-amber-900/50 flex items-center justify-center gap-4 active:scale-95 disabled:opacity-50"
+                            >
+                                <Gavel size={32} className="relative z-10" />
+                                <div className="relative z-10 text-left">
+                                    <div className="text-xs font-bold opacity-80 uppercase tracking-tighter leading-none mb-1">FINAL CALL</div>
+                                    <div className="text-[10px] font-semibold opacity-60 leading-none">Auto-sells when timer ends</div>
                                 </div>
-                            </div>
+                            </button>
                         )}
                     </div>
                 )}
