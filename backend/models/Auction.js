@@ -80,6 +80,10 @@ const auctionSchema = new mongoose.Schema({
         timerDuration: {
             type: Number,
             default: 60 // seconds
+        },
+        maxTeams: {
+            type: Number,
+            default: 10
         }
     },
     teams: [{

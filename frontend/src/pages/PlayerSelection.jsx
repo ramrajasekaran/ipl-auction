@@ -13,7 +13,10 @@ const PlayerSelection = () => {
     const handleDefault = async () => {
         setLoading(true);
         try {
-            await setupDefaultPlayersAPI(roomId);
+            const data = await setupDefaultPlayersAPI(roomId);
+            const count = data.count || 0;
+            const maxTeams = Math.max(2, Math.floor(count / 25));
+            alert(`Successfully loaded ${count} players.\n\nBased on the squad size limit (25 players/team), this room can accommodate a MAXIMUM of ${maxTeams} TEAMS.`);
             navigate(`/auction/${roomId}`);
         } catch (error) {
             console.error("Error loading default players:", error);
@@ -32,7 +35,10 @@ const PlayerSelection = () => {
         formData.append('roomId', roomId);
 
         try {
-            await uploadPlayersAPI(formData);
+            const data = await uploadPlayersAPI(formData);
+            const count = data.count || 0;
+            const maxTeams = Math.max(2, Math.floor(count / 25));
+            alert(`Successfully uploaded ${count} players.\n\nBased on the squad size limit (25 players/team), this room can accommodate a MAXIMUM of ${maxTeams} TEAMS.`);
             navigate(`/auction/${roomId}`);
         } catch (error) {
             console.error("Error uploading file:", error);

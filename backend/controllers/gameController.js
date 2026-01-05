@@ -61,6 +61,15 @@ export const joinGame = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Room not found' });
         }
 
+        // Check Max Teams Limit
+        const maxTeams = auction.settings?.maxTeams || 10;
+        if (auction.teams.length >= maxTeams) {
+            return res.status(400).json({
+                success: false,
+                message: `Room is full (Max ${maxTeams} Teams). Please ask the manager to increase capacity or use the "Continue" tab.`
+            });
+        }
+
         // Prevent manager from joining their own room as a team
         if (auction.auctioneer.toString() === user._id.toString()) {
             return res.status(403).json({
@@ -284,7 +293,15 @@ export const addDefaultPlayers = async (req, res) => {
 
         const createdPlayers = await RoomPlayer.find({ auctionId: auction._id });
         console.log(`Found ${createdPlayers.length} players in DB after seeding`);
+        console.log(`Found ${createdPlayers.length} players in DB after seeding`);
         auction.players = createdPlayers.map(p => p._id);
+
+        // Calculate and Set Max Teams (Total Players / 25)
+        const calculatedMaxTeams = Math.floor(createdPlayers.length / 25);
+        // Ensure at least 2 teams, default to current max if calculation is too low (though 361/25 = 14)
+        auction.settings.maxTeams = Math.max(2, calculatedMaxTeams);
+        console.log(`Updated Max Teams to ${auction.settings.maxTeams} based on ${createdPlayers.length} players`);
+
         await auction.save();
 
         // Notify all users in the room
@@ -444,6 +461,12 @@ export const uploadPlayers = async (req, res) => {
                         console.log(`Successfully inserted ${createdPlayers.length} players for room ${roomId}`);
 
                         auction.players = createdPlayers.map(p => p._id);
+
+                        // Calculate and Set Max Teams (Total Players / 25)
+                        const calculatedMaxTeams = Math.floor(validPlayers.length / 25);
+                        auction.settings.maxTeams = Math.max(2, calculatedMaxTeams);
+                        console.log(`Updated Max Teams to ${auction.settings.maxTeams} based on ${validPlayers.length} uploaded players`);
+
                         await auction.save();
 
                         // Notify all users in the room to refresh their player list
