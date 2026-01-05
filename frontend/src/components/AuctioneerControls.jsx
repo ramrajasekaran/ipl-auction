@@ -75,11 +75,26 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
 
     return (
         <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 w-full md:min-h-[500px] md:h-full flex flex-col overflow-hidden">
-            {/* Actions Zone: Final Call + Search */}
+            {/* Actions Zone: Search + Final Call */}
             <div className="sticky top-0 z-30 bg-[#0f172a] shadow-xl p-4 border-b border-white/10 flex-shrink-0">
+                {/* Player Search Bar - ALWAYS VISIBLE AT TOP */}
+                <div className="relative mb-4">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14} />
+                    <input
+                        type="text"
+                        placeholder="Search players..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full bg-black/30 border border-white/10 rounded-lg py-2.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-primary/50"
+                    />
+                    {isSearchingGlobal && (
+                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={14} />
+                    )}
+                </div>
+
                 {/* Actions for current player - DESKTOP ONLY (will be fixed at bottom on mobile) */}
                 {(isBiddingActive || auctionState?.currentPlayer) && (
-                    <div className="hidden md:block mb-4 space-y-3">
+                    <div className="hidden md:block space-y-3">
                         {timerState.isRunning ? (
                             <div className="relative">
                                 <button
@@ -143,25 +158,10 @@ const AuctioneerControls = ({ onSelectPlayer, onSold, onUnsold, currentBid, isBi
                 )}
 
                 {!isBiddingActive && !auctionState?.currentPlayer && (
-                    <div className="mb-4 py-3 px-4 bg-white/5 rounded-xl text-center text-slate-400 text-xs border border-white/5">
+                    <div className="py-3 px-4 bg-white/5 rounded-xl text-center text-slate-400 text-xs border border-white/5">
                         Select a player to start bidding
                     </div>
                 )}
-
-                {/* Player Search Bar - INSIDE STICKY HEADER */}
-                <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14} />
-                    <input
-                        type="text"
-                        placeholder="Search players..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-lg py-2.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-primary/50"
-                    />
-                    {isSearchingGlobal && (
-                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={14} />
-                    )}
-                </div>
             </div>
 
             {/* Player Selection List - Flowing area */}
