@@ -40,7 +40,12 @@ const ResetPassword = () => {
             const data = await sendResetOTPAPI(payload);
 
             if (data.success) {
-                setMessage({ type: 'success', text: '✅ OTP sent to your email! Check your inbox.' });
+                // Check if dev mode (OTP returned in response)
+                if (data.devMode && data.otp) {
+                    setMessage({ type: 'success', text: `🔧 DEV MODE: Your OTP is ${data.otp}` });
+                } else {
+                    setMessage({ type: 'success', text: '✅ OTP sent to your email! Check your inbox.' });
+                }
                 setStep(2);
             }
         } catch (error) {

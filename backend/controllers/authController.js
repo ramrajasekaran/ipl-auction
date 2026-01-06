@@ -13,7 +13,7 @@ export const register = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({
                 success: false,
-                message: 'User with this email already exists'  
+                message: 'User with this email already exists'
             });
         }
 
@@ -225,12 +225,23 @@ export const sendPasswordResetOTP = async (req, res) => {
         });
 
         // Send OTP via email
-        await sendOTPEmail(email, code, 'password reset');
-
-        res.status(200).json({
-            success: true,
-            message: 'OTP sent to your email. It will expire in 10 minutes.'
-        });
+        try {
+            await sendOTPEmail(email, code, 'password reset');
+            res.status(200).json({
+                success: true,
+                message: 'OTP sent to your email. It will expire in 10 minutes.'
+            });
+        } catch (emailError) {
+            // Dev Mode Fallback: Return OTP in response when email fails
+            console.log('⚠️ Email failed, using DEV MODE - OTP returned in response');
+            console.log('🔑 OTP Code:', code);
+            res.status(200).json({
+                success: true,
+                message: `DEV MODE: Email sending failed. Your OTP is: ${code}`,
+                devMode: true,
+                otp: code
+            });
+        }
 
     } catch (error) {
         console.error('Send OTP Error:', error);

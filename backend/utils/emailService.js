@@ -1,7 +1,17 @@
 import { Resend } from 'resend';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+// Fix for ES modules - get directory path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env from backend root directory
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+// Debug: Log if key is present
+console.log('🔑 RESEND_API_KEY present:', !!process.env.RESEND_API_KEY);
 
 // Initialize Resend client
 const resend = new Resend(process.env.RESEND_API_KEY);
