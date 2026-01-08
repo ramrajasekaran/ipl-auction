@@ -27,35 +27,37 @@ Access: `http://localhost:5173`
 - Repository: Your GitHub repo
 - Root Directory: `backend`
 - Build Command: `npm install`
-- Start Command: `npm start`
+- Start Command: `node server.js`
 
 **Environment Variables:**
 | Variable | Value |
 |----------|-------|
 | `MONGODB_URI` | Your MongoDB Atlas connection string |
-| `CORS_ORIGIN` | `https://your-app.netlify.app` |
+| `CORS_ORIGIN` | `https://ipl-auction-frontend.vercel.app` (or your Vercel domain) |
 | `JWT_SECRET` | Strong random string |
 | `SESSION_SECRET` | Strong random string |
 | `NODE_ENV` | `production` |
 
-### 2. Frontend (Netlify)
+### 2. Frontend (Vercel)
 
 **Deploy Settings:**
+- Framework Preset: Vite
+- Root Directory: `frontend`
 - Build Command: `npm run build`
-- Publish Directory: `dist`
+- Output Directory: `dist`
 
 **Environment Variables:**
 | Variable | Value |
 |----------|-------|
-| `VITE_SOCKET_URL` | `https://your-backend.onrender.com` |
-| `BACKEND_URL` | `https://your-backend.onrender.com` |
+| `VITE_SOCKET_URL` | `https://ipl-auction-8a8o.onrender.com` |
+| `VITE_API_BASE` | `/api` |
 
 ---
 
 ## Architecture
 
 ```
-[Browser] → [Netlify Frontend]
+[Browser] → [Vercel Frontend]
                ↓ Socket.IO (direct)
                ↓ API (/api/* proxy)
            [Render Backend] → [MongoDB Atlas]

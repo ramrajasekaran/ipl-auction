@@ -53,9 +53,10 @@ const AuctionRoom = () => {
         return (myTeamId && tId === myTeamId) || (myUserId && tOwner === myUserId);
     });
 
-    // Trade Notification Polling
+    // Trade Notification Polling - Only for Mini Auctions
     React.useEffect(() => {
-        if (!myTeam || !roomData.auctionId) return;
+        // Trade is only available for Mini Auctions
+        if (!miniAuctionId || !myTeam || !roomData.auctionId) return;
 
         const fetchTradeCount = async () => {
             try {
@@ -70,7 +71,7 @@ const AuctionRoom = () => {
         fetchTradeCount();
         const interval = setInterval(fetchTradeCount, 10000);
         return () => clearInterval(interval);
-    }, [myTeam?._id, roomData.auctionId]);
+    }, [miniAuctionId, myTeam?._id, roomData.auctionId]);
 
     // Sync state with URL
     React.useEffect(() => {
@@ -200,17 +201,20 @@ const AuctionRoom = () => {
                             >
                                 <Users size={14} /> <span className="hidden sm:inline">TEAMS & PURSE</span>
                             </button>
-                            <button
-                                onClick={() => setViewMode('TRADE')}
-                                className={`relative px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'TRADE' ? 'bg-purple-500 text-white' : 'text-slate-400 hover:text-white'}`}
-                            >
-                                <Users size={14} /> <span className="hidden sm:inline">TRADE</span>
-                                {pendingTradeCount > 0 && (
-                                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-slate-900 animate-pulse">
-                                        {pendingTradeCount}
-                                    </div>
-                                )}
-                            </button>
+                            {/* Trade Button - Only for Mini Auctions */}
+                            {miniAuctionId && (
+                                <button
+                                    onClick={() => setViewMode('TRADE')}
+                                    className={`relative px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'TRADE' ? 'bg-purple-500 text-white' : 'text-slate-400 hover:text-white'}`}
+                                >
+                                    <Users size={14} /> <span className="hidden sm:inline">TRADE</span>
+                                    {pendingTradeCount > 0 && (
+                                        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-slate-900 animate-pulse">
+                                            {pendingTradeCount}
+                                        </div>
+                                    )}
+                                </button>
+                            )}
                             {/* Release Button - Only for Mini Auctions */}
                             {miniAuctionId && (
                                 <button
@@ -337,7 +341,8 @@ const AuctionRoom = () => {
                     </div>
                 )}
 
-                {viewMode === 'TRADE' && (
+                {/* Trade View - Only for Mini Auctions */}
+                {viewMode === 'TRADE' && miniAuctionId && (
                     <div className="flex-1 p-6 overflow-hidden max-w-4xl mx-auto w-full">
                         {/* Use MiniTradeCenter for Mini Auctions */}
                         <MiniTradeCenter
