@@ -154,12 +154,19 @@ export const GameProvider = ({ children }) => {
                 updateLocalState(auction);
             } else {
                 // Lightweight Path: Manually update local state
-                // 1. Update Team Purse & functionality (Optional: add player to team list in UI?)
+                // 1. Update Team Purse & functionality (Add player to team list in UI)
                 setRoomData(prev => ({
                     ...prev,
                     teams: prev.teams.map(t => {
                         if (t._id === team._id || t.id === team._id) {
-                            return { ...t, currentPurse: team.currentPurse };
+                            return {
+                                ...t,
+                                currentPurse: team.currentPurse,
+                                players: [
+                                    ...(t.players || []),
+                                    { player: player, boughtPrice: price / 100 }
+                                ]
+                            };
                         }
                         return t;
                     })

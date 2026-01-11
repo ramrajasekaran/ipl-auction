@@ -215,8 +215,8 @@ const AuctionRoom = () => {
                                     )}
                                 </button>
                             )}
-                            {/* Release Button - Only for Mini Auctions */}
-                            {miniAuctionId && (
+                            {/* Release Button - Only for Mini Auctions & BEFORE Auction Starts */}
+                            {miniAuctionId && !auctionState.currentPlayer && (auctionState.history || []).length === 0 && !lastSoldPlayer && (
                                 <button
                                     onClick={() => setViewMode('RELEASE')}
                                     className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'RELEASE' ? 'bg-red-500 text-white' : 'text-slate-400 hover:text-white'}`}
