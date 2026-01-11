@@ -6,6 +6,7 @@ import fs from 'fs';
 import * as XLSX from 'xlsx';
 import Player from '../models/Player.js';
 import RoomPlayer from '../models/RoomPlayer.js';
+import { samplePlayers } from '../data/samplePlayers.js';
 
 // Create a new Game/Auction Room
 export const createGame = async (req, res) => {
@@ -227,7 +228,17 @@ export const addDefaultPlayers = async (req, res) => {
         console.log(`Found ${templates.length} template/global players in database`);
 
         if (templates.length === 0) {
-            return res.status(400).json({ success: false, message: 'No default players found in system.' });
+            console.log('⚠️ No global players found in DB. Auto-seeding default players into Global DB...');
+            // Auto-Seed Logic
+            try {
+                // Must insert into GLOBAL Player collection, not RoomPlayer yet
+                const seeded = await Player.insertMany(samplePlayers);
+                console.log(`✅ Auto-seeded ${seeded.length} players into Global DB.`);
+                templates = seeded; // Use the newly seeded players
+            } catch (seedError) {
+                console.error("Auto-seed failed:", seedError);
+                return res.status(500).json({ success: false, message: 'Failed to auto-seed default database.' });
+            }
         }
 
         // Map imported CSV fields to schema fields
