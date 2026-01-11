@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Activity, DollarSign } from 'lucide-react';
+import { Trophy, Activity, DollarSign, User } from 'lucide-react';
 import { getDynamicIncrement, formatCurrency } from '../utils/formatters';
 
 // Mock images or placeholders
@@ -36,8 +36,10 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
 
         return (
             <div className="min-h-[300px] w-full max-w-sm glass-panel rounded-2xl flex items-center justify-center flex-col text-slate-500 animate-pulse">
-                <Trophy size={32} className="mb-2 opacity-50 block" />
-                <p className="text-sm">Waiting for Auctioneer...</p>
+                <div className="w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center mb-4 border-4 border-slate-700">
+                    <User size={64} className="text-slate-600" />
+                </div>
+                <p className="text-lg font-bold text-slate-500">Waiting for Next Player...</p>
             </div>
         );
     }

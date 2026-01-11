@@ -117,6 +117,7 @@ export const setupSocketHandlers = (io) => {
             console.log(`[Socket] handleSold Triggered: Auction=${aId}, Player=${playerId}, Team=${teamId}, Price=${price}`);
 
             try {
+                // Fetch JUST the necessary docs first to validate
                 const auction = await findAnyAuction(aId);
                 const team = await Team.findById(str(teamId));
                 const player = await RoomPlayer.findById(str(playerId));
@@ -147,17 +148,21 @@ export const setupSocketHandlers = (io) => {
                 auction.timer = { isRunning: false, remaining: 0, startedAt: null };
                 await auction.save();
 
-                const updatedAuction = await getPopulatedAuction(aId);
+                // OPTIMIZATION: Do NOT emit full auction. Emit only the delta.
                 console.log(`[Socket] Sold Success. Emitting event.`);
                 io.to(`auction:${aId}`).emit('auction:player-sold', {
-                    player, team, price: price, timestamp: new Date(), auction: updatedAuction
+                    player,
+                    team: { _id: team._id, name: team.name, currentPurse: team.currentPurse },
+                    price: price,
+                    timestamp: new Date()
+                    // REMOVED: auction: updatedAuction (Too large)
                 });
 
                 if (timerIntervals[aId]) {
                     clearInterval(timerIntervals[aId]);
                     delete timerIntervals[aId];
                 }
-                return updatedAuction;
+                return auction;
             } catch (err) {
                 console.error('HandleSold Exception:', err);
                 io.to(`auction:${aId}`).emit('error', { message: `Sold Action Failed: ${err.message}` });
@@ -186,16 +191,18 @@ export const setupSocketHandlers = (io) => {
                 { new: true }
             );
 
-            const updatedAuction = await getPopulatedAuction(aId);
+            // OPTIMIZATION: Lightweight emit
             io.to(`auction:${aId}`).emit('auction:player-unsold', {
-                player, auction: updatedAuction, timestamp: new Date()
+                player,
+                timestamp: new Date()
+                // REMOVED: auction: updatedAuction
             });
 
             if (timerIntervals[aId]) {
                 clearInterval(timerIntervals[aId]);
                 delete timerIntervals[aId];
             }
-            return updatedAuction;
+            return auction;
         };
 
         // Join auction room
@@ -265,6 +272,15 @@ export const setupSocketHandlers = (io) => {
                     return;
                 }
 
+                const auctionCheck = await findAnyAuction(aId);
+                // STRICT LOGIC: Cannot select new player if auction is currently ACTIVE (i.e. has a current player)
+                // Exception: If somehow currentPlayer is set but status is IDLE, allow it (recovery)
+                if (auctionCheck.currentPlayer && auctionCheck.status === 'ACTIVE') {
+                    console.log(`[Socket] Selection Rejected: Auction ${aId} is ACTIVE with player ${auctionCheck.currentPlayer}`);
+                    socket.emit('error', { message: 'Cannot select player while auction is active!' });
+                    return;
+                }
+
                 const player = await RoomPlayer.findById(pId);
                 if (!player) return;
 
@@ -281,11 +297,15 @@ export const setupSocketHandlers = (io) => {
                     }
                 );
 
-                const auction = await getPopulatedAuction(aId);
+                // OPTIMIZATION: Lightweight emit
+                // We still need 'auction' structure for some frontend compat, but we can make it lighter 
+                // OR just trust the frontend to receive { player } and update local state.
+                // For safety, let's just emit the player and let frontend switch state.
+                // const auction = await getPopulatedAuction(aId); // AVOID THIS EXPENSIVE CALL
 
                 io.to(`auction:${aId}`).emit('auction:player-selected', {
                     player,
-                    auction
+                    // auction // REMOVED
                 });
             } catch (error) {
                 console.error('Error selecting player:', error);
@@ -415,10 +435,16 @@ export const setupSocketHandlers = (io) => {
                 auction.timer.remaining = 0;
                 await auction.save();
 
-                const updatedAuction = await getPopulatedAuction(aId);
+                // OPTIMIZATION: Lightweight Emit
+                // const updatedAuction = await getPopulatedAuction(aId); // AVOID
+
                 io.to(`auction:${aId}`).emit('auction:timer-update', { remaining: 0, isRunning: false });
                 io.to(`auction:${aId}`).emit('auction:bid-placed', {
-                    amount, teamId: team._id, teamName: team.name, timestamp: new Date(), auction: updatedAuction
+                    amount,
+                    teamId: team._id,
+                    teamName: team.name,
+                    timestamp: new Date()
+                    // REMOVED: auction: updatedAuction
                 });
 
                 console.log(`[Bid] Accepted: ${team.name} bid ${amount}L`);

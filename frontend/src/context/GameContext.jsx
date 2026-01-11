@@ -114,10 +114,12 @@ export const GameProvider = ({ children }) => {
             if (auction) {
                 updateLocalState(auction);
             } else {
+                // Optimistic / Lightweight Update
                 setAuctionState(prev => ({
                     ...prev,
                     currentBid: amount,
-                    currentBidder: teamId
+                    currentBidder: teamId,
+                    isBiddingActive: true
                 }));
             }
         }
@@ -127,20 +129,19 @@ export const GameProvider = ({ children }) => {
             setLastSoldPlayer(null);
 
             if (auction) {
-                // ROBUSTNESS FIX: If backend population failed (schema mismatch) but we have the direct player object
+                // Legacy / Full Sync path
                 if (!auction.currentPlayer && player) {
-                    console.warn('⚠️ auction.currentPlayer missing in payload, using direct player object fallback', player);
                     auction.currentPlayer = player;
-                    // Also ensure status is Active if we have a player
                     if (auction.status === 'IDLE') auction.status = 'ACTIVE';
                 }
                 updateLocalState(auction);
             } else {
+                // Lightweight Path
                 setAuctionState(prev => ({
                     ...prev,
                     currentPlayer: player,
                     currentBid: player.basePrice,
-                    currentBidder: null,
+                    currentBidder: null, // Reset bidder
                     isBiddingActive: true
                 }));
             }
@@ -149,13 +150,26 @@ export const GameProvider = ({ children }) => {
         function onPlayerSold({ player, team, price, auction }) {
             console.log('[onPlayerSold] Player sold:', player.name, 'Price:', price, 'Team:', team.name);
 
-            // Update local state from auction (this already includes the sold player in teams)
-            if (auction) updateLocalState(auction);
+            if (auction) {
+                updateLocalState(auction);
+            } else {
+                // Lightweight Path: Manually update local state
+                // 1. Update Team Purse & functionality (Optional: add player to team list in UI?)
+                setRoomData(prev => ({
+                    ...prev,
+                    teams: prev.teams.map(t => {
+                        if (t._id === team._id || t.id === team._id) {
+                            return { ...t, currentPurse: team.currentPurse };
+                        }
+                        return t;
+                    })
+                }));
+            }
 
-            // Store last sold player for announcement (stays until new player selected)
+            // Store last sold player for announcement
             setLastSoldPlayer({ player, team, price });
 
-            // Reset auction state for next player
+            // Reset auction state
             setAuctionState({
                 currentPlayer: null,
                 currentBid: 0,
@@ -166,9 +180,11 @@ export const GameProvider = ({ children }) => {
         }
 
         function onPlayerUnsold({ player, auction }) {
-            if (auction) updateLocalState(auction);
+            if (auction) {
+                updateLocalState(auction);
+            }
 
-            // Store unsold player for announcement (stays until new player selected)
+            // Store unsold player for announcement
             setLastSoldPlayer({ player, team: null, price: 0, isUnsold: true });
 
             setAuctionState({
