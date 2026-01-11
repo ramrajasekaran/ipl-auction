@@ -75,7 +75,7 @@ const AuctionRoom = () => {
 
     // Sync state with URL
     React.useEffect(() => {
-        if (roomData.roomId && roomData.isActive && urlRoomCode && roomData.roomId.toUpperCase() !== urlRoomCode.toUpperCase()) {
+        if (!miniAuctionId && roomData.roomId && roomData.isActive && urlRoomCode && roomData.roomId.toUpperCase() !== urlRoomCode.toUpperCase()) {
             console.warn(`[AuctionRoom] URL mismatch prevented. State=${roomData.roomId}, URL=${urlRoomCode}. Forcing URL sync.`);
             window.history.replaceState(null, document.title, `/auction/${roomData.roomId}`);
             return;
