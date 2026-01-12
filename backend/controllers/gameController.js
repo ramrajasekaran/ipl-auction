@@ -207,44 +207,59 @@ export const resumeGame = async (req, res) => {
 export const addDefaultPlayers = async (req, res) => {
     try {
         const { roomId } = req.body;
+        console.log(`[addDefaultPlayers] Request received for room: ${roomId}`);
+
         const auction = await Auction.findOne({ roomId });
-        if (!auction) return res.status(404).json({ success: false, message: 'Room not found' });
+        if (!auction) {
+            console.error(`[addDefaultPlayers] Room not found: ${roomId}`);
+            return res.status(404).json({ success: false, message: 'Room not found' });
+        }
 
         // Check if room already has players
         const existingCount = await RoomPlayer.countDocuments({ auctionId: auction._id });
         if (existingCount > 0) {
-            console.log(`Room ${roomId} already has ${existingCount} players. Skipping default load.`);
+            console.log(`[addDefaultPlayers] Room ${roomId} already has ${existingCount} players. Skipping default load.`);
             return res.status(200).json({ success: true, message: 'Players already loaded', count: existingCount });
         }
 
         // Find template players (global players without auctionId)
-        const templates = await Player.find({
+        // Ensure we strictly look for the templates
+        let templates = await Player.find({
             $or: [
                 { auctionId: { $exists: false } },
                 { auctionId: null }
             ]
         });
 
-        console.log(`Found ${templates.length} template/global players in database`);
+        console.log(`[addDefaultPlayers] Found ${templates.length} template/global players in database`);
 
         if (templates.length === 0) {
-            console.log('⚠️ No global players found in DB. Auto-seeding default players into Global DB...');
+            console.log('[addDefaultPlayers] ⚠️ No global players found in DB. Attempting to Auto-seed default players into Global DB...');
             // Auto-Seed Logic
             try {
                 // Must insert into GLOBAL Player collection, not RoomPlayer yet
+                console.log(`[addDefaultPlayers] Sample players count: ${samplePlayers?.length}`);
+                if (!samplePlayers || samplePlayers.length === 0) {
+                    throw new Error("Sample players data is empty or undefined");
+                }
+
                 const seeded = await Player.insertMany(samplePlayers);
-                console.log(`✅ Auto-seeded ${seeded.length} players into Global DB.`);
+                console.log(`[addDefaultPlayers] ✅ Auto-seeded ${seeded.length} players into Global DB.`);
                 templates = seeded; // Use the newly seeded players
             } catch (seedError) {
-                console.error("Auto-seed failed:", seedError);
-                return res.status(500).json({ success: false, message: 'Failed to auto-seed default database.' });
+                console.error("[addDefaultPlayers] Auto-seed failed:", seedError);
+                return res.status(500).json({ success: false, message: 'Failed to auto-seed default database: ' + seedError.message });
             }
         }
 
         // Map imported CSV fields to schema fields
-        const newPlayers = templates.map(p => {
+        const newPlayers = templates.map((p, index) => {
             // Convert Mongoose document to plain object to access hyphenated fields
             const playerObj = p.toObject ? p.toObject() : p;
+
+            if (index === 0) {
+                console.log('[addDefaultPlayers] First template object keys:', Object.keys(playerObj));
+            }
 
             // Handle different field name variations from imported CSV
             const name = playerObj['player-name'] || playerObj['Player Name'] || playerObj.Player || playerObj.name || 'Unknown';
@@ -299,38 +314,46 @@ export const addDefaultPlayers = async (req, res) => {
             };
         });
 
-        console.log(`Seeding ${newPlayers.length} players for room ${roomId} (ID: ${auction._id})`);
-        await RoomPlayer.insertMany(newPlayers);
+        console.log(`[addDefaultPlayers] Prepared ${newPlayers.length} players for room ${roomId} (ID: ${auction._id})`);
 
-        const createdPlayers = await RoomPlayer.find({ auctionId: auction._id });
-        console.log(`Found ${createdPlayers.length} players in DB after seeding`);
-        console.log(`Found ${createdPlayers.length} players in DB after seeding`);
-        auction.players = createdPlayers.map(p => p._id);
+        if (newPlayers.length > 0) {
+            const result = await RoomPlayer.insertMany(newPlayers);
+            console.log(`[addDefaultPlayers] InsertMany result count: ${result.length}`);
 
-        // Calculate and Set Max Teams (Total Players / 25)
-        const calculatedMaxTeams = Math.floor(createdPlayers.length / 25);
-        // Ensure at least 2 teams, default to current max if calculation is too low (though 361/25 = 14)
-        auction.settings.maxTeams = Math.max(2, calculatedMaxTeams);
-        console.log(`Updated Max Teams to ${auction.settings.maxTeams} based on ${createdPlayers.length} players`);
+            const createdPlayers = await RoomPlayer.find({ auctionId: auction._id });
+            console.log(`[addDefaultPlayers] Found ${createdPlayers.length} players in DB RE-QUERY after seeding`);
 
-        await auction.save();
+            auction.players = createdPlayers.map(p => p._id);
 
-        // Notify all users in the room
-        const updatedAuction = await Auction.findById(auction._id)
-            .populate('currentPlayer')
-            .populate('teams')
-            .populate('players');
+            // Calculate and Set Max Teams (Total Players / 25)
+            const calculatedMaxTeams = Math.floor(createdPlayers.length / 25);
+            // Ensure at least 2 teams, default to current max if calculation is too low (though 361/25 = 14)
+            auction.settings.maxTeams = Math.max(2, calculatedMaxTeams);
+            console.log(`[addDefaultPlayers] Updated Max Teams to ${auction.settings.maxTeams}`);
 
-        const io = req.app.get('io');
-        if (io) {
-            io.to(`auction:${auction._id}`).emit('auction:state', { auction: updatedAuction });
+            await auction.save();
+            console.log('[addDefaultPlayers] Auction saved with new players');
+
+            // Notify all users in the room
+            const updatedAuction = await Auction.findById(auction._id)
+                .populate('currentPlayer')
+                .populate('teams')
+                .populate('players');
+
+            const io = req.app.get('io');
+            if (io) {
+                io.to(`auction:${auction._id}`).emit('auction:state', { auction: updatedAuction });
+            }
+
+            res.status(200).json({ success: true, count: newPlayers.length });
+        } else {
+            console.log('[addDefaultPlayers] No players were prepared from templates.');
+            res.status(200).json({ success: false, message: 'No players found to load.', count: 0 });
         }
 
-        res.status(200).json({ success: true, count: newPlayers.length });
-
     } catch (error) {
-        console.error("Default Players Error:", error);
-        res.status(500).json({ success: false, message: 'Server Error' });
+        console.error("[addDefaultPlayers] CRITICAL ERROR:", error);
+        res.status(500).json({ success: false, message: 'Server Error: ' + error.message });
     }
 };
 

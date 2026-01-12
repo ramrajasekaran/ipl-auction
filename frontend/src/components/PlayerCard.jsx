@@ -58,12 +58,8 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
                     {player.image ? (
                         <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" />
                     ) : (
-                        <div className="flex items-center justify-center h-full text-slate-700 bg-slate-200">
-                            <img
-                                src={`https://ui-avatars.com/api/?name=${player.name}&background=random&size=200`}
-                                alt={player.name}
-                                className="w-full h-full object-contain p-2"
-                            />
+                        <div className="flex items-center justify-center h-full bg-slate-800/50">
+                            <User size={80} className="text-slate-600" strokeWidth={1} />
                         </div>
                     )}
 
