@@ -102,8 +102,8 @@ const AuctioneerControls = ({
                             placeholder="Search players..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            disabled={isAuctionInProgress}
-                            className={`w-full bg-white/10 border-2 border-white/20 rounded-lg py-3 pl-10 pr-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-primary/70 focus:bg-white/15 ${isAuctionInProgress ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            // Input remains active so user can search
+                            className="w-full bg-white/10 border-2 border-white/20 rounded-lg py-3 pl-10 pr-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-primary/70 focus:bg-white/15"
                         />
                         {isSearchingGlobal && (
                             <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={16} />
@@ -115,7 +115,7 @@ const AuctioneerControls = ({
                 {isAuctionInProgress ? (
                     <div className="py-2 px-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg flex items-center gap-2">
                         <Loader2 size={14} className="text-yellow-500 animate-spin" />
-                        <span className="text-xs text-yellow-200 font-medium">Auction in progress...</span>
+                        <span className="text-xs text-yellow-200 font-medium">Auction in progress (Selection Locked)</span>
                     </div>
                 ) : (
                     <div className="py-3 px-4 bg-white/5 rounded-xl text-center text-slate-400 text-xs border border-white/5 md:block">
@@ -126,12 +126,16 @@ const AuctioneerControls = ({
 
             {/* Player Selection List - Flowing area */}
             {showList && (
-                <div className={`flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar md:max-h-none ${isAuctionInProgress ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
+                <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar md:max-h-none">
                     {filteredPlayers.length > 0 ? (
                         filteredPlayers.map((player, idx) => (
                             <div
                                 key={player._id || `p-${idx}`}
-                                className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group border border-transparent hover:border-white/5"
+                                className={`flex items-center gap-3 p-2 rounded-lg transition-colors border border-transparent 
+                                    ${isAuctionInProgress
+                                        ? 'opacity-50 cursor-not-allowed hover:bg-transparent'
+                                        : 'hover:bg-white/5 cursor-pointer hover:border-white/5 group'
+                                    }`}
                                 onClick={() => handlePlayerClick(player)}
                             >
                                 <img src={player.image || 'https://via.placeholder.com/100'} alt={player.name} className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover bg-slate-800" />
@@ -139,9 +143,11 @@ const AuctioneerControls = ({
                                     <h4 className="text-white font-medium text-xs md:text-sm truncate">{player.name}</h4>
                                     <div className="text-[10px] md:text-xs text-slate-500">{player.role} • {formatCurrency(player.basePrice).replace('₹ ', '')}</div>
                                 </div>
-                                <button className="p-1 text-primary md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                                    <UserPlus size={14} />
-                                </button>
+                                {!isAuctionInProgress && (
+                                    <button className="p-1 text-primary md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                        <UserPlus size={14} />
+                                    </button>
+                                )}
                             </div>
                         ))
                     ) : (
