@@ -63,7 +63,15 @@ const AuctioneerControls = ({
         return searchWords.every(word => pName.includes(word) || pRole.includes(word));
     });
 
+    const isAuctionInProgress = isBiddingActive || !!auctionState?.currentPlayer;
+
     const handlePlayerClick = async (player) => {
+        if (isAuctionInProgress) {
+            console.log('[AuctioneerControls] Blocked: Auction in progress');
+            // Optional: You could show a toast here
+            return;
+        }
+
         console.log('[AuctioneerControls] handlePlayerClick called', {
             player: player.name,
             teamsCount: roomData.teams.length,
@@ -94,7 +102,8 @@ const AuctioneerControls = ({
                             placeholder="Search players..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-white/10 border-2 border-white/20 rounded-lg py-3 pl-10 pr-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-primary/70 focus:bg-white/15"
+                            disabled={isAuctionInProgress}
+                            className={`w-full bg-white/10 border-2 border-white/20 rounded-lg py-3 pl-10 pr-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-primary/70 focus:bg-white/15 ${isAuctionInProgress ? 'opacity-50 cursor-not-allowed' : ''}`}
                         />
                         {isSearchingGlobal && (
                             <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary animate-spin" size={16} />
@@ -102,8 +111,13 @@ const AuctioneerControls = ({
                     </div>
                 )}
 
-                {/* Actions for current player - DESKTOP ONLY (will be fixed at bottom on mobile) */}
-                {!isBiddingActive && !auctionState?.currentPlayer && (
+                {/* Status Message */}
+                {isAuctionInProgress ? (
+                    <div className="py-2 px-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg flex items-center gap-2">
+                        <Loader2 size={14} className="text-yellow-500 animate-spin" />
+                        <span className="text-xs text-yellow-200 font-medium">Auction in progress...</span>
+                    </div>
+                ) : (
                     <div className="py-3 px-4 bg-white/5 rounded-xl text-center text-slate-400 text-xs border border-white/5 md:block">
                         Select a player to start bidding
                     </div>
@@ -112,7 +126,7 @@ const AuctioneerControls = ({
 
             {/* Player Selection List - Flowing area */}
             {showList && (
-                <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar md:max-h-none">
+                <div className={`flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar md:max-h-none ${isAuctionInProgress ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
                     {filteredPlayers.length > 0 ? (
                         filteredPlayers.map((player, idx) => (
                             <div
