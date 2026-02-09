@@ -38,7 +38,10 @@ const WelcomeScreen = () => {
                     <div>
                         <h3 className="text-white font-bold leading-tight">{authUser.name || 'User'}</h3>
                         {isAdmin && (
-                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">{authUser.role}</span>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">{authUser.role}</span>
+                                <span className="text-[8px] text-green-500 font-bold uppercase tracking-wider">v1.1-auth-fixed</span>
+                            </div>
                         )}
                     </div>
                 </div>
