@@ -16,7 +16,7 @@ import {
     PlayCircle,
     ArrowRight,
     ArrowLeft,
-    HandHelping
+    Handshake
 } from 'lucide-react';
 
 const Portal = () => {
@@ -86,7 +86,7 @@ const Portal = () => {
 
                     <div className="mt-8 pt-6 border-t border-white/5">
                         <div className="p-4 bg-primary/5 rounded-2xl flex items-center gap-3">
-                            <HandHelping size={18} className="text-primary" />
+                            <Handshake size={18} className="text-primary" />
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest italic">
                                 Strategy is key to winning.
                             </p>
@@ -222,7 +222,7 @@ const Portal = () => {
                                 </button>
 
                                 <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6 border border-primary/20 animate-pulse">
-                                    <HandHelping size={48} className="text-primary" />
+                                    <Handshake size={48} className="text-primary" />
                                 </div>
                                 <h2 className="text-4xl font-black text-white mb-4 italic uppercase tracking-tighter">Support</h2>
                                 <p className="text-slate-400 text-lg mb-8 max-w-sm leading-relaxed font-medium italic">
