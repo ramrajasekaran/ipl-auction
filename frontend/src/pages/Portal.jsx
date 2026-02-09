@@ -103,8 +103,8 @@ const Portal = () => {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold tracking-wide uppercase text-sm ${activeTab === tab.id
-                                        ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-[1.02]'
-                                        : 'text-slate-500 hover:bg-white/5 hover:text-slate-300'
+                                    ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-[1.02]'
+                                    : 'text-slate-500 hover:bg-white/5 hover:text-slate-300'
                                     }`}
                             >
                                 <tab.icon size={20} />
@@ -347,7 +347,7 @@ const Portal = () => {
                 </p>
             </div>
 
-            <style htm="true">{`
+            <style>{`
                 .custom-scrollbar::-webkit-scrollbar {
                     width: 4px;
                 }

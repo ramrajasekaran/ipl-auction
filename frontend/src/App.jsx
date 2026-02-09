@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children, role }) => {
 
     // Check if user is authenticated
     if (!authToken || !authUser) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/portal" replace />;
     }
 
     // Verify authUser has valid email and check role if specified
@@ -47,7 +47,7 @@ const ProtectedRoute = ({ children, role }) => {
 
     } catch (error) {
         sessionStorage.clear();
-        return <Navigate to="/register" replace />;
+        return <Navigate to="/portal" replace />;
     }
 
     return children;
@@ -94,7 +94,7 @@ function App() {
                         <Route path="/mini-auction/:miniAuctionId/release" element={<ProtectedRoute><PlayerReleasePage /></ProtectedRoute>} />
                         <Route path="/mini-auction/:miniAuctionId" element={<ProtectedRoute><AuctionRoom /></ProtectedRoute>} />
 
-                        <Route path="*" element={<Navigate to="/login" replace />} />
+                        <Route path="*" element={<Navigate to="/portal" replace />} />
                     </Routes>
                 </Router>
             </GameProvider>
