@@ -187,7 +187,7 @@ const Portal = () => {
                         </a>
                         <footer className="mt-20">
                             <p className="text-slate-800 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
-                                IPL ARENA • SECURE SYSTEM • © 2026
+                                IPL ARENA • SECURE SYSTEM
                             </p>
                         </footer>
                     </motion.div>
