@@ -481,10 +481,17 @@ export const GameProvider = ({ children }) => {
                 });
                 setUserRole('MANAGER');
                 const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
-                setCurrentUser({ userId: authUser.id });
+
+                // Update role in session if returned
+                if (data.newRole) {
+                    authUser.role = data.newRole;
+                    sessionStorage.setItem('authUser', JSON.stringify(authUser));
+                }
+
+                setCurrentUser({ userId: authUser.id || authUser._id, role: authUser.role });
                 // Connect Socket
                 socket.connect();
-                socket.emit('auction:join', { auctionId: data.auctionId, userId: authUser.id || 'MANAGER' });
+                socket.emit('auction:join', { auctionId: data.auctionId, userId: authUser.id || authUser._id || 'MANAGER' });
                 return data.roomId;
             }
         } catch (error) {

@@ -32,11 +32,18 @@ export const createGame = async (req, res) => {
             }
         });
 
+        // DYNAMIC ROLE: Assign AUCTIONEER role if they are currently just a USER
+        if (user.role === 'USER') {
+            console.log('[CREATE] Updating user role to AUCTIONEER');
+            await User.findByIdAndUpdate(user._id, { role: 'AUCTIONEER' });
+        }
+
         res.status(201).json({
             success: true,
             roomId,
             auctionId: auction._id,
-            budget: auction.settings.initialPurse
+            budget: auction.settings.initialPurse,
+            newRole: user.role === 'USER' ? 'AUCTIONEER' : user.role
         });
 
     } catch (error) {
@@ -138,12 +145,19 @@ export const joinGame = async (req, res) => {
             io.to(`auction:${auction._id}`).emit('auction:state', { auction: updatedAuction });
         }
 
+        // DYNAMIC ROLE: Assign TEAM_OWNER role if they are currently just a USER
+        if (user.role === 'USER') {
+            console.log('[JOIN] Updating user role to TEAM_OWNER');
+            await User.findByIdAndUpdate(user._id, { role: 'TEAM_OWNER' });
+        }
+
         res.status(200).json({
             success: true,
             teamId: newTeam._id,
             auctionId: auction._id,
             userId: user._id,
-            purse: newTeam.currentPurse
+            purse: newTeam.currentPurse,
+            newRole: user.role === 'USER' ? 'TEAM_OWNER' : user.role
         });
 
     } catch (error) {

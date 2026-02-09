@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['AUCTIONEER', 'TEAM_OWNER', 'ADMIN'],
+        enum: ['AUCTIONEER', 'TEAM_OWNER', 'ADMIN', 'USER'],
+        default: 'USER',
         required: [true, 'Please specify a role']
     },
     teamName: {

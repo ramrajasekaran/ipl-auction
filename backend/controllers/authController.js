@@ -23,7 +23,7 @@ export const register = async (req, res) => {
             name,
             email,
             password,
-            role: role || 'TEAM_OWNER'
+            role: role || 'USER'
         });
 
         console.log('[REGISTER] User created successfully:', user._id);
