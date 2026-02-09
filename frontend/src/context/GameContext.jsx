@@ -356,7 +356,7 @@ export const GameProvider = ({ children }) => {
                     players: [] // Clear old players
                 });
                 setUserRole('MANAGER');
-                const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+                const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
                 setCurrentUser({ userId: authUser.id });
                 // Connect Socket
                 socket.connect();
@@ -480,7 +480,7 @@ export const GameProvider = ({ children }) => {
                     players: []
                 });
                 setUserRole('MANAGER');
-                const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+                const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
                 setCurrentUser({ userId: authUser.id });
                 // Connect Socket
                 socket.connect();

@@ -20,7 +20,7 @@ const MiniTeamLogin = () => {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             const response = await axios.post(
                 `${import.meta.env.VITE_API_BASE || 'http://localhost:5000/api'}/mini-auction/team-continue`,
                 {
@@ -28,13 +28,16 @@ const MiniTeamLogin = () => {
                     teamName: formData.teamName,
                     password: formData.password
                 },
-                { headers: { Authorization: `Bearer ${token}` } }
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true
+                }
             );
 
             if (response.data.success) {
-                localStorage.setItem('miniAuctionId', response.data.miniAuctionId);
-                localStorage.setItem('teamId', response.data.teamId);
-                localStorage.setItem('isManager', 'false');
+                sessionStorage.setItem('miniAuctionId', response.data.miniAuctionId);
+                sessionStorage.setItem('teamId', response.data.teamId);
+                sessionStorage.setItem('isManager', 'false');
 
                 // Navigate to player release page first
                 navigate(`/mini-auction/${response.data.miniAuctionId}/release`);

@@ -13,7 +13,7 @@ const PlayerReleasePage = () => {
     const [loading, setLoading] = useState(true);
     const [releasing, setReleasing] = useState(false);
     const [error, setError] = useState('');
-    const teamId = localStorage.getItem('teamId');
+    const teamId = sessionStorage.getItem('teamId');
 
     useEffect(() => {
         fetchTeamSquad();
@@ -21,10 +21,13 @@ const PlayerReleasePage = () => {
 
     const fetchTeamSquad = async () => {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             const response = await axios.get(
                 `${import.meta.env.VITE_API_BASE || 'http://localhost:5000/api'}/games/team/${teamId}`,
-                { headers: { Authorization: `Bearer ${token}` } }
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true
+                }
             );
 
             if (response.data.success) {

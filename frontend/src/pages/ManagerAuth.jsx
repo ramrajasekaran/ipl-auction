@@ -196,7 +196,7 @@ const ManagerAuth = () => {
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+                                        const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
                                         const email = authUser.email || '';
                                         navigate(`/reset-password?type=manager&roomId=${formData.roomId}&email=${encodeURIComponent(email)}`);
                                     }}

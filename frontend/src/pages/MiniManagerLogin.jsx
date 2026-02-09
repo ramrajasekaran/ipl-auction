@@ -20,7 +20,7 @@ const MiniManagerLogin = () => {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             const response = await axios.post(
                 `${import.meta.env.VITE_API_BASE || 'http://localhost:5000/api'}/mini-auction/manager-continue`,
                 {
@@ -28,13 +28,16 @@ const MiniManagerLogin = () => {
                     password: formData.password,
                     budget: formData.budget ? parseFloat(formData.budget) : 25
                 },
-                { headers: { Authorization: `Bearer ${token}` } }
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true
+                }
             );
 
             if (response.data.success) {
-                localStorage.setItem('miniAuctionId', response.data.miniAuctionId);
-                localStorage.setItem('isManager', 'true');
-                localStorage.setItem('miniAuctionBudget', response.data.budget);
+                sessionStorage.setItem('miniAuctionId', response.data.miniAuctionId);
+                sessionStorage.setItem('isManager', 'true');
+                sessionStorage.setItem('miniAuctionBudget', response.data.budget);
 
                 // Navigate to mini auction room
                 navigate(`/mini-auction/${response.data.miniAuctionId}`);

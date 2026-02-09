@@ -27,7 +27,7 @@ const MiniAuctionPage = () => {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             const response = await axios.post(
                 `${import.meta.env.VITE_API_BASE || 'http://localhost:5000/api'}/mini-auction/manager-continue`,
                 {
@@ -35,13 +35,16 @@ const MiniAuctionPage = () => {
                     password: formData.password,
                     budget: formData.budget ? parseFloat(formData.budget) : 25
                 },
-                { headers: { Authorization: `Bearer ${token}` } }
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true
+                }
             );
 
             if (response.data.success) {
-                localStorage.setItem('miniAuctionId', response.data.miniAuctionId);
-                localStorage.setItem('isManager', 'true');
-                localStorage.setItem('miniAuctionBudget', response.data.budget);
+                sessionStorage.setItem('miniAuctionId', response.data.miniAuctionId);
+                sessionStorage.setItem('isManager', 'true');
+                sessionStorage.setItem('miniAuctionBudget', response.data.budget);
 
                 navigate(`/mini-auction/${response.data.miniAuctionId}`);
             }
@@ -58,7 +61,7 @@ const MiniAuctionPage = () => {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             const response = await axios.post(
                 `${import.meta.env.VITE_API_BASE || 'http://localhost:5000/api'}/mini-auction/team-continue`,
                 {
@@ -66,13 +69,16 @@ const MiniAuctionPage = () => {
                     teamName: formData.teamName,
                     password: formData.password
                 },
-                { headers: { Authorization: `Bearer ${token}` } }
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true
+                }
             );
 
             if (response.data.success) {
-                localStorage.setItem('miniAuctionId', response.data.miniAuctionId);
-                localStorage.setItem('teamId', response.data.teamId);
-                localStorage.setItem('isManager', 'false');
+                sessionStorage.setItem('miniAuctionId', response.data.miniAuctionId);
+                sessionStorage.setItem('teamId', response.data.teamId);
+                sessionStorage.setItem('isManager', 'false');
 
                 navigate(`/mini-auction/${response.data.miniAuctionId}/release`);
             }

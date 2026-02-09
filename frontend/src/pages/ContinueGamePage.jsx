@@ -30,8 +30,8 @@ const ContinueGamePage = () => {
 
             if (response.success) {
                 // Store mini auction data
-                localStorage.setItem('miniAuctionId', response.miniAuctionId);
-                localStorage.setItem('teamId', response.teamId);
+                sessionStorage.setItem('miniAuctionId', response.miniAuctionId);
+                sessionStorage.setItem('teamId', response.teamId);
 
                 // Navigate to player release page
                 navigate(`/mini-auction/${response.miniAuctionId}/release`);

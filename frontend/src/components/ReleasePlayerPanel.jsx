@@ -19,10 +19,13 @@ const ReleasePlayerPanel = ({ miniAuctionId, teamId, onClose }) => {
 
     const fetchTeamSquad = async () => {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             const response = await axios.get(
                 `${import.meta.env.VITE_API_BASE || 'http://localhost:5000/api'}/games/team/${teamId}`,
-                { headers: { Authorization: `Bearer ${token}` } }
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true
+                }
             );
 
             if (response.data.success) {

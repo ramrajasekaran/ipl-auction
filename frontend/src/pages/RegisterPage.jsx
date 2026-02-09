@@ -42,8 +42,8 @@ const RegisterPage = () => {
 
             if (data.success) {
                 // Store token and user data
-                localStorage.setItem('authToken', data.token);
-                localStorage.setItem('authUser', JSON.stringify(data.user));
+                sessionStorage.setItem('authToken', data.token);
+                sessionStorage.setItem('authUser', JSON.stringify(data.user));
 
                 // Redirect to welcome screen
                 navigate('/');

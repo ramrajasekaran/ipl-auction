@@ -9,7 +9,7 @@ const miniAuctionAPI = axios.create({
 
 // Add auth token to requests
 miniAuctionAPI.interceptors.request.use((config) => {
-    const token = localStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

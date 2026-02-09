@@ -19,7 +19,7 @@ const ContestantAuth = () => {
         e.preventDefault();
         try {
             // Get logged in user email
-            const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+            const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
             const userEmail = authUser.email || '';
 
             await joinGame(formData.roomId, formData.teamName, userEmail, formData.password);
@@ -83,7 +83,7 @@ const ContestantAuth = () => {
                     <p className="text-slate-400 mb-4 px-4">
                         {activeTab === 'join'
                             ? "Join an auction room and create your own team password."
-                            : `Continuing as ${JSON.parse(localStorage.getItem('authUser') || '{}').email || 'registered user'}`}
+                            : `Continuing as ${JSON.parse(sessionStorage.getItem('authUser') || '{}').email || 'registered user'}`}
                     </p>
                 </div>
 
@@ -146,7 +146,7 @@ const ContestantAuth = () => {
                             <button
                                 type="button"
                                 onClick={() => {
-                                    const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+                                    const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
                                     const email = authUser.email || '';
                                     navigate(`/reset-password?type=team&roomId=${formData.roomId}&teamName=${encodeURIComponent(formData.teamName)}&email=${encodeURIComponent(email)}`);
                                 }}
