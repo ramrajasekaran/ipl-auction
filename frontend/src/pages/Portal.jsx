@@ -178,7 +178,7 @@ const Portal = () => {
                             Technical issues or feedback? Contact the official team.
                         </p>
                         <a
-                            href="mailto:iplarena.app@gmail.com"
+                            href="mailto:iplarena.app@gmail.com?subject=IPL Arena Support - Feedback/Query&body=Hello IPL Arena Team,%0D%0A%0D%0AI have the following feedback/query:%0D%0A%0D%0A[Your message here]%0D%0A%0D%0ARegards,%0D%0A[Your Name]"
                             className="inline-flex items-center gap-4 px-8 py-4 bg-white/5 hover:bg-primary text-white border border-white/10 rounded-2xl font-black text-xl transition-all shadow-xl group"
                         >
                             <Mail size={24} />
