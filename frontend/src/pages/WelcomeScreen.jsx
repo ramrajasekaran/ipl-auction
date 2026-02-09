@@ -26,9 +26,9 @@ const WelcomeScreen = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-start p-6 overflow-x-hidden relative">
+        <div className="h-screen bg-slate-950 flex flex-col items-center justify-start p-6 overflow-hidden relative">
             {/* Header / Nav */}
-            <div className="w-full max-w-7xl flex items-center justify-between mb-12 relative z-10 px-4">
+            <div className="w-full max-w-7xl flex items-center justify-between mb-4 relative z-10 px-4">
                 <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
                         <Trophy className="text-white" size={28} />
@@ -74,9 +74,9 @@ const WelcomeScreen = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-center mb-12 space-y-4 relative z-10"
+                className="text-center mb-6 space-y-2 relative z-10"
             >
-                <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-white mb-2 uppercase italic">
+                <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-1 uppercase italic">
                     IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Auction</span>
                 </h1>
                 <div className="flex flex-col items-center gap-2">

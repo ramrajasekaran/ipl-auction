@@ -38,7 +38,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
             {/* Background Effects */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-[-20%] left-[20%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full" />
