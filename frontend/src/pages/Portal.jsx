@@ -12,7 +12,8 @@ import {
     DollarSign,
     Users,
     PlayCircle,
-    Handshake
+    Handshake,
+    ArrowRight
 } from 'lucide-react';
 
 const Portal = () => {
