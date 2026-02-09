@@ -9,7 +9,7 @@ import {
     Trophy,
     Zap,
     Clock,
-    DollarSign,
+    IndianRupee,
     Users,
     PlayCircle,
     Handshake,
@@ -23,16 +23,17 @@ const Portal = () => {
         { title: "Register & Access", desc: "Create your official IPL Arena account to start your journey." },
         { title: "Select Mode", desc: "Choose between Mega Auction (Fresh) or Mini Auction (Saved)." },
         { title: "Create/Join Room", desc: "Host a room or join one as a Team Owner." },
-        { title: "Live Bidding", desc: "Bid in real-time. Manage your 120Cr budget wisely!" },
+        { title: "Live Bidding", desc: "Bid in real-time. Manage your budget wisely!" },
         { title: "Build the Squad", desc: "Aim for 15-25 players with valid team composition." }
     ];
 
     const rules = [
         { label: "Squad Size", val: "15 - 25 Players", icon: Users },
-        { label: "Total Budget", val: "120.00 Crores", icon: DollarSign },
+        { label: "Mega Budget", val: "120.00 Crores", icon: IndianRupee },
+        { label: "Mini Budget", val: "25.00 Crores", icon: IndianRupee },
         { label: "Overseas Limit", val: "Max 8 Players", icon: Trophy },
         { label: "Min Bid", val: "Base Price", icon: Zap },
-        { label: "Mini Auction", val: "Retain & Release", icon: Clock }
+        { label: "Auction Flow", val: "Retain & Release", icon: Clock }
     ];
 
     return (
@@ -54,7 +55,7 @@ const Portal = () => {
             <main className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
 
                 {/* 1. Centered Title Section */}
-                <header className="pt-12 pb-20 text-center">
+                <header className="pt-12 pb-16 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -70,9 +71,9 @@ const Portal = () => {
                 </header>
 
                 {/* 2. Left-Aligned Auth Buttons */}
-                <section className="mb-24">
+                <section className="mb-20">
                     <div className="max-w-md">
-                        <h2 className="text-xs font-black text-slate-600 uppercase tracking-[0.3em] mb-8 border-l-2 border-primary pl-4">Gateway Access</h2>
+                        <h2 className="text-xs font-black text-slate-600 uppercase tracking-[0.3em] mb-6 border-l-2 border-primary pl-4">Gateway Access</h2>
                         <div className="flex flex-col gap-4">
                             <motion.button
                                 whileHover={{ scale: 1.02, x: 10 }}
@@ -110,8 +111,8 @@ const Portal = () => {
                 </section>
 
                 {/* 3. User Manual (How to Play) */}
-                <section className="mb-24">
-                    <h2 className="text-xl font-bold mb-10 flex items-center gap-3 italic">
+                <section className="mb-20">
+                    <h2 className="text-xl font-bold mb-8 flex items-center gap-3 italic text-white/90">
                         <PlayCircle size={28} className="text-primary" />
                         User Manual: How to Play
                     </h2>
@@ -136,8 +137,8 @@ const Portal = () => {
                 </section>
 
                 {/* 4. Official Rules */}
-                <section className="mb-24 pb-24 border-b border-white/5">
-                    <h2 className="text-xl font-bold mb-10 flex items-center gap-3 italic">
+                <section className="mb-16">
+                    <h2 className="text-xl font-bold mb-8 flex items-center gap-3 italic text-white/90">
                         <ShieldCheck size={28} className="text-primary" />
                         Tournament Rules
                     </h2>
@@ -156,33 +157,33 @@ const Portal = () => {
                     </div>
                     <div className="mt-8 p-6 bg-amber-500/5 border border-amber-500/10 rounded-2xl flex items-center justify-center gap-4">
                         < Zap size={18} className="text-amber-500" />
-                        <p className="text-xs text-amber-500/80 font-black uppercase tracking-[0.2em] italic">
-                            Squads must include 1 WK and 4 Bowlers minimum.
+                        <p className="text-xs text-amber-500/80 font-black uppercase tracking-[0.2em] italic text-center">
+                            Valid squads must have at least 1 WK and 4 Bowlers minimum.
                         </p>
                     </div>
                 </section>
 
                 {/* 5. Contact Section */}
-                <section id="contact" className="text-center py-20">
+                <section id="contact" className="text-center pt-8 pb-20">
                     <motion.div
                         whileInView={{ opacity: 1, scale: 1 }}
                         initial={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-primary/20">
-                            <Handshake size={40} className="text-primary" />
+                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20">
+                            <Handshake size={32} className="text-primary" />
                         </div>
-                        <h2 className="text-4xl font-black text-white mb-4 italic uppercase tracking-tighter">Support & Collaboration</h2>
-                        <p className="text-slate-500 text-lg mb-10 max-w-xl mx-auto font-medium italic">
-                            For technical issues, feedback, or custom arena requests, reach out to the official team.
+                        <h2 className="text-3xl font-black text-white mb-3 uppercase italic tracking-tighter">Support</h2>
+                        <p className="text-slate-500 text-base mb-8 max-w-xl mx-auto font-medium italic">
+                            Technical issues or feedback? Contact the official team.
                         </p>
                         <a
                             href="mailto:iplarena.app@gmail.com"
-                            className="inline-flex items-center gap-4 px-10 py-5 bg-white/5 hover:bg-primary text-white border border-white/10 rounded-2xl font-black text-2xl transition-all shadow-2xl group"
+                            className="inline-flex items-center gap-4 px-8 py-4 bg-white/5 hover:bg-primary text-white border border-white/10 rounded-2xl font-black text-xl transition-all shadow-xl group"
                         >
-                            <Mail size={32} />
+                            <Mail size={24} />
                             iplarena.app@gmail.com
-                            <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
+                            <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                         </a>
                         <footer className="mt-20">
                             <p className="text-slate-800 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
