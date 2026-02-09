@@ -184,10 +184,7 @@ export const searchGlobalPlayers = async (req, res) => {
             ]
         };
 
-        console.log(`Searching for: "${q}" with query:`, JSON.stringify(query));
-        const rawPlayers = await Player.collection.find(query).limit(20).toArray();
-        console.log(`Found ${rawPlayers.length} results for "${q}"`);
-        console.log(`Found ${rawPlayers.length} results for "${q}"`);
+
 
         // Map them to a consistent format for the frontend
         const players = rawPlayers.map(p => {
@@ -243,7 +240,7 @@ export const searchGlobalPlayers = async (req, res) => {
             players
         });
     } catch (error) {
-        console.error("Global Search Error:", error);
+
         res.status(500).json({
             success: false,
             message: error.message
@@ -336,7 +333,7 @@ export const activateGlobalPlayer = async (req, res) => {
             player: newPlayer
         });
     } catch (error) {
-        console.error("Activate Player Error:", error);
+
         res.status(500).json({ success: false, message: error.message });
     }
 };

@@ -28,7 +28,7 @@ const PlayerSelection = () => {
             });
             setShowModal(true);
         } catch (error) {
-            console.error("Error loading default players:", error);
+
             setModalContent({
                 title: 'Load Failed',
                 message: 'Failed to load default players. Please try again.',
@@ -60,7 +60,7 @@ const PlayerSelection = () => {
             });
             setShowModal(true);
         } catch (error) {
-            console.error("Error uploading file:", error);
+
             const msg = error.response?.data?.message || "Error uploading file. Please ensure it's a valid CSV.";
 
             setModalContent({

@@ -69,7 +69,7 @@ const TeamOwnerDashboard = () => {
             // Load team data
             await loadTeamData(auctionId);
         } catch (error) {
-            console.error('Error initializing auction:', error);
+
             setBidError('Waiting for auctioneer to start the session...');
         } finally {
             setLoading(false);
@@ -107,7 +107,7 @@ const TeamOwnerDashboard = () => {
             const userTeam = teams.find(t => t.owner === user.id);
             setMyTeam(userTeam);
         } catch (error) {
-            console.error('Error loading team:', error);
+
         }
     };
 

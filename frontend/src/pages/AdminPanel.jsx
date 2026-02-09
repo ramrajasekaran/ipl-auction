@@ -24,7 +24,7 @@ const AdminPanel = () => {
             const data = await getGlobalPlayersAPI();
             setPlayers(data.players || []);
         } catch (err) {
-            console.error("Failed to fetch global players", err);
+
             if (err.response?.status === 403) {
                 navigate('/welcome');
             }
@@ -49,7 +49,7 @@ const AdminPanel = () => {
             setSuccess(`Success! Uploaded ${res.count} players to the global database.`);
             fetchPlayers(); // Refresh list
         } catch (err) {
-            console.error(err);
+
             setError('Upload failed. Please check the CSV format.');
         } finally {
             setUploading(false);

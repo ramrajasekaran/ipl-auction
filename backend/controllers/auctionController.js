@@ -417,7 +417,7 @@ export const resetAuction = async (req, res) => {
             auction
         });
     } catch (error) {
-        console.error('Reset Auction Error:', error);
+
         res.status(500).json({
             success: false,
             message: error.message

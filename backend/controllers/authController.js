@@ -18,7 +18,7 @@ export const register = async (req, res) => {
         }
 
         // Create user (no teamName required at registration - set when joining room)
-        console.log('[REGISTER] Creating user with email:', email);
+
         const user = await User.create({
             name,
             email,
@@ -26,7 +26,7 @@ export const register = async (req, res) => {
             role: role || 'USER'
         });
 
-        console.log('[REGISTER] User created successfully:', user._id);
+
 
         // Generate token
         const token = user.getSignedJwtToken();
@@ -42,7 +42,7 @@ export const register = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Register error:', error);
+
         res.status(500).json({
             success: false,
             message: error.message || 'Server error during registration'
@@ -68,11 +68,10 @@ export const login = async (req, res) => {
         // Check for user (include password for comparison)
         const user = await User.findOne({ email }).select('+password');
 
-        console.log('[LOGIN] User lookup for email:', email);
-        console.log('[LOGIN] User found:', !!user);
+
 
         if (!user) {
-            console.log('[LOGIN] User not found');
+
             return res.status(401).json({
                 success: false,
                 message: 'Invalid credentials'
@@ -81,27 +80,27 @@ export const login = async (req, res) => {
 
         // AUTO-PROMPT ADMIN (For hosted environment setup)
         if (email.toLowerCase() === 'sriramsriram16145@gmail.com' && user.role !== 'ADMIN') {
-            console.log('[LOGIN] Auto-promoting user to ADMIN:', email);
+
             user.role = 'ADMIN';
             await user.save();
         }
 
-        console.log('[LOGIN] User exists, checking password...');
+
 
         // Check if password matches
         const isMatch = await user.matchPassword(password);
 
-        console.log('[LOGIN] Password match result:', isMatch);
+
 
         if (!isMatch) {
-            console.log('[LOGIN] Password mismatch');
+
             return res.status(401).json({
                 success: false,
                 message: 'Invalid credentials'
             });
         }
 
-        console.log('[LOGIN] Authentication successful');
+
 
         // Generate token
         const token = user.getSignedJwtToken();
@@ -115,8 +114,7 @@ export const login = async (req, res) => {
             role: user.role
         };
 
-        console.log('[LOGIN] Session created for user:', user.email, 'Role:', user.role);
-        console.log('[LOGIN] req.session.user:', req.session.user);
+
 
         res.status(200).json({
             success: true,
@@ -131,7 +129,7 @@ export const login = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Login error:', error);
+
         res.status(500).json({
             success: false,
             message: 'Server error during login'
@@ -155,7 +153,7 @@ export const getMe = async (req, res) => {
 
         // AUTO-PROMOTE ADMIN (For hosted environment setup/consistency)
         if (user.email.toLowerCase() === 'sriramsriram16145@gmail.com' && user.role !== 'ADMIN') {
-            console.log('[GETME] Auto-promoting user to ADMIN:', user.email);
+
             user.role = 'ADMIN';
             await user.save();
         }
@@ -257,8 +255,7 @@ export const sendPasswordResetOTP = async (req, res) => {
             });
         } catch (emailError) {
             // Dev Mode Fallback: Return OTP in response when email fails
-            console.log('⚠️ Email failed, using DEV MODE - OTP returned in response');
-            console.log('🔑 OTP Code:', code);
+
             res.status(200).json({
                 success: true,
                 message: `DEV MODE: Email sending failed. Your OTP is: ${code}`,
@@ -268,7 +265,7 @@ export const sendPasswordResetOTP = async (req, res) => {
         }
 
     } catch (error) {
-        console.error('Send OTP Error:', error);
+
         res.status(500).json({
             success: false,
             message: error.message || 'Failed to send OTP. Please check email configuration.'
@@ -313,7 +310,7 @@ export const verifyOTPOnly = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Verify OTP Only Error:', error);
+
         res.status(500).json({
             success: false,
             message: 'Server error during OTP verification'
@@ -399,7 +396,7 @@ export const verifyOTPAndResetPassword = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Verify OTP Error:', error);
+
         res.status(500).json({
             success: false,
             message: 'Server error during password reset'
@@ -415,7 +412,7 @@ export const logout = async (req, res) => {
         // Destroy session
         req.session.destroy((err) => {
             if (err) {
-                console.error('Session destruction error:', err);
+
                 return res.status(500).json({
                     success: false,
                     message: 'Error logging out'
@@ -431,7 +428,7 @@ export const logout = async (req, res) => {
             });
         });
     } catch (error) {
-        console.error('Logout error:', error);
+
         res.status(500).json({
             success: false,
             message: 'Server error during logout'

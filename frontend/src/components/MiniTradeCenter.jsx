@@ -36,7 +36,7 @@ const MiniTradeCenter = ({ miniAuctionId, currentTeam, allTeams, onClose }) => {
                 setTrades(response.trades);
             }
         } catch (error) {
-            console.error('Failed to fetch trades:', error);
+
         }
     };
 
@@ -108,7 +108,7 @@ const MiniTradeCenter = ({ miniAuctionId, currentTeam, allTeams, onClose }) => {
                 ));
             }
         } catch (error) {
-            console.error('Failed to send message:', error);
+
         }
     };
 

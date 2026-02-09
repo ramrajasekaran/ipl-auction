@@ -57,7 +57,6 @@ const AuctioneerDashboard = () => {
                 }
             } catch (err) {
                 // If not found (404), we will create one
-                console.log('No active auction found, creating new one...');
             }
 
             // If no existing auction, create one
@@ -82,7 +81,7 @@ const AuctioneerDashboard = () => {
             // Listen to socket events
             setupSocketListeners(auctionData._id);
         } catch (error) {
-            console.error('Error initializing auction:', error);
+
         }
     };
 
@@ -101,7 +100,7 @@ const AuctioneerDashboard = () => {
             const response = await playerAPI.getAll({ status: 'AVAILABLE' });
             setPlayers(response.data.players || []);
         } catch (error) {
-            console.error('Error loading players:', error);
+
         } finally {
             setLoading(false);
         }
@@ -114,7 +113,7 @@ const AuctioneerDashboard = () => {
                 setTeams(response.data.teams || []);
             }
         } catch (error) {
-            console.error('Error loading teams:', error);
+
         }
     };
 
@@ -129,7 +128,7 @@ const AuctioneerDashboard = () => {
             // Notify via socket
             socketService.selectPlayer(auctionId, player._id);
         } catch (error) {
-            console.error('Error selecting player:', error);
+
         }
     };
 
@@ -140,7 +139,7 @@ const AuctioneerDashboard = () => {
             await auctionAPI.startTimer(auctionId);
             socketService.startTimer(auctionId);
         } catch (error) {
-            console.error('Error starting timer:', error);
+
         }
     };
 
@@ -151,7 +150,7 @@ const AuctioneerDashboard = () => {
             await auctionAPI.pauseTimer(auctionId);
             socketService.pauseTimer(auctionId);
         } catch (error) {
-            console.error('Error pausing timer:', error);
+
         }
     };
 
@@ -162,7 +161,7 @@ const AuctioneerDashboard = () => {
             await auctionAPI.extendTimer(auctionId, seconds);
             socketService.extendTimer(auctionId, seconds);
         } catch (error) {
-            console.error('Error extending timer:', error);
+
         }
     };
 
@@ -183,7 +182,7 @@ const AuctioneerDashboard = () => {
                 });
             }
         } catch (error) {
-            console.error('Error marking sold:', error);
+
         }
     };
 
@@ -203,7 +202,7 @@ const AuctioneerDashboard = () => {
                 });
             }
         } catch (error) {
-            console.error('Error marking unsold:', error);
+
         }
     };
 
@@ -216,7 +215,7 @@ const AuctioneerDashboard = () => {
             setCurrentPlayer(null);
             setSelectedPlayerId(null);
         } catch (error) {
-            console.error('Error resetting auction:', error);
+
         }
     };
 

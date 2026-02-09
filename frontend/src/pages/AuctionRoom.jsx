@@ -65,7 +65,7 @@ const AuctionRoom = () => {
                     const count = res.trades.filter(t => t.status === 'PENDING' && (t.receivingTeam._id || t.receivingTeam) === myTeam._id).length;
                     setPendingTradeCount(count);
                 }
-            } catch (e) { console.error('Trade Poll Failed', e); }
+            } catch (e) { }
         };
 
         fetchTradeCount();
@@ -76,7 +76,7 @@ const AuctionRoom = () => {
     // Sync state with URL
     React.useEffect(() => {
         if (!miniAuctionId && roomData.roomId && roomData.isActive && urlRoomCode && roomData.roomId.toUpperCase() !== urlRoomCode.toUpperCase()) {
-            console.warn(`[AuctionRoom] URL mismatch prevented. State=${roomData.roomId}, URL=${urlRoomCode}. Forcing URL sync.`);
+
             window.history.replaceState(null, document.title, `/auction/${roomData.roomId}`);
             return;
         }

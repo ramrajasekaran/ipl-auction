@@ -34,7 +34,7 @@ const PlayerReleasePage = () => {
                 setSquad(response.data.team.players || []);
             }
         } catch (err) {
-            console.error("Fetch Squad Error:", err);
+
             setError(`Failed to load team squad: ${err.response?.data?.message || err.message} (${err.response?.status})`);
         } finally {
             setLoading(false);

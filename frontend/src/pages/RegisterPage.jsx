@@ -36,8 +36,7 @@ const RegisterPage = () => {
             const data = await registerAPI({
                 name: formData.name,
                 email: formData.email,
-                password: formData.password,
-                role: 'TEAM_OWNER' // Default role
+                password: formData.password
             });
 
             if (data.success) {
@@ -49,9 +48,7 @@ const RegisterPage = () => {
                 navigate('/');
             }
         } catch (err) {
-            console.error('Registration Error Details:', err);
             const msg = err.response?.data?.message || err.message || 'Registration failed. Please try again.';
-            console.log('Error Message Displayed:', msg);
             setError(msg);
         } finally {
             setLoading(false);

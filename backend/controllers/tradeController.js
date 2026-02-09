@@ -29,7 +29,7 @@ export const proposeTrade = async (req, res) => {
         res.status(201).json({ success: false, trade });
 
     } catch (error) {
-        console.error('Propose Trade Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -129,7 +129,7 @@ export const respondToTrade = async (req, res) => {
         }
 
     } catch (error) {
-        console.error('Respond Trade Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -199,7 +199,7 @@ export const createMiniTrade = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Create Mini Trade Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -291,7 +291,7 @@ export const respondToMiniTrade = async (req, res) => {
         }
 
     } catch (error) {
-        console.error('Respond to Mini Trade Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -329,7 +329,7 @@ export const sendTradeMessage = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Send Trade Message Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -358,7 +358,7 @@ export const getMiniTrades = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Get Mini Trades Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };

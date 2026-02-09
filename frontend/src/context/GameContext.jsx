@@ -83,23 +83,21 @@ export const GameProvider = ({ children }) => {
     // Socket Event Listeners
     useEffect(() => {
         function onConnect() {
-            console.log('✅ Socket Connected!', { role: userRole });
+
 
             // AUTO-REJOIN on Reconnect
             // If socket disconnected and reconnected, we must re-emit join using refs
             const { auctionId, userId } = connectionRef.current;
             if (auctionId && userId) {
-                console.log('🔄 Re-joining auction after reconnect:', auctionId);
                 socket.emit('auction:join', { auctionId, userId });
             }
         }
 
         function onDisconnect() {
-            console.log('❌ Socket Disconnected');
+
         }
 
         function onAuctionState(data) {
-            console.log('📦 Received auction:state', { hasAuction: !!data?.auction, timerState: data?.auction?.timer });
             // Full Sync
             if (data && data.auction) {
                 updateLocalState(data.auction);
@@ -144,7 +142,6 @@ export const GameProvider = ({ children }) => {
         }
 
         function onPlayerSold({ player, team, price, auction }) {
-            console.log('[onPlayerSold] Player sold:', player.name, 'Price:', price, 'Team:', team.name);
 
             if (auction) {
                 updateLocalState(auction);
@@ -200,18 +197,15 @@ export const GameProvider = ({ children }) => {
         }
 
         function onUserJoined({ userId }) {
-            // Ideally fetch updated teams list, or just wait for next sync
-            // For now, minimal action or toast
-            console.log('User joined:', userId);
+            // Minimal action or toast
         }
 
         function onSocketError(err) {
-            console.error('Socket Error:', err);
+
             alert(`⚠️ ${err.message || 'Auction Error'}`);
         }
 
         function onTimerUpdate({ remaining, isRunning }) {
-            console.log(`⏱️ [Socket] Timer Update: ${remaining}s (isRunning: ${isRunning})`, { role: userRole });
             setTimerState({ remaining, isRunning });
         }
 
@@ -226,7 +220,6 @@ export const GameProvider = ({ children }) => {
         socket.on('error', onSocketError);
         socket.on('auction:timer-update', onTimerUpdate);
         socket.on('auction:refresh-request', () => {
-            console.log('🔄 Server requested refresh');
             refreshState();
         });
         socket.on('auction:toast', ({ message }) => {
@@ -256,17 +249,8 @@ export const GameProvider = ({ children }) => {
 
     // Helper to map backend data to frontend state
     const updateLocalState = (auction) => {
-        console.log('🔄 updateLocalState called', {
-            auctionId: auction._id,
-            roomId: auction.roomId,
-            teamsCount: auction.teams?.length,
-            teamNames: auction.teams?.map(t => ({ name: t.name, auctionId: t.auctionId })),
-            rawTeams: auction.teams
-        });
 
-        console.log('📊 Setting roomData with players:', auction.players?.length);
         if (auction.players?.length > 0) {
-            console.log('First player sample:', auction.players[0]);
         }
 
         setRoomData(prev => ({
@@ -280,7 +264,6 @@ export const GameProvider = ({ children }) => {
         }));
 
         // Log immediately after to see if state update is queued
-        console.log('✅ roomData setState called. Teams:', auction.teams?.length);
 
         // If auction has active bid/player state, sync it
         if (auction.currentPlayer) {
@@ -305,7 +288,7 @@ export const GameProvider = ({ children }) => {
         if (auction.timer?.isRunning && auction.timer?.startedAt) {
             const elapsed = Math.floor((Date.now() - new Date(auction.timer.startedAt)) / 1000);
             const remaining = Math.max(0, 10 - elapsed);
-            console.log(`[updateLocalState] Setting timer: ${remaining}s (isRunning: ${remaining > 0})`);
+
             setTimerState({
                 remaining,
                 isRunning: remaining > 0
@@ -364,7 +347,7 @@ export const GameProvider = ({ children }) => {
                 return true;
             }
         } catch (error) {
-            console.error("Resume Game Failed", error);
+
             throw error;
         }
     };
@@ -393,7 +376,7 @@ export const GameProvider = ({ children }) => {
                 return true;
             }
         } catch (error) {
-            console.error("Release Player Failed", error);
+
             throw error;
         }
     };
@@ -415,9 +398,7 @@ export const GameProvider = ({ children }) => {
             // Clear old state before entering room
             clearSessionState();
 
-            console.log('🔄 Rejoining team...', { roomId, teamName });
             const data = await rejoinTeamAPI(roomId, teamName, password);
-            console.log('📥 Rejoin API response:', data);
             if (data.success) {
                 setCurrentUser({
                     teamName,
@@ -433,12 +414,17 @@ export const GameProvider = ({ children }) => {
                     teams: [],
                     players: []
                 }));
-                console.log('✅ Room data set:', { auctionId: data.auctionId, roomId });
                 setUserRole('CONTESTANT');
+
+                // Update role in session if returned
+                const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
+                if (data.newRole) {
+                    authUser.role = data.newRole;
+                    sessionStorage.setItem('authUser', JSON.stringify(authUser));
+                }
 
                 // Connect Socket and wait for connection
                 if (!socket.connected) {
-                    console.log('🔌 Connecting socket...');
                     socket.connect();
 
                     // Wait for socket to connect before joining room
@@ -447,19 +433,17 @@ export const GameProvider = ({ children }) => {
                             resolve();
                         } else {
                             socket.once('connect', () => {
-                                console.log('✅ Socket connected!');
                                 resolve();
                             });
                         }
                     });
                 }
 
-                console.log('📡 Emitting auction:join', { auctionId: data.auctionId, userId: data.userId });
                 socket.emit('auction:join', { auctionId: data.auctionId, userId: data.userId });
                 return true;
             }
         } catch (error) {
-            console.error('❌ Rejoin Team Failed', error);
+
             throw error;
         }
     };
@@ -495,7 +479,7 @@ export const GameProvider = ({ children }) => {
                 return data.roomId;
             }
         } catch (error) {
-            console.error("Create Game Failed", error);
+
             throw error;
         }
     };
@@ -505,9 +489,7 @@ export const GameProvider = ({ children }) => {
             // Clear old state before joining room
             clearSessionState();
 
-            console.log('🎮 Joining game...', { roomId, teamName });
             const data = await joinGameAPI(roomId, teamName, email, password);
-            console.log('📥 Join API response:', data);
             if (data.success) {
                 setCurrentUser({
                     teamName,
@@ -523,12 +505,17 @@ export const GameProvider = ({ children }) => {
                     teams: [],
                     players: []
                 }));
-                console.log('✅ Room data set:', { auctionId: data.auctionId, roomId });
                 setUserRole('CONTESTANT');
+
+                // Update role in session if returned
+                const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
+                if (data.newRole) {
+                    authUser.role = data.newRole;
+                    sessionStorage.setItem('authUser', JSON.stringify(authUser));
+                }
 
                 // Connect Socket and wait for connection
                 if (!socket.connected) {
-                    console.log('🔌 Connecting socket...');
                     socket.connect();
 
                     // Wait for socket to connect before joining room
@@ -537,19 +524,17 @@ export const GameProvider = ({ children }) => {
                             resolve();
                         } else {
                             socket.once('connect', () => {
-                                console.log('✅ Socket connected!');
                                 resolve();
                             });
                         }
                     });
                 }
 
-                console.log('📡 Emitting auction:join', { auctionId: data.auctionId, userId: data.userId });
                 socket.emit('auction:join', { auctionId: data.auctionId, userId: data.userId });
                 return true;
             }
         } catch (error) {
-            console.error('❌ Join Game Failed', error);
+
             throw error;
         }
     };
@@ -567,13 +552,8 @@ export const GameProvider = ({ children }) => {
     const startTurn = (player) => {
         // Just emit selection, backend handles state
         if (roomData.auctionId) {
-            console.log('📡 [startTurn] Emitting auction:player-selected', {
-                auctionId: roomData.auctionId,
-                playerId: player._id,
-                playerName: player.name
-            });
             if (!player._id) {
-                console.error('❌ [startTurn] Player ID is missing!', player);
+
                 alert('Internal Error: Player ID missing. Cannot select.');
                 return;
             }
@@ -582,7 +562,7 @@ export const GameProvider = ({ children }) => {
                 playerId: player._id
             });
         } else {
-            console.error('❌ [startTurn] No auctionId found in roomData');
+
         }
     };
 
@@ -598,7 +578,7 @@ export const GameProvider = ({ children }) => {
                 return data.player;
             }
         } catch (error) {
-            console.error("Activate Player Failed", error);
+
             throw error;
         }
     };
@@ -631,14 +611,9 @@ export const GameProvider = ({ children }) => {
         const rId = specificRoomId || roomData.roomId;
         if (!rId) return;
 
-        console.log(`[GameContext] refreshState requested for: ${rId}`);
-
-        console.log(`[GameContext] refreshState requested for: ${rId}`);
-
         // OPTIMIZATION: If we are already in the requested room with data, DO NOT clear state.
         // Just ensure socket connection.
         if (roomData.roomId && roomData.roomId.toUpperCase() === rId.toUpperCase() && roomData.auctionId) {
-            console.log('[GameContext] Already in correct room, skipping state clear. Ensuring socket...');
             if (socket.connected) {
                 socket.emit('auction:join', {
                     auctionId: roomData.auctionId,
@@ -658,8 +633,6 @@ export const GameProvider = ({ children }) => {
         // Skip API lookup and join socket directly.
         const isObjectId = /^[0-9a-fA-F]{24}$/.test(rId);
         if (isObjectId) {
-            console.log('[GameContext] Detected direct Auction ID (Mini Auction). Connecting socket directly...');
-
             // Set auctionId immediately so socket listeners know where to update
             setRoomData(prev => ({
                 ...prev,
@@ -696,7 +669,7 @@ export const GameProvider = ({ children }) => {
                     }));
                     socket.emit('auction:join', { auctionId: data.auctionId, userId: currentUser?.userId || 'manager' });
                 })
-                .catch(err => console.error("Refresh failed (needs re-auth?):", err));
+
         }
     };
 
@@ -732,10 +705,8 @@ export const GameProvider = ({ children }) => {
 
             // Clear all session storage (tab-bound)
             sessionStorage.clear();
-
-            console.log('✅ Logged out successfully');
         } catch (error) {
-            console.error('Logout error:', error);
+
             // Even if API call fails, clear local state
             clearSessionState();
             sessionStorage.clear();
@@ -746,8 +717,6 @@ export const GameProvider = ({ children }) => {
     };
 
     const leaveGame = () => {
-        console.log('👋 Leaving game/room...');
-
         // Disconnect socket
         if (socket.connected) socket.disconnect();
 

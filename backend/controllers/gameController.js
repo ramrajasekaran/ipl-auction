@@ -34,7 +34,7 @@ export const createGame = async (req, res) => {
 
         // DYNAMIC ROLE: Assign AUCTIONEER role if they are currently just a USER
         if (user.role === 'USER') {
-            console.log('[CREATE] Updating user role to AUCTIONEER');
+
             await User.findByIdAndUpdate(user._id, { role: 'AUCTIONEER' });
         }
 
@@ -47,7 +47,7 @@ export const createGame = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Create Game Error Detail:', error);
+
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }
 };
@@ -56,7 +56,7 @@ export const createGame = async (req, res) => {
 export const joinGame = async (req, res) => {
     try {
         const { roomId, teamName, password } = req.body;
-        console.log(`Join Request: Room=${roomId}, Team=${teamName}`);
+
 
         if (!req.user) {
             return res.status(401).json({ success: false, message: 'Authentication required' });
@@ -139,7 +139,7 @@ export const joinGame = async (req, res) => {
             })
             .populate('players');
 
-        console.log(`[joinGame] Broadcasting auction:state. Teams count: ${updatedAuction.teams?.length}`);
+
         const io = req.app.get('io');
         if (io) {
             io.to(`auction:${auction._id}`).emit('auction:state', { auction: updatedAuction });
@@ -147,7 +147,7 @@ export const joinGame = async (req, res) => {
 
         // DYNAMIC ROLE: Assign TEAM_OWNER role if they are currently just a USER
         if (user.role === 'USER') {
-            console.log('[JOIN] Updating user role to TEAM_OWNER');
+
             await User.findByIdAndUpdate(user._id, { role: 'TEAM_OWNER' });
         }
 
@@ -164,7 +164,7 @@ export const joinGame = async (req, res) => {
         if (error.code === 11000) {
             return res.status(400).json({ success: false, message: 'Team Name already exists in this room' });
         }
-        console.error('Join Game Error:', error);
+
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }
 };
@@ -212,7 +212,7 @@ export const resumeGame = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Resume Game Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -221,18 +221,18 @@ export const resumeGame = async (req, res) => {
 export const addDefaultPlayers = async (req, res) => {
     try {
         const { roomId } = req.body;
-        console.log(`[addDefaultPlayers] Request received for room: ${roomId}`);
+
 
         const auction = await Auction.findOne({ roomId });
         if (!auction) {
-            console.error(`[addDefaultPlayers] Room not found: ${roomId}`);
+
             return res.status(404).json({ success: false, message: 'Room not found' });
         }
 
         // Check if room already has players
         const existingCount = await RoomPlayer.countDocuments({ auctionId: auction._id });
         if (existingCount > 0) {
-            console.log(`[addDefaultPlayers] Room ${roomId} already has ${existingCount} players. Skipping default load.`);
+
             return res.status(200).json({ success: true, message: 'Players already loaded', count: existingCount });
         }
 
@@ -245,23 +245,23 @@ export const addDefaultPlayers = async (req, res) => {
             ]
         });
 
-        console.log(`[addDefaultPlayers] Found ${templates.length} template/global players in database`);
+
 
         if (templates.length === 0) {
-            console.log('[addDefaultPlayers] ⚠️ No global players found in DB. Attempting to Auto-seed default players into Global DB...');
+
             // Auto-Seed Logic
             try {
                 // Must insert into GLOBAL Player collection, not RoomPlayer yet
-                console.log(`[addDefaultPlayers] Sample players count: ${samplePlayers?.length}`);
+
                 if (!samplePlayers || samplePlayers.length === 0) {
                     throw new Error("Sample players data is empty or undefined");
                 }
 
                 const seeded = await Player.insertMany(samplePlayers);
-                console.log(`[addDefaultPlayers] ✅ Auto-seeded ${seeded.length} players into Global DB.`);
+
                 templates = seeded; // Use the newly seeded players
             } catch (seedError) {
-                console.error("[addDefaultPlayers] Auto-seed failed:", seedError);
+
                 return res.status(500).json({ success: false, message: 'Failed to auto-seed default database: ' + seedError.message });
             }
         }
@@ -272,7 +272,7 @@ export const addDefaultPlayers = async (req, res) => {
             const playerObj = p.toObject ? p.toObject() : p;
 
             if (index === 0) {
-                console.log('[addDefaultPlayers] First template object keys:', Object.keys(playerObj));
+
             }
 
             // Handle different field name variations from imported CSV
@@ -328,14 +328,14 @@ export const addDefaultPlayers = async (req, res) => {
             };
         });
 
-        console.log(`[addDefaultPlayers] Prepared ${newPlayers.length} players for room ${roomId} (ID: ${auction._id})`);
+
 
         if (newPlayers.length > 0) {
             const result = await RoomPlayer.insertMany(newPlayers);
-            console.log(`[addDefaultPlayers] InsertMany result count: ${result.length}`);
+
 
             const createdPlayers = await RoomPlayer.find({ auctionId: auction._id });
-            console.log(`[addDefaultPlayers] Found ${createdPlayers.length} players in DB RE-QUERY after seeding`);
+
 
             auction.players = createdPlayers.map(p => p._id);
 
@@ -343,10 +343,10 @@ export const addDefaultPlayers = async (req, res) => {
             const calculatedMaxTeams = Math.floor(createdPlayers.length / 25);
             // Ensure at least 2 teams, default to current max if calculation is too low (though 361/25 = 14)
             auction.settings.maxTeams = Math.max(2, calculatedMaxTeams);
-            console.log(`[addDefaultPlayers] Updated Max Teams to ${auction.settings.maxTeams}`);
+
 
             await auction.save();
-            console.log('[addDefaultPlayers] Auction saved with new players');
+
 
             // Notify all users in the room
             const updatedAuction = await Auction.findById(auction._id)
@@ -361,12 +361,12 @@ export const addDefaultPlayers = async (req, res) => {
 
             res.status(200).json({ success: true, count: newPlayers.length });
         } else {
-            console.log('[addDefaultPlayers] No players were prepared from templates.');
+
             res.status(200).json({ success: false, message: 'No players found to load.', count: 0 });
         }
 
     } catch (error) {
-        console.error("[addDefaultPlayers] CRITICAL ERROR:", error);
+
         res.status(500).json({ success: false, message: 'Server Error: ' + error.message });
     }
 };
@@ -396,7 +396,7 @@ export const uploadPlayers = async (req, res) => {
             .on('data', (data) => results.push(data))
             .on('end', async () => {
                 try {
-                    console.log(`CSV Upload for Room ${roomId}: Found ${results.length} rows`);
+
                     if (results.length === 0) {
                         try { fs.unlinkSync(req.file.path); } catch (e) { }
                         return res.status(400).json({ success: false, message: 'CSV file is empty or invalid.' });
@@ -405,7 +405,7 @@ export const uploadPlayers = async (req, res) => {
                     // Dynamic Header Detection
                     const firstRow = results[0];
                     const keys = Object.keys(firstRow);
-                    console.log('CSV Headers Found:', keys);
+
 
                     // Helper to fuzzy match column names
                     const findKey = (keywords) => {
@@ -422,7 +422,7 @@ export const uploadPlayers = async (req, res) => {
                     const ageKey = findKey(['age']);
                     const imageKey = findKey(['image', 'img', 'photo', 'picture']);
 
-                    console.log(`Mapped Keys: Name=${nameKey}, Role=${roleKey}, Price=${priceKey}`);
+
 
                     if (!nameKey || !roleKey || !priceKey) {
                         try { fs.unlinkSync(req.file.path); } catch (e) { }
@@ -497,23 +497,23 @@ export const uploadPlayers = async (req, res) => {
                         };
                     }).filter(p => p.name !== 'Unknown' && p.name && p.name.length > 1);
 
-                    console.log(`Mapped ${validPlayers.length} valid players from CSV`);
+
 
                     if (validPlayers.length > 0) {
                         // CRITICAL: Cleanup previous players for THIS room only to avoid duplicates/mixing
                         await RoomPlayer.deleteMany({ auctionId: auction._id });
-                        console.log(`Cleaned up previous players for room ${roomId}`);
+
 
                         await RoomPlayer.insertMany(validPlayers);
                         const createdPlayers = await RoomPlayer.find({ auctionId: auction._id });
-                        console.log(`Successfully inserted ${createdPlayers.length} players for room ${roomId}`);
+
 
                         auction.players = createdPlayers.map(p => p._id);
 
                         // Calculate and Set Max Teams (Total Players / 25)
                         const calculatedMaxTeams = Math.floor(validPlayers.length / 25);
                         auction.settings.maxTeams = Math.max(2, calculatedMaxTeams);
-                        console.log(`Updated Max Teams to ${auction.settings.maxTeams} based on ${validPlayers.length} uploaded players`);
+
 
                         await auction.save();
 
@@ -532,22 +532,20 @@ export const uploadPlayers = async (req, res) => {
                     // Cleanup file
                     try {
                         fs.unlinkSync(req.file.path);
-                    } catch (e) { console.error("File delete error", e); }
+                    } catch (e) { }
 
                     res.status(200).json({ success: true, count: validPlayers.length });
-
                 } catch (processError) {
-                    console.error("CSV Processing Error:", processError);
                     res.status(500).json({ success: false, message: 'Error processing CSV file' });
                 }
             })
             .on('error', (err) => {
-                console.error("CSV Read Stream Error:", err);
+
                 res.status(500).json({ success: false, message: 'Failed to read CSV file' });
             });
 
     } catch (error) {
-        console.error("Upload Error:", error);
+
         if (req.file) {
             try { fs.unlinkSync(req.file.path); } catch (e) { }
         }
@@ -608,7 +606,7 @@ export const rejoinTeam = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Rejoin Error:', error);
+
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }
 };
@@ -658,7 +656,7 @@ export const releasePlayer = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Release Error:", error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -693,7 +691,7 @@ export const getTeamDetails = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Get Team Details Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -728,7 +726,7 @@ export const resetManagerPassword = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Reset Manager Password Error:", error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -774,7 +772,7 @@ export const resetTeamPassword = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Reset Team Password Error:", error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -792,7 +790,7 @@ export const uploadGlobalPlayers = async (req, res) => {
             .on('data', (data) => results.push(data))
             .on('end', async () => {
                 try {
-                    console.log(`Global CSV Upload: Found ${results.length} rows`);
+
 
                     if (results.length === 0) {
                         return res.status(400).json({ success: false, message: 'CSV file is empty' });
@@ -801,7 +799,7 @@ export const uploadGlobalPlayers = async (req, res) => {
                     // Dynamic Header Detection
                     const firstRow = results[0];
                     const keys = Object.keys(firstRow);
-                    console.log('CSV Headers Found:', keys);
+
 
                     // Helper to fuzzy match column names
                     const findKey = (keywords) => {
@@ -818,7 +816,7 @@ export const uploadGlobalPlayers = async (req, res) => {
                     const ageKey = findKey(['age']);
                     const imageKey = findKey(['image', 'img', 'photo', 'picture']);
 
-                    console.log('Mapped Keys:', { nameKey, countryKey, roleKey, priceKey });
+
 
                     if (!nameKey || !roleKey || !priceKey) {
                         return res.status(400).json({
@@ -883,32 +881,32 @@ export const uploadGlobalPlayers = async (req, res) => {
                         };
                     }).filter(p => p.name !== 'Unknown' && p.name && p.name.length > 1);
 
-                    console.log(`Mapped ${validPlayers.length} valid GLOBAL players`);
+
 
                     if (validPlayers.length > 0) {
                         await Player.insertMany(validPlayers);
-                        console.log(`Successfully inserted ${validPlayers.length} global players`);
+
                     }
 
                     // Cleanup file
                     try {
                         fs.unlinkSync(req.file.path);
-                    } catch (e) { console.error("File delete error", e); }
+                    } catch (e) { }
 
                     res.status(200).json({ success: true, count: validPlayers.length });
 
                 } catch (processError) {
-                    console.error("CSV Processing Error:", processError);
+
                     res.status(500).json({ success: false, message: 'Error processing CSV file' });
                 }
             })
             .on('error', (err) => {
-                console.error("CSV Read Stream Error:", err);
+
                 res.status(500).json({ success: false, message: 'Failed to read CSV file' });
             });
 
     } catch (error) {
-        console.error("Global Upload Error:", error);
+
         if (req.file) {
             try { fs.unlinkSync(req.file.path); } catch (e) { }
         }
@@ -928,7 +926,7 @@ export const getGlobalPlayers = async (req, res) => {
 
         res.status(200).json({ success: true, count: players.length, players });
     } catch (error) {
-        console.error("Get Global Players Error:", error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -945,7 +943,7 @@ export const clearGlobalPlayers = async (req, res) => {
 
         res.status(200).json({ success: true, message: `Deleted ${result.deletedCount} global players` });
     } catch (error) {
-        console.error("Clear Global Players Error:", error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -953,7 +951,7 @@ export const clearGlobalPlayers = async (req, res) => {
 // Seed Default Players (Admin Only)
 export const seedGlobalPlayers = async (req, res) => {
     try {
-        console.log('[SEED] Starting global player seeding...');
+
 
         // Ensure samplePlayers exists
         if (!samplePlayers || samplePlayers.length === 0) {
@@ -971,11 +969,11 @@ export const seedGlobalPlayers = async (req, res) => {
 
         // Insert
         await Player.insertMany(formatted);
-        console.log(`[SEED] Successfully seeded ${formatted.length} global players`);
+
 
         res.status(200).json({ success: true, count: formatted.length });
     } catch (error) {
-        console.error("Seed Global Players Error:", error);
+
         res.status(500).json({ success: false, message: 'Seeding failed: ' + error.message });
     }
 };
@@ -1010,7 +1008,7 @@ const getTeamDetails_Ignored = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Get Team Details Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };

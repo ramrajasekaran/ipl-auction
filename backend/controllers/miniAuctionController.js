@@ -100,7 +100,7 @@ export const continueGame = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Continue Game Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -174,7 +174,7 @@ export const releasePlayer = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Release Player Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -222,7 +222,7 @@ export const getPlayerPool = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Get Player Pool Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -230,13 +230,13 @@ export const getPlayerPool = async (req, res) => {
 export const managerContinue = async (req, res) => {
     try {
         const { roomId, password, budget } = req.body;
-        console.log('[MiniAuction] Manager Login Request Body:', JSON.stringify(req.body, null, 2));
+
 
         const normalizedRoomId = roomId ? roomId.trim().toUpperCase() : '';
-        console.log(`[MiniAuction] Normalized Room ID: "${normalizedRoomId}"`);
+
 
         if (!req.user) {
-            console.log('[MiniAuction] No user in request');
+
             return res.status(401).json({ success: false, message: 'Authentication required' });
         }
 
@@ -244,14 +244,11 @@ export const managerContinue = async (req, res) => {
         const megaAuction = await Auction.findOne({ roomId: normalizedRoomId });
 
         if (!megaAuction) {
-            // DEBUG: List all available IDs to see what's going on
-            const allAuctions = await Auction.find({}, 'roomId');
-            const availableIds = allAuctions.map(a => `"${a.roomId}"`).join(', ');
-            console.log(`[MiniAuction] Room "${normalizedRoomId}" NOT FOUND. Available IDs in DB: [${availableIds}]`);
+
 
             return res.status(404).json({
                 success: false,
-                message: `Mega auction room "${normalizedRoomId}" not found. Available: ${availableIds}`
+                message: `Mega auction room "${normalizedRoomId}" not found.`
             });
         }
 
@@ -271,7 +268,7 @@ export const managerContinue = async (req, res) => {
 
         // Check if mega auction is completed - Auto-complete if manager is logging in
         if (megaAuction.status !== 'COMPLETED') {
-            console.log(`[MiniAuction] Manager force-completing auction ${normalizedRoomId}`);
+
             megaAuction.status = 'COMPLETED';
             megaAuction.completedAt = new Date();
             await megaAuction.save();
@@ -312,7 +309,7 @@ export const managerContinue = async (req, res) => {
             const newUnsoldIds = unsoldIds.filter(id => !existingPoolStrs.includes(id.toString()));
 
             if (newUnsoldIds.length > 0) {
-                console.log(`[MiniAuction] Adding ${newUnsoldIds.length} missing unsold players to pool`);
+
                 miniAuction.playerPool.push(...newUnsoldIds);
             }
             await miniAuction.save();
@@ -334,7 +331,7 @@ export const managerContinue = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Manager Continue Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
@@ -344,16 +341,16 @@ export const teamContinue = async (req, res) => {
     try {
         const { roomId, teamName, password } = req.body;
         const normalizedRoomId = roomId ? roomId.toUpperCase().trim() : '';
-        console.log(`[MiniAuction] Team Login Attempt: Room=${normalizedRoomId}, Team=${teamName}`);
+
 
         if (!req.user) {
-            console.log('[MiniAuction] Team Login: No user found in request');
+
             return res.status(401).json({ success: false, message: 'Authentication required' });
         }
 
         // Find the mega auction
         const megaAuction = await Auction.findOne({ roomId: normalizedRoomId });
-        console.log(`[MiniAuction] Team Login: Mega Auction found? ${!!megaAuction}`);
+
 
         if (!megaAuction) {
             return res.status(404).json({ success: false, message: 'Mega auction room not found' });
@@ -428,7 +425,7 @@ export const teamContinue = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Team Continue Error:', error);
+
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };

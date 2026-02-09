@@ -19,10 +19,6 @@ const AuctioneerControls = ({
     const allSelectableRoomPlayers = (roomData.players || []).filter(p =>
         p.status === 'AVAILABLE' || p.status === 'UNSOLD' || p.status === 'RELEASED'
     );
-
-    console.log('[AuctioneerControls] Room Players:', roomData.players?.length, 'Selectable:', allSelectableRoomPlayers.length);
-
-    // State for global search (for future use)
     const [globalSearchResults, setGlobalSearchResults] = useState([]);
     const [isSearchingGlobal, setIsSearchingGlobal] = useState(false);
 
@@ -37,7 +33,7 @@ const AuctioneerControls = ({
                         setGlobalSearchResults(data.players);
                     }
                 } catch (error) {
-                    console.error('Global search error:', error);
+
                     setGlobalSearchResults([]);
                 } finally {
                     setIsSearchingGlobal(false);
@@ -67,20 +63,11 @@ const AuctioneerControls = ({
 
     const handlePlayerClick = async (player) => {
         if (isAuctionInProgress) {
-            console.log('[AuctioneerControls] Blocked: Auction in progress');
-            // Optional: You could show a toast here
             return;
         }
 
-        console.log('[AuctioneerControls] handlePlayerClick called', {
-            player: player.name,
-            teamsCount: roomData.teams.length,
-            teams: roomData.teams,
-            roomData: roomData
-        });
-
         if (roomData.teams.length === 0) {
-            console.error('[AuctioneerControls] BLOCKED: No teams in roomData!', roomData);
+
             alert("No teams have joined the room yet. At least one team must join before you can select and sell players.");
             return;
         }

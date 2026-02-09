@@ -24,44 +24,31 @@ const ProtectedRoute = ({ children, role }) => {
     const authToken = sessionStorage.getItem('authToken');
     const authUser = sessionStorage.getItem('authUser');
 
-    console.log('[ProtectedRoute] Token exists:', !!authToken);
-    console.log('[ProtectedRoute] User data exists:', !!authUser);
-
     // Check if user is authenticated
     if (!authToken || !authUser) {
-        console.log('[ProtectedRoute] Missing token or user, redirecting to login');
         return <Navigate to="/login" replace />;
     }
 
     // Verify authUser has valid email and check role if specified
     try {
         const user = JSON.parse(authUser);
-        console.log('[ProtectedRoute] Parsed user:', user);
 
         if (!user.email) {
-            console.log('[ProtectedRoute] No email, redirecting to register');
             sessionStorage.clear();
             return <Navigate to="/register" replace />;
         }
 
         // MASTER ADMIN OVERRIDE
         if (user.email.toLowerCase() === 'sriramsriram16145@gmail.com' && user.role !== 'ADMIN') {
-            console.log('[ProtectedRoute] Applying Master Admin Override');
             user.role = 'ADMIN';
             sessionStorage.setItem('authUser', JSON.stringify(user));
         }
 
-        if (role && user.role !== role) {
-            console.log(`[ProtectedRoute] Role mismatch: required ${role}, found ${user.role}. Redirecting to welcome.`);
-            return <Navigate to="/welcome" replace />;
-        }
     } catch (error) {
-        console.error('[ProtectedRoute] Parse error:', error);
         sessionStorage.clear();
         return <Navigate to="/register" replace />;
     }
 
-    console.log('[ProtectedRoute] Auth passed');
     return children;
 };
 
