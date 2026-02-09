@@ -1,28 +1,22 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Upload, Key, CheckCircle, Database, Trash2, Users } from 'lucide-react';
 import { uploadGlobalPlayersAPI, getGlobalPlayersAPI, clearGlobalPlayersAPI } from '../services/api';
 import { formatCurrency } from '../utils/formatters';
 
 const AdminPanel = () => {
-    // ...
-    const [accessKey, setAccessKey] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
     const [uploading, setUploading] = useState(false);
     const [players, setPlayers] = useState([]);
     const [loadingPlayers, setLoadingPlayers] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    // Hardcoded simple admin key for this implementation
-    const ADMIN_KEY = "admin123";
-
-    // Fetch players once authenticated
+    // Fetch players on mount
     React.useEffect(() => {
-        if (isAuthenticated) {
-            fetchPlayers();
-        }
-    }, [isAuthenticated]);
+        fetchPlayers();
+    }, []);
 
     const fetchPlayers = async () => {
         setLoadingPlayers(true);
@@ -31,18 +25,11 @@ const AdminPanel = () => {
             setPlayers(data.players || []);
         } catch (err) {
             console.error("Failed to fetch global players", err);
+            if (err.response?.status === 403) {
+                navigate('/welcome');
+            }
         } finally {
             setLoadingPlayers(false);
-        }
-    };
-
-    const handleLogin = (e) => {
-        e.preventDefault();
-        if (accessKey === ADMIN_KEY) {
-            setIsAuthenticated(true);
-            setError('');
-        } else {
-            setError('Invalid Admin Key');
         }
     };
 
@@ -81,38 +68,6 @@ const AdminPanel = () => {
         }
     };
 
-    if (!isAuthenticated) {
-        return (
-            <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 to-black">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="max-w-md w-full glass-panel p-8 rounded-2xl border border-white/10"
-                >
-                    <div className="flex flex-col items-center mb-6">
-                        <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4">
-                            <Key className="text-red-500" size={32} />
-                        </div>
-                        <h1 className="text-2xl font-bold text-white">Admin Access</h1>
-                        <p className="text-slate-400 text-sm">Enter secret key to proceed</p>
-                    </div>
-
-                    <form onSubmit={handleLogin} className="space-y-4">
-                        <input
-                            type="password"
-                            value={accessKey}
-                            onChange={(e) => setAccessKey(e.target.value)}
-                            className="w-full bg-black/30 border border-white/10 rounded-xl py-3 px-4 text-white text-center tracking-widest focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-600"
-                            placeholder="Enter Key"
-                        />
-                        {error && <p className="text-red-400 text-xs text-center">{error}</p>}
-                        <button type="submit" className="btn-primary w-full">Access Panel</button>
-                    </form>
-                </motion.div>
-            </div>
-        );
-    }
-
     return (
         <div className="min-h-screen p-6 bg-gradient-to-br from-slate-900 to-black">
             <div className="max-w-6xl mx-auto">
@@ -123,8 +78,8 @@ const AdminPanel = () => {
                     </h1>
                     <div className="flex items-center gap-4">
                         <button onClick={fetchPlayers} className="text-sm text-slate-400 hover:text-white">Refresh</button>
-                        <button onClick={() => setIsAuthenticated(false)} className="text-sm text-red-400 hover:text-red-300">
-                            Logout
+                        <button onClick={() => navigate('/welcome')} className="text-sm text-red-400 hover:text-red-300">
+                            Exit Admin
                         </button>
                     </div>
                 </div>

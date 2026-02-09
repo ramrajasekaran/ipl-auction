@@ -1,4 +1,4 @@
- import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 // Protect routes - verify JWT token
@@ -60,11 +60,14 @@ export const requireRole = (...roles) => {
     };
 };
 
+// Require admin role
+export const requireAdmin = requireRole('ADMIN');
+
 // Require auctioneer role
 export const requireAuctioneer = requireRole('AUCTIONEER');
 
 // Require team owner role
 export const requireTeamOwner = requireRole('TEAM_OWNER');
 
-// Allow both roles
-export const requireAuthenticated = requireRole('AUCTIONEER', 'TEAM_OWNER');
+// Allow all authenticated roles
+export const requireAuthenticated = requireRole('AUCTIONEER', 'TEAM_OWNER', 'ADMIN');

@@ -20,29 +20,33 @@ import PlayerReleasePage from './pages/PlayerReleasePage'; // Mini Auction
 
 // ... inside App component
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, role }) => {
     const authToken = localStorage.getItem('authToken');
     const authUser = localStorage.getItem('authUser');
 
     console.log('[ProtectedRoute] Token exists:', !!authToken);
     console.log('[ProtectedRoute] User data exists:', !!authUser);
 
-    // Check if user is authenticated with valid token AND has registered with email
+    // Check if user is authenticated
     if (!authToken || !authUser) {
         console.log('[ProtectedRoute] Missing token or user, redirecting to login');
         return <Navigate to="/login" replace />;
     }
 
-    // Verify authUser has valid email (ensures proper registration)
+    // Verify authUser has valid email and check role if specified
     try {
         const user = JSON.parse(authUser);
         console.log('[ProtectedRoute] Parsed user:', user);
-        console.log('[ProtectedRoute] User email:', user.email);
 
         if (!user.email) {
             console.log('[ProtectedRoute] No email, redirecting to register');
             localStorage.clear();
             return <Navigate to="/register" replace />;
+        }
+
+        if (role && user.role !== role) {
+            console.log(`[ProtectedRoute] Role mismatch: required ${role}, found ${user.role}. Redirecting to welcome.`);
+            return <Navigate to="/welcome" replace />;
         }
     } catch (error) {
         console.error('[ProtectedRoute] Parse error:', error);
@@ -78,8 +82,8 @@ function App() {
                         <Route path="/mega-auction" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
                         <Route path="/mini-auction" element={<ProtectedRoute><MiniAuctionPage /></ProtectedRoute>} />
 
-                        {/* ADMIN ROUTE */}
-                        <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+                        {/* ADMIN ROUTE - Restricted to ADMIN role */}
+                        <Route path="/admin" element={<ProtectedRoute role="ADMIN"><AdminPanel /></ProtectedRoute>} />
 
                         <Route path="/manager" element={<ProtectedRoute><ManagerAuth /></ProtectedRoute>} />
                         <Route path="/manager-auth" element={<ProtectedRoute><ManagerAuth /></ProtectedRoute>} />
