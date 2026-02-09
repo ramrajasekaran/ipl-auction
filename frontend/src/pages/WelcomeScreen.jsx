@@ -34,6 +34,9 @@ const WelcomeScreen = () => {
                     <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10">
                         <User size={16} className="text-primary" />
                         <span className="text-white text-sm font-medium">{authUser.name}</span>
+                        <span className="text-xs px-2 py-0.5 bg-primary/20 text-primary rounded border border-primary/20 uppercase">
+                            {authUser.role || 'No Role'}
+                        </span>
                     </div>
                 )}
                 <button
