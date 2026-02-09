@@ -186,7 +186,7 @@ const Portal = () => {
                             <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                         </a>
                         <footer className="mt-20">
-                            <p className="text-slate-800 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
+                            <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
                                 IPL ARENA • SECURE SYSTEM
                             </p>
                         </footer>
