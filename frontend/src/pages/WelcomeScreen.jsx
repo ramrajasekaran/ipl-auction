@@ -21,6 +21,15 @@ const WelcomeScreen = () => {
         <div className="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
             {/* User Header */}
             <div className="absolute top-4 right-4 flex items-center gap-4">
+                {authUser.role === 'ADMIN' && (
+                    <button
+                        onClick={() => navigate('/admin')}
+                        className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-full border border-red-500/20 transition-all font-medium"
+                    >
+                        <Zap size={16} fill="currentColor" />
+                        Admin Panel
+                    </button>
+                )}
                 {authUser.name && (
                     <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10">
                         <User size={16} className="text-primary" />
