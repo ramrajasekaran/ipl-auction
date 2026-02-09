@@ -179,11 +179,16 @@ const Portal = () => {
                         </p>
                         <a
                             href="mailto:iplarena.app@gmail.com?subject=IPL Arena Support - Feedback/Query&body=Hello IPL Arena Team,%0D%0A%0D%0AI have the following feedback/query:%0D%0A%0D%0A[Your message here]%0D%0A%0D%0ARegards,%0D%0A[Your Name]"
-                            className="inline-flex items-center gap-4 px-8 py-4 bg-white/5 hover:bg-primary text-white border border-white/10 rounded-2xl font-black text-xl transition-all shadow-xl group"
+                            className="inline-flex flex-col items-center gap-2 px-10 py-5 bg-white/5 hover:bg-primary text-white border border-white/10 rounded-2xl font-black transition-all shadow-2xl group min-w-[320px]"
                         >
-                            <Mail size={24} />
-                            iplarena.app@gmail.com
-                            <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
+                            <div className="flex items-center gap-3 text-2xl">
+                                <Mail size={32} />
+                                Start Conversation
+                                <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
+                            </div>
+                            <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 group-hover:text-white/70">
+                                iplarena.app@gmail.com
+                            </span>
                         </a>
                         <footer className="mt-20">
                             <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
