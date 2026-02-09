@@ -115,6 +115,9 @@ export const login = async (req, res) => {
             role: user.role
         };
 
+        console.log('[LOGIN] Session created for user:', user.email, 'Role:', user.role);
+        console.log('[LOGIN] req.session.user:', req.session.user);
+
         res.status(200).json({
             success: true,
             token,
@@ -142,6 +145,20 @@ export const login = async (req, res) => {
 export const getMe = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).populate('teamId');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        // AUTO-PROMOTE ADMIN (For hosted environment setup/consistency)
+        if (user.email.toLowerCase() === 'sriramsriram16145@gmail.com' && user.role !== 'ADMIN') {
+            console.log('[GETME] Auto-promoting user to ADMIN:', user.email);
+            user.role = 'ADMIN';
+            await user.save();
+        }
 
         res.status(200).json({
             success: true,

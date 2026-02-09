@@ -11,7 +11,16 @@ const WelcomeScreen = () => {
 
     // Get logged-in user
     const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
+
+    // MASTER ADMIN OVERRIDE
+    if (authUser.email && authUser.email.toLowerCase() === 'sriramsriram16145@gmail.com' && authUser.role !== 'ADMIN') {
+        authUser.role = 'ADMIN';
+        sessionStorage.setItem('authUser', JSON.stringify(authUser));
+        console.log('[Welcome] Master Admin Override Applied');
+    }
+
     const isAdmin = authUser.role === 'ADMIN';
+    console.log('[Welcome] Auth State:', { email: authUser.email, role: authUser.role, isAdmin });
 
     const handleLogout = async () => {
         await logout();

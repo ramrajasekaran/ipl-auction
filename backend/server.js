@@ -25,6 +25,9 @@ connectDB();
 const app = express();
 const httpServer = createServer(app);
 
+// Trust proxy for secure cookies in hosted environment
+app.set('trust proxy', 1);
+
 // Initialize Socket.io
 const io = new Server(httpServer, {
     cors: {
@@ -61,8 +64,8 @@ app.use(session({
     cookie: {
         maxAge: parseInt(process.env.SESSION_MAX_AGE) || 86400000, // 24 hours
         httpOnly: true, // Prevent JavaScript access
-        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-        sameSite: 'lax', // CSRF protection
+        secure: true, // Always true for HTTPS (Render/Vercel)
+        sameSite: 'none', // Required for cross-site cookie support in some proxy setups
         domain: process.env.COOKIE_DOMAIN || undefined
     },
     name: process.env.SESSION_NAME || 'ipl_auction_sid'
