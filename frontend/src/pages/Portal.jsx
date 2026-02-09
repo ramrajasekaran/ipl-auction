@@ -29,8 +29,8 @@ const Portal = () => {
 
     const rules = [
         { label: "Squad Size", val: "15 - 25 Players", icon: Users },
-        { label: "Mega Budget", val: "120.00 Crores", icon: IndianRupee },
-        { label: "Mini Budget", val: "25.00 Crores", icon: IndianRupee },
+        { label: "Max Mega Budget", val: "120.00 Crores", icon: IndianRupee },
+        { label: "Max Mini Budget", val: "25.00 Crores", icon: IndianRupee },
         { label: "Overseas Limit", val: "Max 8 Players", icon: Trophy },
         { label: "Min Bid", val: "Base Price", icon: Zap },
         { label: "Auction Flow", val: "Retain & Release", icon: Clock }
