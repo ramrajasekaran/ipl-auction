@@ -5,7 +5,7 @@ import { Gavel, User, Trophy, PlayCircle } from 'lucide-react';
 
 const LandingPage = () => {
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
+        <div className="h-screen flex flex-col items-center justify-center p-4 relative z-10 overflow-hidden">
             <motion.button
                 onClick={() => { window.location.href = '/' }} // Force full nav or useHook, stick to Link/UserHook inside component.
                 // Better: import useNavigate
