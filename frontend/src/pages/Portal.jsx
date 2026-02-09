@@ -37,7 +37,7 @@ const Portal = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+        <div className="min-h-screen bg-slate-950 text-white font-outfit selection:bg-primary/30 overflow-x-hidden">
             {/* Background Decor */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full" />
@@ -64,7 +64,7 @@ const Portal = () => {
                         <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter mb-4 uppercase">
                             IPL <span className="text-primary drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">Arena</span>
                         </h1>
-                        <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-sm md:text-base">
+                        <p className="text-slate-200 font-bold uppercase tracking-[0.3em] text-sm md:text-base">
                             The Ultimate Live Auction Experience
                         </p>
                     </motion.div>
@@ -73,7 +73,7 @@ const Portal = () => {
                 {/* 2. Left-Aligned Auth Buttons */}
                 <section className="mb-20">
                     <div className="max-w-md">
-                        <h2 className="text-xs font-black text-slate-600 uppercase tracking-[0.3em] mb-6 border-l-2 border-primary pl-4">Gateway Access</h2>
+                        <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-6 border-l-2 border-primary pl-4">Gateway Access</h2>
                         <div className="flex flex-col gap-4">
                             <motion.button
                                 whileHover={{ scale: 1.02, x: 10 }}
@@ -85,7 +85,7 @@ const Portal = () => {
                                     <LogIn size={28} />
                                     <div className="text-left">
                                         <h3 className="font-black uppercase italic tracking-widest text-lg">Sign In</h3>
-                                        <p className="text-white/60 text-[10px] font-black uppercase tracking-widest leading-none">Access your existing dashboard</p>
+                                        <p className="text-white/90 text-[10px] font-black uppercase tracking-widest leading-none">Access your existing dashboard</p>
                                     </div>
                                 </div>
                                 <Zap size={20} className="opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -101,7 +101,7 @@ const Portal = () => {
                                     <UserPlus size={28} className="text-primary" />
                                     <div className="text-left">
                                         <h3 className="font-black uppercase italic tracking-widest text-lg">Enrollment</h3>
-                                        <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest leading-none">Join the league as a new official</p>
+                                        <p className="text-slate-300 text-[10px] font-black uppercase tracking-widest leading-none">Join the league as a new official</p>
                                     </div>
                                 </div>
                                 <Zap size={20} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -128,7 +128,7 @@ const Portal = () => {
                                 <h3 className="text-lg font-black uppercase italic tracking-tight mb-3 text-white">
                                     {step.title}
                                 </h3>
-                                <p className="text-slate-500 text-sm leading-relaxed font-medium">
+                                <p className="text-slate-300 text-sm leading-relaxed font-medium">
                                     {step.desc}
                                 </p>
                             </div>
@@ -149,7 +149,7 @@ const Portal = () => {
                                     <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400">
                                         <rule.icon size={20} />
                                     </div>
-                                    <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">{rule.label}</span>
+                                    <span className="text-slate-300 font-bold uppercase text-[10px] tracking-widest">{rule.label}</span>
                                 </div>
                                 <span className="text-primary font-black italic">{rule.val}</span>
                             </div>
@@ -174,7 +174,7 @@ const Portal = () => {
                             <Handshake size={32} className="text-primary" />
                         </div>
                         <h2 className="text-3xl font-black text-white mb-3 uppercase italic tracking-tighter">Support</h2>
-                        <p className="text-slate-500 text-base mb-8 max-w-xl mx-auto font-medium italic">
+                        <p className="text-slate-300 text-base mb-8 max-w-xl mx-auto font-medium italic">
                             Technical issues or feedback? Contact the official team.
                         </p>
                         <a
