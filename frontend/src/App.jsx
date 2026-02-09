@@ -15,6 +15,7 @@ import RegisterPage from './pages/RegisterPage';
 import AdminPanel from './pages/AdminPanel'; // Import
 import ContinueGamePage from './pages/ContinueGamePage'; // Mini Auction
 import PlayerReleasePage from './pages/PlayerReleasePage'; // Mini Auction
+import Portal from './pages/Portal';
 
 // ... imports remain the same
 
@@ -55,7 +56,7 @@ const ProtectedRoute = ({ children, role }) => {
 // Root redirect based on auth status
 const RootRedirect = () => {
     const isAuthenticated = sessionStorage.getItem('authToken') && sessionStorage.getItem('authUser');
-    return <Navigate to={isAuthenticated ? "/welcome" : "/login"} replace />;
+    return <Navigate to={isAuthenticated ? "/welcome" : "/portal"} replace />;
 };
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
                         {/* Public Auth Routes */}
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/portal" element={<Portal />} />
 
                         {/* Root Redirect */}
                         <Route path="/" element={<RootRedirect />} />
