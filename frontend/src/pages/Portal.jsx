@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     LogIn,
     UserPlus,
-    Info,
     ShieldCheck,
     Mail,
     Trophy,
@@ -14,64 +13,13 @@ import {
     Users,
     ChevronRight,
     Gavel,
-    PlayCircle
+    PlayCircle,
+    ArrowRight
 } from 'lucide-react';
-import { loginAPI, registerAPI } from '../services/api';
 
 const Portal = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('auth'); // 'auth' | 'how-to' | 'rules' | 'contact'
-    const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
-
-    // Auth State
-    const [loginData, setLoginData] = useState({ email: '', password: '' });
-    const [registerData, setRegisterData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
-        try {
-            const data = await loginAPI(loginData.email, loginData.password);
-            if (data.success) {
-                sessionStorage.setItem('authToken', data.token);
-                sessionStorage.setItem('authUser', JSON.stringify(data.user));
-                navigate('/welcome');
-            }
-        } catch (err) {
-            setError(err.response?.data?.message || err.message || 'Login failed');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        setError('');
-        if (registerData.password !== registerData.confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
-        setLoading(true);
-        try {
-            const data = await registerAPI({
-                name: registerData.name,
-                email: registerData.email,
-                password: registerData.password
-            });
-            if (data.success) {
-                sessionStorage.setItem('authToken', data.token);
-                sessionStorage.setItem('authUser', JSON.stringify(data.user));
-                navigate('/welcome');
-            }
-        } catch (err) {
-            setError(err.response?.data?.message || err.message || 'Registration failed');
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return (
         <div className="h-screen flex flex-col items-center justify-center p-4 bg-slate-950 overflow-hidden relative font-sans">
@@ -103,8 +51,8 @@ const Portal = () => {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-bold tracking-wide uppercase text-sm ${activeTab === tab.id
-                                    ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-[1.02]'
-                                    : 'text-slate-500 hover:bg-white/5 hover:text-slate-300'
+                                        ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-[1.02]'
+                                        : 'text-slate-500 hover:bg-white/5 hover:text-slate-300'
                                     }`}
                             >
                                 <tab.icon size={20} />
@@ -129,113 +77,55 @@ const Portal = () => {
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -20 }}
-                                className="h-full flex flex-col"
+                                className="h-full flex flex-col justify-center gap-6"
                             >
-                                <div className="flex gap-4 p-1 bg-black/40 rounded-xl mb-8 border border-white/5">
-                                    <button
-                                        onClick={() => setAuthMode('login')}
-                                        className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${authMode === 'login' ? 'bg-primary text-white shadow-md' : 'text-slate-500 hover:text-white'}`}
-                                    >
-                                        Log In
-                                    </button>
-                                    <button
-                                        onClick={() => setAuthMode('register')}
-                                        className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${authMode === 'register' ? 'bg-primary text-white shadow-md' : 'text-slate-500 hover:text-white'}`}
-                                    >
-                                        Register
-                                    </button>
+                                <div className="text-center mb-4">
+                                    <h2 className="text-3xl font-black text-white mb-2 uppercase italic tracking-tighter">Welcome to the Arena</h2>
+                                    <p className="text-slate-500 text-sm font-medium">Choose your path to enter the session</p>
                                 </div>
 
-                                <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-                                    {authMode === 'login' ? (
-                                        <form onSubmit={handleLogin} className="space-y-6">
-                                            <div>
-                                                <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Email Address</label>
-                                                <input
-                                                    type="email"
-                                                    value={loginData.email}
-                                                    onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-4 px-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-slate-700"
-                                                    placeholder="Enter your email"
-                                                    required
-                                                />
+                                <div className="space-y-4">
+                                    <motion.button
+                                        whileHover={{ scale: 1.02, x: 5 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => navigate('/login')}
+                                        className="w-full group p-6 bg-primary rounded-2xl flex items-center justify-between shadow-xl shadow-primary/20 transition-all border border-primary/50"
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-white">
+                                                <LogIn size={24} />
                                             </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Password</label>
-                                                <input
-                                                    type="password"
-                                                    value={loginData.password}
-                                                    onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-4 px-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-slate-700"
-                                                    placeholder="Enter your password"
-                                                    required
-                                                />
+                                            <div className="text-left">
+                                                <h3 className="text-white font-black uppercase italic tracking-widest">Sign In</h3>
+                                                <p className="text-white/60 text-xs font-bold uppercase tracking-widest">Returning Official</p>
                                             </div>
-                                            {error && <p className="text-red-500 text-xs font-bold bg-red-500/10 p-3 rounded-lg border border-red-500/20 italic">⚠️ {error}</p>}
-                                            <button
-                                                disabled={loading}
-                                                className="w-full py-4 bg-primary text-white font-black rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all uppercase tracking-widest flex items-center justify-center gap-2"
-                                            >
-                                                {loading ? 'Processing...' : 'Access Arena'}
-                                                {!loading && <ChevronRight size={18} />}
-                                            </button>
-                                        </form>
-                                    ) : (
-                                        <form onSubmit={handleRegister} className="space-y-4">
-                                            <div>
-                                                <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Full Name</label>
-                                                <input
-                                                    type="text"
-                                                    value={registerData.name}
-                                                    onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
-                                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-slate-700"
-                                                    placeholder="Enter your name"
-                                                    required
-                                                />
+                                        </div>
+                                        <ArrowRight className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    </motion.button>
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.02, x: 5 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => navigate('/register')}
+                                        className="w-full group p-6 bg-white/5 hover:bg-white/10 rounded-2xl flex items-center justify-between transition-all border border-white/10"
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-slate-400">
+                                                <UserPlus size={24} />
                                             </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Email Address</label>
-                                                <input
-                                                    type="email"
-                                                    value={registerData.email}
-                                                    onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
-                                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-slate-700"
-                                                    placeholder="Enter your email"
-                                                    required
-                                                />
+                                            <div className="text-left">
+                                                <h3 className="text-white font-black uppercase italic tracking-widest">Register</h3>
+                                                <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">New Enrollment</p>
                                             </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Create Password</label>
-                                                <input
-                                                    type="password"
-                                                    value={registerData.password}
-                                                    onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
-                                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-slate-700"
-                                                    placeholder="Min. 3 characters"
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Confirm Password</label>
-                                                <input
-                                                    type="password"
-                                                    value={registerData.confirmPassword}
-                                                    onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
-                                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-slate-700"
-                                                    placeholder="Repeat password"
-                                                    required
-                                                />
-                                            </div>
-                                            {error && <p className="text-red-500 text-xs font-bold bg-red-500/10 p-3 rounded-lg border border-red-500/20 italic">⚠️ {error}</p>}
-                                            <button
-                                                disabled={loading}
-                                                className="w-full py-4 bg-primary text-white font-black rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all uppercase tracking-widest flex items-center justify-center gap-2"
-                                            >
-                                                {loading ? 'Creating...' : 'Enroll Official'}
-                                                {!loading && <ChevronRight size={18} />}
-                                            </button>
-                                        </form>
-                                    )}
+                                        </div>
+                                        <ArrowRight className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    </motion.button>
+                                </div>
+
+                                <div className="mt-8 pt-8 border-t border-white/5 text-center">
+                                    <p className="text-[10px] text-slate-600 font-bold uppercase tracking-[0.3em]">
+                                        Secure Multi-Factor Authentication Active
+                                    </p>
                                 </div>
                             </motion.div>
                         )}
