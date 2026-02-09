@@ -59,12 +59,21 @@ const WelcomeScreen = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-center mb-16 space-y-4"
+                className="text-center mb-12 space-y-4"
             >
                 <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-white mb-2 uppercase italic">
                     IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Auction</span>
                 </h1>
-                <p className="text-slate-400 text-xl tracking-widest uppercase">Select Your Game Mode</p>
+                <div className="flex flex-col items-center gap-2">
+                    <p className="text-slate-400 text-xl tracking-widest uppercase">Select Your Game Mode</p>
+                    <div className="px-4 py-1 bg-green-500/10 border border-green-500/20 rounded-full flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                        <span className="text-green-500 text-xs font-bold uppercase tracking-widest">Authentication Active</span>
+                    </div>
+                    <p className="text-slate-500 text-sm max-w-md">
+                        Your global session is active. To start bidding or hosting, please enter a specific <b>Auction Room</b> using the cards below.
+                    </p>
+                </div>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
@@ -84,14 +93,15 @@ const WelcomeScreen = () => {
                             <Trophy size={48} className="text-white" />
                         </div>
 
-                        <h2 className="text-4xl font-bold text-white mb-4">MEGA AUCTION</h2>
+                        <h2 className="text-4xl font-bold text-white mb-4 uppercase italic">Mega Auction</h2>
+                        <span className="text-xs font-bold text-purple-400 tracking-[0.2em] mb-4 uppercase">New Game / Setup</span>
                         <p className="text-slate-400 mb-8 leading-relaxed">
-                            The classic experience. One Manager hosts, multiple Team Owners bid.
-                            Build your squad from scratch with a massive budget.
+                            Create a new room or join as a contestant for the first time.
+                            Requires a unique Room ID to begin your journey.
                         </p>
 
                         <div className="mt-auto flex items-center gap-2 text-purple-400 font-bold tracking-wider group-hover:text-purple-300">
-                            ENTER ARENA <Zap size={16} fill="currentColor" />
+                            HOST OR JOIN <Zap size={16} fill="currentColor" />
                         </div>
                     </div>
                 </motion.div>
@@ -112,14 +122,15 @@ const WelcomeScreen = () => {
                             <Zap size={48} className="text-white" fill="currentColor" />
                         </div>
 
-                        <h2 className="text-4xl font-bold text-white mb-4">MINI AUCTION</h2>
+                        <h2 className="text-4xl font-bold text-white mb-4 uppercase italic">Mini Auction</h2>
+                        <span className="text-xs font-bold text-yellow-500 tracking-[0.2em] mb-4 uppercase">Continue Saved Game</span>
                         <p className="text-slate-400 mb-8 leading-relaxed">
-                            Quick fire rounds. Smaller budgets, limited squads.
-                            Perfect for fast-paced strategic gameplay.
+                            Already have a team? Enter your Room ID and Team Password to
+                            release players and start your Mini Auction.
                         </p>
 
                         <div className="mt-auto flex items-center gap-2 text-yellow-500 font-bold tracking-wider group-hover:text-yellow-400">
-                            ENTER ARENA <Zap size={16} fill="currentColor" />
+                            CONTINUE GAME <Zap size={16} fill="currentColor" />
                         </div>
                     </div>
                 </motion.div>

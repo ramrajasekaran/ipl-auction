@@ -20,6 +20,16 @@ export const protect = async (req, res, next) => {
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+        // EXTRA SECURITY: Check if session still exists in backend
+        // This ensures that logout immediately invalidates the JWT for the current session
+        if (!req.session || !req.session.userId || req.session.userId !== decoded.id) {
+            console.log('[AUTH] Valid JWT but missing/mismatched Session. Denying access.');
+            return res.status(401).json({
+                success: false,
+                message: 'Session expired or logged out. Please log in again.'
+            });
+        }
+
         // Get user from database
         req.user = await User.findById(decoded.id).select('-password');
 
