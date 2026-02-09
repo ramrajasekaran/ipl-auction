@@ -21,8 +21,8 @@ import PlayerReleasePage from './pages/PlayerReleasePage'; // Mini Auction
 // ... inside App component
 
 const ProtectedRoute = ({ children, role }) => {
-    const authToken = localStorage.getItem('authToken');
-    const authUser = localStorage.getItem('authUser');
+    const authToken = sessionStorage.getItem('authToken');
+    const authUser = sessionStorage.getItem('authUser');
 
     console.log('[ProtectedRoute] Token exists:', !!authToken);
     console.log('[ProtectedRoute] User data exists:', !!authUser);
@@ -40,7 +40,7 @@ const ProtectedRoute = ({ children, role }) => {
 
         if (!user.email) {
             console.log('[ProtectedRoute] No email, redirecting to register');
-            localStorage.clear();
+            sessionStorage.clear();
             return <Navigate to="/register" replace />;
         }
 
@@ -50,7 +50,7 @@ const ProtectedRoute = ({ children, role }) => {
         }
     } catch (error) {
         console.error('[ProtectedRoute] Parse error:', error);
-        localStorage.clear();
+        sessionStorage.clear();
         return <Navigate to="/register" replace />;
     }
 
@@ -60,7 +60,7 @@ const ProtectedRoute = ({ children, role }) => {
 
 // Root redirect based on auth status
 const RootRedirect = () => {
-    const isAuthenticated = localStorage.getItem('authToken') && localStorage.getItem('authUser');
+    const isAuthenticated = sessionStorage.getItem('authToken') && sessionStorage.getItem('authUser');
     return <Navigate to={isAuthenticated ? "/welcome" : "/login"} replace />;
 };
 

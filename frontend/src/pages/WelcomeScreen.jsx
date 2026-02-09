@@ -10,7 +10,8 @@ const WelcomeScreen = () => {
     const { logout } = useGame();
 
     // Get logged-in user
-    const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+    const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
+    const isAdmin = authUser.role === 'ADMIN';
 
     const handleLogout = async () => {
         await logout();
@@ -18,35 +19,39 @@ const WelcomeScreen = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
-            {/* User Header */}
-            <div className="absolute top-4 right-4 flex items-center gap-4">
-                {authUser.role === 'ADMIN' && (
-                    <button
-                        onClick={() => navigate('/admin')}
-                        className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-full border border-red-500/20 transition-all font-medium"
-                    >
-                        <Zap size={16} fill="currentColor" />
-                        Admin Panel
-                    </button>
-                )}
-                {authUser.name && (
-                    <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                        <User size={16} className="text-primary" />
-                        <span className="text-white text-sm font-medium">{authUser.name}</span>
-                        <span className="text-xs px-2 py-0.5 bg-primary/20 text-primary rounded border border-primary/20 uppercase">
-                            {authUser.role || 'No Role'}
-                        </span>
+        <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-start p-6 overflow-x-hidden relative">
+            {/* Header / Nav */}
+            <div className="w-full max-w-7xl flex items-center justify-between mb-12 relative z-10 px-4">
+                <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                        <Trophy className="text-white" size={28} />
                     </div>
-                )}
-                <button
-                    onClick={handleLogout}
-                    className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all flex items-center gap-2"
-                    title="Logout"
-                >
-                    <LogOut size={18} />
-                    <span className="text-sm hidden md:inline">Logout</span>
-                </button>
+                    <div>
+                        <h3 className="text-white font-bold leading-tight">{authUser.name || 'User'}</h3>
+                        {isAdmin && (
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">{authUser.role}</span>
+                        )}
+                    </div>
+                </div>
+                <div className="flex items-center gap-4">
+                    {isAdmin && (
+                        <button
+                            onClick={() => navigate('/admin')}
+                            className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-full border border-red-500/20 transition-all font-medium"
+                        >
+                            <Zap size={16} fill="currentColor" />
+                            Admin Panel
+                        </button>
+                    )}
+                    <button
+                        onClick={handleLogout}
+                        className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all flex items-center gap-2"
+                        title="Logout"
+                    >
+                        <LogOut size={18} />
+                        <span className="text-sm hidden md:inline">Logout</span>
+                    </button>
+                </div>
             </div>
 
             {/* Background elements */}
@@ -59,7 +64,7 @@ const WelcomeScreen = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-center mb-12 space-y-4"
+                className="text-center mb-12 space-y-4 relative z-10"
             >
                 <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-white mb-2 uppercase italic">
                     IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Auction</span>
@@ -76,7 +81,7 @@ const WelcomeScreen = () => {
                 </div>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
+            <div className="grid md:grid-cols-2 gap-8 w-full max-w-5xl px-4 relative z-10">
                 {/* Mega Auction Card */}
                 <motion.div
                     onHoverStart={() => setHovered('mega')}

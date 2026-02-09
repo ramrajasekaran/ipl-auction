@@ -22,9 +22,9 @@ const LoginPage = () => {
             const data = await loginAPI(formData.email, formData.password);
 
             if (data.success) {
-                // Store token and user data
-                localStorage.setItem('authToken', data.token);
-                localStorage.setItem('authUser', JSON.stringify(data.user));
+                // Store token and user data in sessionStorage (cleared on tab close)
+                sessionStorage.setItem('authToken', data.token);
+                sessionStorage.setItem('authUser', JSON.stringify(data.user));
 
                 // Redirect to welcome screen
                 navigate('/');

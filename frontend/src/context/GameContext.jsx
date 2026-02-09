@@ -20,32 +20,28 @@ export const useGame = () => {
 
 export const GameProvider = ({ children }) => {
     // User Role: 'MANAGER' | 'CONTESTANT' | null
-    const [userRole, setUserRole] = useState(() => localStorage.getItem('userRole'));
+    const [userRole, setUserRole] = useState(() => sessionStorage.getItem('userRole'));
 
-    // Game/Room State
-    const [roomData, setRoomData] = useState(() => {
-        const saved = localStorage.getItem('roomData');
-        const defaults = {
-            roomId: null,
-            budget: 0,
-            isActive: false,
-            teams: [],
-            players: [],
-            auctionId: null
-        };
-        return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+    // Game/Room State - NO PERSISTENCE (must join fresh every time)
+    const [roomData, setRoomData] = useState({
+        roomId: null,
+        budget: 0,
+        isActive: false,
+        teams: [],
+        players: [],
+        auctionId: null
     });
 
     // Current User (Contestant/Manager)
     const [currentUser, setCurrentUser] = useState(() => {
         // Priority 1: Game-specific user state
-        const saved = localStorage.getItem('currentUser');
+        const saved = sessionStorage.getItem('currentUser');
         if (saved) return JSON.parse(saved);
 
         // Priority 2: Auth user state (Login persistence)
-        const authUser = localStorage.getItem('authUser');
-        if (authUser) {
-            const user = JSON.parse(authUser);
+        const authUserS = sessionStorage.getItem('authUser');
+        if (authUserS) {
+            const user = JSON.parse(authUserS);
             // Adapt authUser to currentUser structure
             return {
                 userId: user.id || user._id, // Handle both formats
@@ -253,101 +249,10 @@ export const GameProvider = ({ children }) => {
         };
     }, []);
 
-    // Auto-Rejoin Logic: If we have an auctionId in storage, join the room on mount
-    useEffect(() => {
-        const savedRoomData = localStorage.getItem('roomData');
-        if (savedRoomData) {
-            try {
-                const parsed = JSON.parse(savedRoomData);
+    // Auto-Rejoin logic removed to ensure users always start at Welcome Screen
+    // and must explicitly rejoin a room.
 
-                // Validation: check if data is stale (older than 24 hours)
-                const savedTimestamp = localStorage.getItem('roomDataTimestamp');
-                if (savedTimestamp) {
-                    const age = Date.now() - parseInt(savedTimestamp);
-                    const MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours
-                    if (age > MAX_AGE) {
-                        console.log('🧹 Clearing stale localStorage (>24h old)');
-                        localStorage.removeItem('roomData');
-                        localStorage.removeItem('roomDataTimestamp');
-                        return;
-                    }
-                }
-
-                if (parsed.auctionId) {
-                    setRoomData(parsed);
-
-                    // Resolve userId: either from currentUser, or from authUser directly
-                    let userId = currentUser?.userId || currentUser?.id || currentUser?._id;
-                    if (!userId) {
-                        try {
-                            const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
-                            userId = authUser.id || authUser._id;
-                        } catch (e) {
-                            console.error("Error parsing authUser for socket", e);
-                        }
-                    }
-                    userId = userId || 'MANAGER';
-
-                    const joinPayload = { auctionId: parsed.auctionId, userId };
-
-                    if (socket.connected) {
-                        console.log('🔌 Socket already connected, joining immediately', joinPayload);
-                        socket.emit('auction:join', joinPayload);
-                    } else {
-                        console.log('🔌 Socket connecting... waiting to join', joinPayload);
-                        socket.connect();
-                        // Remove any existing one-time listener to avoid duplicates if effect re-runs
-                        socket.off('connect');
-                        socket.once('connect', () => {
-                            console.log('✅ Socket connected (delayed), joining now', joinPayload);
-                            socket.emit('auction:join', joinPayload);
-                        });
-                    }
-
-                    console.log('✅ Auto-rejoin logic initiated for:', parsed.auctionId);
-                }
-            } catch (err) {
-                console.error("Error parsing saved roomData", err);
-                // process.env.NODE_ENV === 'development' && alert("Session Error: " + err.message);
-                // localStorage.removeItem('roomData'); // Temporarily disable clearing to debug
-            }
-        }
-    }, [currentUser]); // currentUser check ensures we have the ID to join with
-
-    // Update persistence when role/user/room changes
-    useEffect(() => {
-        if (userRole) localStorage.setItem('userRole', userRole);
-        else localStorage.removeItem('userRole');
-    }, [userRole]);
-
-    useEffect(() => {
-        if (currentUser) {
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        } else {
-            // If currentUser is null, check if we have authUser and should restore it
-            const authUser = localStorage.getItem('authUser');
-            if (authUser) {
-                const user = JSON.parse(authUser);
-                const restoredUser = {
-                    userId: user.id,
-                    email: user.email,
-                    name: user.name,
-                    teamId: user.teamId
-                };
-                setCurrentUser(restoredUser);
-                // Don't remove 'currentUser' from storage here, strict sync handled above
-            } else {
-                localStorage.removeItem('currentUser');
-            }
-        }
-    }, [currentUser]);
-
-    useEffect(() => {
-        if (roomData.auctionId) {
-            localStorage.setItem('roomData', JSON.stringify(roomData));
-            localStorage.setItem('roomDataTimestamp', Date.now().toString());
-        }
-    }, [roomData]);
+    // Persistence hooks removed - application state is now ephemeral and tab-bound via sessionStorage
 
     // Helper to map backend data to frontend state
     const updateLocalState = (auction) => {
@@ -430,9 +335,9 @@ export const GameProvider = ({ children }) => {
             players: []
         });
         setCurrentUser(null);
-        // Clear local storage for room data as well
-        localStorage.removeItem('roomData');
-        localStorage.removeItem('currentUser');
+        // Clear session storage for game-specific data
+        sessionStorage.removeItem('roomData');
+        sessionStorage.removeItem('currentUser');
     };
 
     const resumeGame = async (roomId, password) => {
@@ -818,18 +723,15 @@ export const GameProvider = ({ children }) => {
                 socket.disconnect();
             }
 
-            // Clear all local storage
-            localStorage.removeItem('authUser');
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('roomData');
-            localStorage.removeItem('currentUser');
+            // Clear all session storage (tab-bound)
+            sessionStorage.clear();
 
             console.log('✅ Logged out successfully');
         } catch (error) {
             console.error('Logout error:', error);
             // Even if API call fails, clear local state
             clearSessionState();
-            localStorage.clear();
+            sessionStorage.clear();
             if (socket.connected) {
                 socket.disconnect();
             }
@@ -851,11 +753,11 @@ export const GameProvider = ({ children }) => {
             teams: [],
             players: []
         });
-        localStorage.removeItem('roomData');
-        localStorage.removeItem('roomDataTimestamp');
+        sessionStorage.removeItem('roomData');
+        sessionStorage.removeItem('roomDataTimestamp');
 
         // Reset currentUser to base Auth Identity (remove team context)
-        const authUserString = localStorage.getItem('authUser');
+        const authUserString = sessionStorage.getItem('authUser');
         if (authUserString) {
             const authUser = JSON.parse(authUserString);
             setCurrentUser({
