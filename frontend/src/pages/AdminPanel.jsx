@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Upload, Key, CheckCircle, Database, Trash2, Users } from 'lucide-react';
-import { uploadGlobalPlayersAPI, getGlobalPlayersAPI, clearGlobalPlayersAPI } from '../services/api';
+import { uploadGlobalPlayersAPI, getGlobalPlayersAPI, clearGlobalPlayersAPI, seedGlobalPlayersAPI } from '../services/api';
 import { formatCurrency } from '../utils/formatters';
 
 const AdminPanel = () => {
@@ -65,6 +65,24 @@ const AdminPanel = () => {
             fetchPlayers();
         } catch (err) {
             setError("Failed to clear database");
+        }
+    };
+
+    const handleSeedDefaults = async () => {
+        if (!window.confirm("This will add ~180 players to the global database. Continue?")) return;
+
+        setUploading(true);
+        setError('');
+        setSuccess('');
+
+        try {
+            const res = await seedGlobalPlayersAPI();
+            setSuccess(`Successfully seeded ${res.count} players!`);
+            fetchPlayers();
+        } catch (err) {
+            setError("Failed to seed players");
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -156,6 +174,37 @@ const AdminPanel = () => {
                         <p className="text-slate-500 text-sm">
                             Total players available for new auctions.
                         </p>
+                    </motion.div>
+
+                    {/* Seed Data Card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15 }}
+                        className="glass-panel p-6 rounded-2xl border border-white/10 col-span-1 flex flex-col justify-between"
+                    >
+                        <div>
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+                                    <Database className="text-emerald-500" size={24} />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-white">Sample Data</h3>
+                                    <p className="text-slate-400 text-xs">Auto-Initialize</p>
+                                </div>
+                            </div>
+                            <p className="text-slate-500 text-sm mb-4">
+                                Load the default 180+ players curated by the system. Recommended for first-time setup.
+                            </p>
+                        </div>
+                        <button
+                            onClick={handleSeedDefaults}
+                            disabled={uploading}
+                            className={`w-full py-3 rounded-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-2
+                                ${uploading ? 'bg-slate-700 cursor-not-allowed' : 'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 hove:scale-[1.02]'}`}
+                        >
+                            <Database size={16} /> Load Sample Data
+                        </button>
                     </motion.div>
 
                     {/* Actions Card */}

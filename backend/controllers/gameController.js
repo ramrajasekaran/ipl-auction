@@ -789,7 +789,7 @@ export const uploadGlobalPlayers = async (req, res) => {
                     const keys = Object.keys(firstRow);
                     console.log('CSV Headers Found:', keys);
 
-                    // Helper to exact column name
+                    // Helper to fuzzy match column names
                     const findKey = (keywords) => {
                         return keys.find(k => {
                             const cleanKey = k.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
@@ -797,14 +797,21 @@ export const uploadGlobalPlayers = async (req, res) => {
                         });
                     };
 
-                    const nameKey = findKey(['name', 'player']);
-                    const countryKey = findKey(['country', 'nation', 'team']);
-                    const roleKey = findKey(['role', 'position', 'type']);
+                    const nameKey = findKey(['name', 'player', 'fullname']);
+                    const countryKey = findKey(['country', 'nation', 'team', 'nationality']);
+                    const roleKey = findKey(['role', 'position', 'type', 'category']);
                     const priceKey = findKey(['price', 'cost', 'amount', 'value', 'base']);
                     const ageKey = findKey(['age']);
                     const imageKey = findKey(['image', 'img', 'photo', 'picture']);
 
                     console.log('Mapped Keys:', { nameKey, countryKey, roleKey, priceKey });
+
+                    if (!nameKey || !roleKey || !priceKey) {
+                        return res.status(400).json({
+                            success: false,
+                            message: "Invalid CSV format. Missing required columns (Name, Role, Price)."
+                        });
+                    }
 
                     const validPlayers = results.map(row => {
                         const name = row[nameKey] ? row[nameKey].trim() : 'Unknown';
@@ -818,11 +825,11 @@ export const uploadGlobalPlayers = async (req, res) => {
                         else role = 'BATSMAN';
 
                         // Parse Base Price
-                        let rawPrice = (row[priceKey] || '20').toString();
+                        let rawPrice = (row[priceKey] || '20').toString().trim();
                         let price = 20;
                         let displayLabel = '20 Lakhs';
 
-                        const numVal = parseFloat(rawPrice);
+                        const numVal = parseFloat(rawPrice.replace(/[^0-9.]/g, ''));
                         const upperPrice = rawPrice.toUpperCase();
 
                         if (upperPrice.includes('C') || upperPrice.includes('CR')) {
@@ -830,9 +837,9 @@ export const uploadGlobalPlayers = async (req, res) => {
                         } else if (upperPrice.includes('L')) {
                             price = numVal;
                         } else {
-                            if (numVal < 15) { // Heuristic: if a number without unit is small, assume it's Cr
+                            if (numVal < 15) { // Heuristic: if a number without unit is small (e.g. 2.0), assume it's Cr
                                 price = numVal * 100;
-                            } else { // Otherwise, assume it's Lakhs
+                            } else { // Otherwise, assume it's Lakhs (e.g. 20, 50)
                                 price = numVal;
                             }
                         }
@@ -926,6 +933,36 @@ export const clearGlobalPlayers = async (req, res) => {
     } catch (error) {
         console.error("Clear Global Players Error:", error);
         res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+// Seed Default Players (Admin Only)
+export const seedGlobalPlayers = async (req, res) => {
+    try {
+        console.log('[SEED] Starting global player seeding...');
+
+        // Ensure samplePlayers exists
+        if (!samplePlayers || samplePlayers.length === 0) {
+            return res.status(500).json({ success: false, message: 'Sample player data not found' });
+        }
+
+        // Format sample players for global collection
+        const formatted = samplePlayers.map(p => ({
+            ...p,
+            auctionId: null,
+            status: 'AVAILABLE',
+            priceLabel: p.basePrice >= 100 ? `${(p.basePrice / 100).toFixed(2)} Cr` : `${p.basePrice} Lakhs`,
+            image: p.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=random&size=400&bold=true`
+        }));
+
+        // Insert
+        await Player.insertMany(formatted);
+        console.log(`[SEED] Successfully seeded ${formatted.length} global players`);
+
+        res.status(200).json({ success: true, count: formatted.length });
+    } catch (error) {
+        console.error("Seed Global Players Error:", error);
+        res.status(500).json({ success: false, message: 'Seeding failed: ' + error.message });
     }
 };
 

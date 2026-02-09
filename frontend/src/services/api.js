@@ -137,4 +137,9 @@ export const clearGlobalPlayersAPI = async () => {
     return response.data;
 };
 
+export const seedGlobalPlayersAPI = async () => {
+    const response = await api.post('/games/players/admin/seed');
+    return response.data;
+};
+
 export default api;
