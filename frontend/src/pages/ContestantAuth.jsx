@@ -47,7 +47,7 @@ const ContestantAuth = () => {
     };
 
     return (
-        <div className="h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
+        <div className="h-screen flex flex-col items-center justify-start md:justify-center p-4 pt-20 md:pt-4 overflow-hidden">
             <motion.button
                 onClick={() => navigate('/welcome')}
                 initial={{ opacity: 0, x: -20 }}

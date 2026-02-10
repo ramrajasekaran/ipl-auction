@@ -91,7 +91,7 @@ const MiniAuctionPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
+        <div className="min-h-screen flex flex-col items-center justify-start md:justify-center p-4 pt-20 md:pt-4 relative">
             <motion.button
                 onClick={() => navigate('/welcome')}
                 initial={{ opacity: 0, x: -20 }}
