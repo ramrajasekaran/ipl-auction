@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children, role }) => {
 
     // Check if user is authenticated
     if (!authToken || !authUser) {
-        return <Navigate to="/portal" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     // Verify authUser has valid email and check role if specified
@@ -47,7 +47,7 @@ const ProtectedRoute = ({ children, role }) => {
 
     } catch (error) {
         sessionStorage.clear();
-        return <Navigate to="/portal" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     return children;
@@ -56,7 +56,7 @@ const ProtectedRoute = ({ children, role }) => {
 // Root redirect based on auth status
 const RootRedirect = () => {
     const isAuthenticated = sessionStorage.getItem('authToken') && sessionStorage.getItem('authUser');
-    return <Navigate to={isAuthenticated ? "/welcome" : "/portal"} replace />;
+    return <Navigate to={isAuthenticated ? "/welcome" : "/login"} replace />;
 };
 
 function App() {

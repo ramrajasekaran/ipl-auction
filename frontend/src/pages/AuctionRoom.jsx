@@ -245,11 +245,11 @@ const AuctionRoom = () => {
 
                     {/* Logout Button */}
                     <button
-                        onClick={() => {
+                        onClick={async () => {
                             if (confirm('Are you sure you want to LOGOUT? This will end your session.')) {
                                 isIntentionalLeave.current = true; // Bypass listener
-                                logout();
-                                window.location.href = '/login';
+                                await logout();
+                                navigate('/login');
                             }
                         }}
                         className="ml-2 p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
