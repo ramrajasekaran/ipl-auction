@@ -167,9 +167,8 @@ const Portal = () => {
                 </div>
                 <button
                     onClick={handleFundDeveloper}
-                    className="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-colors text-sm font-semibold shadow-lg shadow-pink-600/20"
+                    className="px-4 py-2 bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-yellow-500 text-black rounded-lg transition-all text-sm font-bold shadow-lg shadow-gold/20"
                 >
-                    <Heart size={16} className="fill-current" />
                     Support Developer
                 </button>
             </nav>
