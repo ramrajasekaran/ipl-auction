@@ -74,41 +74,53 @@ const PlayerSelection = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-900 to-black">
+        <div className="min-h-screen flex flex-col items-center justify-start md:justify-center p-4 pt-12 md:pt-4 bg-gradient-to-br from-slate-900 to-black overflow-y-auto">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="max-w-2xl w-full text-center"
+                className="max-w-4xl w-full text-center mb-8"
             >
-                <h1 className="text-4xl font-bold text-white mb-8">Setup Auction Players</h1>
+                <h1 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">Setup Auction Players</h1>
+                <p className="text-slate-400 text-sm md:text-base mb-10">Choose how you want to populate your auction room</p>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Default Option */}
                     <button
                         onClick={handleDefault}
                         disabled={loading || uploading}
-                        className="group relative p-8 glass-panel rounded-2xl hover:bg-primary/10 transition-all border border-white/10 hover:border-primary/50 text-left"
+                        className="group relative p-6 md:p-10 glass-panel rounded-3xl hover:bg-primary/10 transition-all border border-white/10 hover:border-primary/50 text-left flex flex-col items-start gap-4"
                     >
-                        <Database className="text-primary mb-4" size={40} />
-                        <h3 className="text-xl font-bold text-white mb-2">Default Database</h3>
-                        <p className="text-slate-400 text-sm">
-                            Use our curated list of 200+ top cricket players with complete stats.
-                        </p>
-                        {loading && <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-2xl"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div></div>}
+                        <div className="w-12 h-12 md:w-16 md:h-16 bg-primary/20 rounded-2xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                            <Database size={32} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Default Database</h3>
+                            <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                                Use our curated list of 200+ top cricket players with complete stats.
+                            </p>
+                        </div>
+                        {loading && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center rounded-3xl z-20"><div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div></div>}
                     </button>
 
                     {/* Custom Upload Option */}
-                    <div className="group relative p-8 glass-panel rounded-2xl hover:bg-blue-500/10 transition-all border border-white/10 hover:border-blue-500/50 text-left cursor-pointer">
-                        <Upload className="text-blue-500 mb-4" size={40} />
-                        <h3 className="text-xl font-bold text-white mb-2">Upload CSV</h3>
-                        Upload your player list. **.csv files only**. Columns: Name, Role, BasePrice.
-                        <input
-                            type="file"
-                            accept=".csv"
-                            onChange={handleUpload}
-                            className="text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500/10 file:text-blue-500 hover:file:bg-blue-500/20"
-                        />
-                        {uploading && <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-2xl"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div></div>}
+                    <div className="group relative p-6 md:p-10 glass-panel rounded-3xl hover:bg-blue-500/10 transition-all border border-white/10 hover:border-blue-500/50 text-left flex flex-col items-start gap-4">
+                        <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                            <Upload size={32} />
+                        </div>
+                        <div className="w-full">
+                            <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Upload CSV</h3>
+                            <p className="text-slate-400 text-sm md:text-base mb-6 leading-relaxed">
+                                Upload your player list. <span className="text-blue-400 font-bold">*.csv files only</span>. <br />
+                                <span className="text-xs opacity-70 italic">Columns: Name, Role, BasePrice.</span>
+                            </p>
+                            <input
+                                type="file"
+                                accept=".csv"
+                                onChange={handleUpload}
+                                className="w-full text-xs md:text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-500 file:text-white hover:file:bg-blue-600 transition-all cursor-pointer"
+                            />
+                        </div>
+                        {uploading && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center rounded-3xl z-20"><div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div></div>}
                     </div>
                 </div>
             </motion.div>
