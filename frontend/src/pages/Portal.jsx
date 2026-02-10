@@ -15,9 +15,11 @@ import {
     Handshake,
     ArrowRight
 } from 'lucide-react';
+import MailOptionsModal from '../components/MailOptionsModal';
 
 const Portal = () => {
     const navigate = useNavigate();
+    const [isMailModalOpen, setIsMailModalOpen] = React.useState(false);
 
     const steps = [
         { title: "Register & Access", desc: "Create your official IPL Arena account to start your journey." },
@@ -177,8 +179,8 @@ const Portal = () => {
                         <p className="text-slate-300 text-base mb-8 max-w-xl mx-auto font-medium italic">
                             Technical issues or feedback? Contact the official team.
                         </p>
-                        <a
-                            href="mailto:iplarena.app@gmail.com?subject=IPL Arena Support - Feedback/Query&body=Hello IPL Arena Team,%0D%0A%0D%0AI have the following feedback/query:%0D%0A%0D%0A[Your message here]%0D%0A%0D%0ARegards,%0D%0A[Your Name]"
+                        <button
+                            onClick={() => setIsMailModalOpen(true)}
                             className="inline-flex flex-col items-center gap-2 px-10 py-5 bg-white/5 hover:bg-primary text-white border border-white/10 rounded-2xl font-black transition-all shadow-2xl group min-w-[320px]"
                         >
                             <div className="flex items-center gap-3 text-2xl">
@@ -189,7 +191,11 @@ const Portal = () => {
                             <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 group-hover:text-white/70">
                                 iplarena.app@gmail.com
                             </span>
-                        </a>
+                        </button>
+                        <MailOptionsModal
+                            isOpen={isMailModalOpen}
+                            onClose={() => setIsMailModalOpen(false)}
+                        />
                         <footer className="mt-20">
                             <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
                                 IPL ARENA • SECURE SYSTEM
