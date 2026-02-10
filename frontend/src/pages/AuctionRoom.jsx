@@ -159,58 +159,58 @@ const AuctionRoom = () => {
 
 
                     {isManager && (
-                        <div className="flex bg-white/10 rounded-lg p-1 gap-1 border border-white/5">
+                        <div className="flex bg-white/10 rounded-lg p-1 gap-1 border border-white/5 shadow-inner">
                             <button
                                 onClick={() => setViewMode('AUCTION')}
-                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'AUCTION' ? 'bg-gold text-black shadow-lg shadow-gold/20' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
+                                className={`px-3 py-1.5 rounded-md text-xs font-black transition-all flex items-center gap-2 ${viewMode === 'AUCTION' ? 'bg-gradient-to-r from-yellow-400 to-gold text-black shadow-[0_0_15px_rgba(255,215,0,0.3)]' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
                             >
-                                <Gavel size={14} /> AUCTION
+                                <Gavel size={14} className={viewMode === 'AUCTION' ? 'text-black' : 'text-gold'} /> AUCTION
                             </button>
                             <button
                                 onClick={() => setViewMode('PLAYERS')}
-                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'PLAYERS' ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/20' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
+                                className={`px-3 py-1.5 rounded-md text-xs font-black transition-all flex items-center gap-2 ${viewMode === 'PLAYERS' ? 'bg-gradient-to-r from-cyan-400 to-cyan-600 text-white shadow-[0_0_15px_rgba(0,229,255,0.3)]' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
                             >
-                                <UserPlus size={14} /> PLAYERS
+                                <UserPlus size={14} className={viewMode === 'PLAYERS' ? 'text-white' : 'text-cyan-400'} /> PLAYERS
                             </button>
                             <button
                                 onClick={() => setViewMode('ALL_TEAMS')}
-                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
+                                className={`px-3 py-1.5 rounded-md text-xs font-black transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-gradient-to-r from-green-400 to-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
                             >
-                                <Users size={14} /> TEAMS & PURSE
+                                <Users size={14} className={viewMode === 'ALL_TEAMS' ? 'text-white' : 'text-green-400'} /> TEAMS & PURSE
                             </button>
                         </div>
                     )}
 
                     {/* Team Owner Controls */}
                     {!isManager && (
-                        <div className="flex bg-white/10 rounded-lg p-1 gap-1 border border-white/5">
+                        <div className="flex bg-white/10 rounded-lg p-1 gap-1 border border-white/5 shadow-inner">
                             <button
                                 onClick={() => setViewMode('AUCTION')}
-                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'AUCTION' ? 'bg-gold text-black shadow-lg shadow-gold/20' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
+                                className={`px-3 py-1.5 rounded-md text-xs font-black transition-all flex items-center gap-2 ${viewMode === 'AUCTION' ? 'bg-gradient-to-r from-yellow-400 to-gold text-black shadow-[0_0_15px_rgba(255,215,0,0.3)]' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
                             >
-                                <Gavel size={14} /> <span className="hidden sm:inline">AUCTION</span>
+                                <Gavel size={14} className={viewMode === 'AUCTION' ? 'text-black' : 'text-gold'} /> <span className="hidden sm:inline">AUCTION</span>
                             </button>
                             <button
                                 onClick={() => setViewMode('DASHBOARD')}
-                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'DASHBOARD' ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/20' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
+                                className={`px-3 py-1.5 rounded-md text-xs font-black transition-all flex items-center gap-2 ${viewMode === 'DASHBOARD' ? 'bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
                             >
-                                <LayoutDashboard size={14} /> <span className="hidden sm:inline">MY SQUAD</span>
+                                <LayoutDashboard size={14} className={viewMode === 'DASHBOARD' ? 'text-white' : 'text-purple-400'} /> <span className="hidden sm:inline">MY SQUAD</span>
                             </button>
                             <button
                                 onClick={() => setViewMode('ALL_TEAMS')}
-                                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
+                                className={`px-3 py-1.5 rounded-md text-xs font-black transition-all flex items-center gap-2 ${viewMode === 'ALL_TEAMS' ? 'bg-gradient-to-r from-green-400 to-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
                             >
-                                <Users size={14} /> <span className="hidden sm:inline">TEAMS & PURSE</span>
+                                <Users size={14} className={viewMode === 'ALL_TEAMS' ? 'text-white' : 'text-green-400'} /> <span className="hidden sm:inline">TEAMS & PURSE</span>
                             </button>
                             {/* Trade Button - Only for Mini Auctions */}
                             {miniAuctionId && (
                                 <button
                                     onClick={() => setViewMode('TRADE')}
-                                    className={`relative px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'TRADE' ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/20' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
+                                    className={`relative px-3 py-1.5 rounded-md text-xs font-black transition-all flex items-center gap-2 ${viewMode === 'TRADE' ? 'bg-gradient-to-r from-purple-400 to-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
                                 >
-                                    <Users size={14} /> <span className="hidden sm:inline">TRADE</span>
+                                    <Users size={14} className={viewMode === 'TRADE' ? 'text-white' : 'text-purple-400'} /> <span className="hidden sm:inline">TRADE</span>
                                     {pendingTradeCount > 0 && (
-                                        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-slate-900 animate-pulse">
+                                        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-slate-900 animate-pulse font-bold">
                                             {pendingTradeCount}
                                         </div>
                                     )}
@@ -220,9 +220,9 @@ const AuctionRoom = () => {
                             {miniAuctionId && !auctionState.currentPlayer && (auctionState.history || []).length === 0 && !lastSoldPlayer && (
                                 <button
                                     onClick={() => setViewMode('RELEASE')}
-                                    className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${viewMode === 'RELEASE' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
+                                    className={`px-3 py-1.5 rounded-md text-xs font-black transition-all flex items-center gap-2 ${viewMode === 'RELEASE' ? 'bg-gradient-to-r from-red-400 to-red-600 text-white shadow-[0_0_15px_rgba(239,68,68,0.3)]' : 'text-slate-200 hover:text-white hover:bg-white/5'}`}
                                 >
-                                    <UserMinus size={14} /> <span className="hidden sm:inline">RELEASE</span>
+                                    <UserMinus size={14} className={viewMode === 'RELEASE' ? 'text-white' : 'text-red-400'} /> <span className="hidden sm:inline">RELEASE</span>
                                 </button>
                             )}
                         </div>
