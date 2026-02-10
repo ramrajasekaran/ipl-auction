@@ -46,7 +46,7 @@ const ManagerAuth = () => {
     return (
         <div className="h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
             <motion.button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/welcome')}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="absolute top-8 left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
