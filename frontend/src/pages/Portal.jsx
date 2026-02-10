@@ -160,23 +160,24 @@ const Portal = () => {
             </div>
 
             {/* Top Navigation / Corner Branding */}
-            <nav className="relative z-50 px-6 py-6 flex items-center justify-between max-w-7xl mx-auto">
+            <nav className="relative z-50 px-4 md:px-6 py-4 md:py-6 flex items-center justify-between max-w-7xl mx-auto">
                 <div className="flex items-center gap-2">
-                    <Trophy className="text-gold" size={24} />
-                    <span className="font-black italic tracking-tighter text-lg uppercase text-slate-200">IPL <span className="text-gold">Arena</span></span>
+                    <Trophy className="text-gold" size={20} />
+                    <span className="font-black italic tracking-tighter text-base md:text-lg uppercase text-slate-200">IPL <span className="text-gold">Arena</span></span>
                 </div>
                 <button
                     onClick={handleFundDeveloper}
-                    className="px-4 py-2 bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-yellow-500 text-white rounded-lg transition-all text-sm font-bold shadow-lg shadow-gold/20"
+                    className="px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-yellow-500 text-white rounded-lg transition-all text-xs md:text-sm font-bold shadow-lg shadow-gold/20 whitespace-nowrap"
                 >
-                    Support Developer
+                    <span className="hidden sm:inline">Support Developer</span>
+                    <span className="sm:hidden">Support</span>
                 </button>
             </nav>
 
             <main className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
 
                 {/* 1. Centered Title Section */}
-                <header className="pt-12 pb-16 text-center">
+                <header className="pt-8 md:pt-12 pb-10 md:pb-16 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -185,7 +186,7 @@ const Portal = () => {
                         <h1 className="text-4xl md:text-6xl lg:text-8xl font-black italic tracking-tighter mb-4 uppercase drop-shadow-2xl">
                             IPL <span className="text-ipl-blue drop-shadow-[0_0_15px_rgba(0,75,160,0.8)]">Arena</span>
                         </h1>
-                        <p className="text-slate-200 font-bold uppercase tracking-[0.3em] text-sm md:text-base">
+                        <p className="text-slate-200 font-bold uppercase tracking-[0.15em] md:tracking-[0.3em] text-xs md:text-base px-4">
                             The Ultimate Live Auction Experience
                         </p>
                     </motion.div>
@@ -199,26 +200,26 @@ const Portal = () => {
                         <div className="h-px w-12 bg-white/10" />
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                         <motion.button
                             whileHover={{ scale: 1.02, y: -5 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => navigate('/login')}
-                            className="flex items-center justify-between p-6 md:p-8 bg-ipl-blue rounded-3xl shadow-2xl shadow-ipl-blue/20 border border-ipl-blue/50 group hover:shadow-ipl-blue/40 neon-border-blue relative overflow-hidden"
+                            className="flex items-center justify-between p-5 md:p-8 bg-ipl-blue rounded-3xl shadow-2xl shadow-ipl-blue/20 border border-ipl-blue/50 group hover:shadow-ipl-blue/40 neon-border-blue relative overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                            <div className="flex items-center gap-6 relative z-10">
-                                <div className="w-16 h-16 rounded-2xl bg-black/20 flex items-center justify-center backdrop-blur-sm">
-                                    <LogIn size={32} className="text-white" />
+                            <div className="flex items-center gap-4 md:gap-6 relative z-10">
+                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-black/20 flex items-center justify-center backdrop-blur-sm">
+                                    <LogIn size={24} className="md:text-3xl text-white" />
                                 </div>
                                 <div className="text-left">
-                                    <h3 className="font-black uppercase italic tracking-widest text-2xl text-white">Sign In</h3>
-                                    <p className="text-blue-100 text-[11px] font-bold uppercase tracking-widest mt-1">Access Dashboard</p>
+                                    <h3 className="font-black uppercase italic tracking-widest text-xl md:text-2xl text-white">Sign In</h3>
+                                    <p className="text-blue-100 text-[10px] md:text-[11px] font-bold uppercase tracking-widest mt-1">Access Dashboard</p>
                                 </div>
                             </div>
-                            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                                <ArrowRight size={20} className="text-white" />
+                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                <ArrowRight size={18} className="text-white" />
                             </div>
                         </motion.button>
 
@@ -226,19 +227,19 @@ const Portal = () => {
                             whileHover={{ scale: 1.02, y: -5 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => navigate('/register')}
-                            className="flex items-center justify-between p-6 md:p-8 bg-arena-dark/50 hover:bg-arena-dark/80 rounded-3xl border border-white/10 transition-all group backdrop-blur-md hover:border-gold/30"
+                            className="flex items-center justify-between p-5 md:p-8 bg-arena-dark/50 hover:bg-arena-dark/80 rounded-3xl border border-white/10 transition-all group backdrop-blur-md hover:border-gold/30"
                         >
-                            <div className="flex items-center gap-6">
-                                <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
-                                    <UserPlus size={32} className="text-gold" />
+                            <div className="flex items-center gap-4 md:gap-6">
+                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
+                                    <UserPlus size={24} className="md:text-3xl text-gold" />
                                 </div>
                                 <div className="text-left">
-                                    <h3 className="font-black uppercase italic tracking-widest text-2xl text-white">Enrollment</h3>
-                                    <p className="text-slate-400 text-[11px] font-bold uppercase tracking-widest mt-1">New Official Registration</p>
+                                    <h3 className="font-black uppercase italic tracking-widest text-xl md:text-2xl text-white">Enrollment</h3>
+                                    <p className="text-slate-400 text-[10px] md:text-[11px] font-bold uppercase tracking-widest mt-1">New Official Registration</p>
                                 </div>
                             </div>
-                            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gold/10 transition-colors">
-                                <Zap size={20} className="text-slate-500 group-hover:text-gold transition-colors" />
+                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gold/10 transition-colors">
+                                <Zap size={18} className="text-slate-500 group-hover:text-gold transition-colors" />
                             </div>
                         </motion.button>
                     </div>
@@ -360,12 +361,12 @@ const Portal = () => {
                         </div>
                     </div>
 
-                    <div className="mt-16 text-center space-y-4">
-                        <div className="flex items-center justify-center gap-8 text-[10px] font-black text-slate-600 uppercase tracking-[0.5em]">
+                    <div className="mt-12 md:mt-16 text-center space-y-4">
+                        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-[9px] md:text-[10px] font-black text-slate-600 uppercase tracking-[0.25em] md:tracking-[0.5em]">
                             <span>AUTHENTICATED ACCESS</span>
-                            <div className="w-1 h-1 bg-slate-800 rounded-full" />
+                            <div className="hidden md:block w-1 h-1 bg-slate-800 rounded-full" />
                             <span>ELITE EDITION v1.2.0</span>
-                            <div className="w-1 h-1 bg-slate-800 rounded-full" />
+                            <div className="hidden md:block w-1 h-1 bg-slate-800 rounded-full" />
                             <span>STATUS: PEAK PERFORMANCE</span>
                         </div>
                     </div>

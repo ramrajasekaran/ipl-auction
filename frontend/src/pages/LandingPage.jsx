@@ -7,10 +7,9 @@ const LandingPage = () => {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
             <motion.button
-                onClick={() => { window.location.href = '/' }} // Force full nav or useHook, stick to Link/UserHook inside component.
-                // Better: import useNavigate
-                className="absolute top-8 left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-50">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>
+                onClick={() => { window.location.href = '/' }}
+                className="absolute top-4 md:top-8 left-4 md:left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-50">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="md:w-6 md:h-6"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>
             </motion.button>
 
             {/* Background elements */}
@@ -23,16 +22,16 @@ const LandingPage = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-center mb-16 space-y-4"
+                className="text-center mb-8 md:mb-16 space-y-4 px-4"
             >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gold text-sm font-medium mb-4">
-                    <Trophy size={14} />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gold text-xs md:text-sm font-medium mb-2 md:mb-4">
+                    <Trophy size={12} className="md:size-3.5" />
                     <span>IPL ARENA</span>
                 </div>
-                <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-2">
+                <h1 className="text-4xl md:text-7xl font-bold tracking-tight text-white mb-2 leading-tight">
                     Build Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">Dream Team</span>
                 </h1>
-                <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto">
+                <p className="text-slate-400 text-base md:text-xl max-w-2xl mx-auto px-2">
                     Experience the thrill of the auction. Manage budgets, bid strategically, and assemble the ultimate squad.
                 </p>
             </motion.div>
