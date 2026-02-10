@@ -77,9 +77,9 @@ const AuctioneerControls = ({
     };
 
     return (
-        <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 w-full h-full md:min-h-[500px] flex flex-col overflow-hidden">
+        <div className="bg-black/60 backdrop-blur-xl rounded-2xl border border-white/10 w-full h-full min-h-[400px] md:min-h-[600px] flex flex-col overflow-hidden shadow-2xl">
             {/* Actions Zone: Search + Final Call */}
-            <div className="sticky top-0 z-30 bg-[#0f172a] shadow-xl p-4 border-b border-white/10 flex-shrink-0">
+            <div className="sticky top-0 z-30 bg-slate-900/95 backdrop-blur-md p-3 md:p-4 border-b border-white/10 flex-shrink-0">
                 {/* Player Search Bar - ALWAYS VISIBLE AT TOP */}
                 {showSearch && (
                     <div className="relative mb-2 md:mb-4">
@@ -113,7 +113,7 @@ const AuctioneerControls = ({
 
             {/* Player Selection List - Flowing area */}
             {showList && (
-                <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar md:max-h-none">
+                <div className="flex-1 overflow-y-auto space-y-1 p-2 md:p-4 custom-scrollbar max-h-[50vh] md:max-h-none">
                     {filteredPlayers.length > 0 ? (
                         filteredPlayers.map((player, idx) => (
                             <div
