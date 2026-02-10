@@ -1,5 +1,5 @@
 import express from 'express';
-import { createGame, joinGame, resumeGame, rejoinTeam, addDefaultPlayers, uploadPlayers, uploadGlobalPlayers, getGlobalPlayers, clearGlobalPlayers, releasePlayer, resetManagerPassword, resetTeamPassword, getTeamDetails } from '../controllers/gameController.js';
+import { createGame, joinGame, resumeGame, rejoinTeam, addDefaultPlayers, uploadPlayers, uploadGlobalPlayers, getGlobalPlayers, clearGlobalPlayers, seedGlobalPlayers, releasePlayer, resetManagerPassword, resetTeamPassword, getTeamDetails } from '../controllers/gameController.js';
 import multer from 'multer';
 import { protect, requireAdmin } from '../middleware/authMiddleware.js';
 

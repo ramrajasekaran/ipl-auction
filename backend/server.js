@@ -13,6 +13,7 @@ import auctionRoutes from './routes/auctionRoutes.js';
 import playerRoutes from './routes/playerRoutes.js';
 import tradeRoutes from './routes/tradeRoutes.js';
 import miniAuctionRoutes from './routes/miniAuctionRoutes.js'; // Mini Auction Routes
+import paymentRoutes from './routes/paymentRoutes.js'; // Payment Routes
 import setupSocketHandlers from './socket/socketHandlers.js';
 
 // Load environment variables
@@ -86,6 +87,7 @@ app.use('/api/auction', auctionRoutes);
 app.use('/api/players', playerRoutes);
 app.use('/api/trades', tradeRoutes);
 app.use('/api/mini-auction', miniAuctionRoutes); // Mini Auction Routes
+app.use('/api/payment', paymentRoutes); // Payment Routes
 
 // Health check route
 app.get('/api/health', (req, res) => {

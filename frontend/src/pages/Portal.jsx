@@ -111,7 +111,7 @@ const Portal = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter mb-4 uppercase drop-shadow-2xl">
+                        <h1 className="text-4xl md:text-6xl lg:text-8xl font-black italic tracking-tighter mb-4 uppercase drop-shadow-2xl">
                             IPL <span className="text-ipl-blue drop-shadow-[0_0_15px_rgba(0,75,160,0.8)]">Arena</span>
                         </h1>
                         <p className="text-slate-200 font-bold uppercase tracking-[0.3em] text-sm md:text-base">
@@ -121,7 +121,7 @@ const Portal = () => {
                 </header>
 
                 {/* 2. Gateway Access Section */}
-                <section className="mb-20 max-w-4xl mx-auto">
+                <section className="mb-12 md:mb-20 max-w-4xl mx-auto">
                     <div className="flex items-center justify-center mb-10">
                         <div className="h-px w-12 bg-white/10" />
                         <h2 className="mx-4 text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Gateway Access</h2>
@@ -133,7 +133,7 @@ const Portal = () => {
                             whileHover={{ scale: 1.02, y: -5 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => navigate('/login')}
-                            className="flex items-center justify-between p-8 bg-ipl-blue rounded-3xl shadow-2xl shadow-ipl-blue/20 border border-ipl-blue/50 group hover:shadow-ipl-blue/40 neon-border-blue relative overflow-hidden"
+                            className="flex items-center justify-between p-6 md:p-8 bg-ipl-blue rounded-3xl shadow-2xl shadow-ipl-blue/20 border border-ipl-blue/50 group hover:shadow-ipl-blue/40 neon-border-blue relative overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
@@ -155,7 +155,7 @@ const Portal = () => {
                             whileHover={{ scale: 1.02, y: -5 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => navigate('/register')}
-                            className="flex items-center justify-between p-8 bg-arena-dark/50 hover:bg-arena-dark/80 rounded-3xl border border-white/10 transition-all group backdrop-blur-md hover:border-gold/30"
+                            className="flex items-center justify-between p-6 md:p-8 bg-arena-dark/50 hover:bg-arena-dark/80 rounded-3xl border border-white/10 transition-all group backdrop-blur-md hover:border-gold/30"
                         >
                             <div className="flex items-center gap-6">
                                 <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
@@ -174,7 +174,7 @@ const Portal = () => {
                 </section>
 
                 {/* 3. User Manual (How to Play) */}
-                <section className="mb-20">
+                <section className="mb-12 md:mb-20">
                     <h2 className="text-xl font-bold mb-8 flex items-center gap-3 italic text-white/90">
                         <PlayCircle size={28} className="text-primary" />
                         User Manual: How to Play
@@ -186,7 +186,7 @@ const Portal = () => {
                                 whileHover={{ scale: 1.02, y: -5 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => openStepDetail(step, i)}
-                                className="text-left p-8 bg-arena-dark/60 border border-white/5 rounded-3xl hover:border-gold/30 transition-all group relative overflow-hidden shadow-lg"
+                                className="text-left p-6 md:p-8 bg-arena-dark/60 border border-white/5 rounded-3xl hover:border-gold/30 transition-all group relative overflow-hidden shadow-lg"
                             >
                                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition-opacity">
                                     <span className="text-8xl font-black italic">{i + 1}</span>
@@ -243,7 +243,7 @@ const Portal = () => {
 
                 {/* 5. Tournament Footer (Integrated Support) */}
                 <footer className="mt-8 border-t border-white/5 pt-16">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-12 bg-slate-900/40 p-10 rounded-[2.5rem] border border-white/5 backdrop-blur-xl relative overflow-hidden group">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 bg-slate-900/40 p-6 md:p-10 rounded-[2.5rem] border border-white/5 backdrop-blur-xl relative overflow-hidden group">
                         {/* Decorative background for footer */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -mr-32 -mt-32 group-hover:bg-primary/10 transition-colors duration-700" />
 

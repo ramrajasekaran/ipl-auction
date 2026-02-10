@@ -13,6 +13,8 @@ import useAuthStore from '../store/authStore';
 import useAuctionStore from '../store/auctionStore';
 import { formatCurrency } from '../utils/formatters';
 import { pageVariants } from '../utils/animations';
+import { createPaymentOrderAPI, verifyPaymentAPI } from '../services/api';
+import { Heart } from 'lucide-react';
 
 const TeamOwnerDashboard = () => {
     const navigate = useNavigate();
@@ -148,6 +150,65 @@ const TeamOwnerDashboard = () => {
         handlePlaceBid(amount);
     };
 
+    const loadScript = (src) => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
+
+    const handleFundDeveloper = async () => {
+        const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+
+        if (!res) {
+            alert('Razorpay SDK failed to load. Are you online?');
+            return;
+        }
+
+        try {
+            // 1. Create Order
+            const data = await createPaymentOrderAPI(500); // 500 INR
+
+            const options = {
+                key: data.key_id, // Enter the Key ID generated from the Dashboard
+                amount: data.order.amount,
+                currency: data.order.currency,
+                name: "IPL Auction",
+                description: "Fund the Developer",
+                order_id: data.order.id,
+                handler: async function (response) {
+                    try {
+                        const verifyRes = await verifyPaymentAPI({
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        });
+                        alert(verifyRes.message);
+                    } catch (error) {
+                        alert('Payment verification failed');
+                    }
+                },
+                prefill: {
+                    name: user.name,
+                    email: user.email,
+                    contact: "9999999999"
+                },
+                theme: {
+                    color: "#3399cc"
+                }
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.open();
+        } catch (error) {
+            console.error(error);
+            alert('Failed to initiate payment');
+        }
+    };
+
     const quickBidAmounts = currentPlayer
         ? [
             currentBid.amount + 0.5,
@@ -179,14 +240,24 @@ const TeamOwnerDashboard = () => {
                             </p>
                         </div>
 
-                        {myTeam && (
-                            <div className="glass p-4 rounded-lg">
-                                <p className="text-xs text-gray-400 mb-1">Your Purse</p>
-                                <p className="text-2xl md:text-3xl font-bold text-accent-gold">
-                                    {formatCurrency(myTeam.currentPurse)}
-                                </p>
-                            </div>
-                        )}
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={handleFundDeveloper}
+                                className="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-colors text-sm font-semibold shadow-lg shadow-pink-600/20"
+                            >
+                                <Heart size={16} className="fill-current" />
+                                Fund Dev
+                            </button>
+
+                            {myTeam && (
+                                <div className="glass p-4 rounded-lg">
+                                    <p className="text-xs text-gray-400 mb-1">Your Purse</p>
+                                    <p className="text-2xl md:text-3xl font-bold text-accent-gold">
+                                        {formatCurrency(myTeam.currentPurse)}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 

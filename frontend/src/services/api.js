@@ -142,4 +142,22 @@ export const seedGlobalPlayersAPI = async () => {
     return response.data;
 };
 
+// Auction API namespace
+export const auctionAPI = {
+    getLatest: () => api.get('/auction/latest'),
+    getTeams: (auctionId) => api.get(`/auction/${auctionId}/teams`),
+    placeBid: (auctionId, amount) => api.post(`/auction/${auctionId}/bid`, { amount })
+};
+
+// Payment APIs
+export const createPaymentOrderAPI = async (amount) => {
+    const response = await api.post('/payment/order', { amount });
+    return response.data;
+};
+
+export const verifyPaymentAPI = async (paymentData) => {
+    const response = await api.post('/payment/verify', paymentData);
+    return response.data;
+};
+
 export default api;
