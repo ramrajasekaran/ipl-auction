@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Users, Lock, Hash, Shield } from 'lucide-react';
+import { ArrowLeft, Users, Lock, Hash, Shield, Eye, EyeOff } from 'lucide-react';
 import { useGame } from '../context/GameContext';
 
 const ContestantAuth = () => {
@@ -14,6 +14,7 @@ const ContestantAuth = () => {
         roomId: '',
         password: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleJoinGame = async (e) => {
         e.preventDefault();
@@ -126,13 +127,20 @@ const ContestantAuth = () => {
                             <div className="relative">
                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-12 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
                                     placeholder="Secret pin for re-entry"
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
                             </div>
                             {activeTab === 'join' && (
                                 <p className="text-[10px] text-slate-500 mt-2">
