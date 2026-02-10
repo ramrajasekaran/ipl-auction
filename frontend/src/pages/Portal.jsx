@@ -15,17 +15,66 @@ import {
     Handshake,
     ArrowRight
 } from 'lucide-react';
+import ManualDetailModal from '../components/ManualDetailModal';
 
 const Portal = () => {
     const navigate = useNavigate();
 
     const steps = [
-        { title: "Register & Access", desc: "Create your official IPL Arena account to start your journey." },
-        { title: "Select Mode", desc: "Choose between Mega Auction (Fresh) or Mini Auction (Saved)." },
-        { title: "Create/Join Room", desc: "Host a room or join one as a Team Owner." },
-        { title: "Live Bidding", desc: "Bid in real-time. Manage your budget wisely!" },
-        { title: "Build the Squad", desc: "Aim for 15-25 players with valid team composition." }
+        {
+            title: "Register & Access",
+            desc: "Create your official IPL Arena account to start your journey.",
+            details: [
+                "Create your account as either a Team Owner or a Host.",
+                "Verify your email to ensure secure access to the league.",
+                "Access your personalized dashboard to manage rooms or teams."
+            ]
+        },
+        {
+            title: "Select Mode",
+            desc: "Choose between Mega Auction (Fresh) or Mini Auction (Saved).",
+            details: [
+                "Mega Auction: Build a completely new team with the full player pool.",
+                "Mini Auction: Retain players from previous seasons and bid for new ones.",
+                "Choose the mode that fits your league's current status."
+            ]
+        },
+        {
+            title: "Create/Join Room",
+            desc: "Host a room or join one as a Team Owner.",
+            details: [
+                "Hosts can create unique rooms and invite others via Room Codes.",
+                "Team Owners join specific rooms to compete for players.",
+                "Real-time synchronization ensures everyone starts at the same time."
+            ]
+        },
+        {
+            title: "Live Bidding",
+            desc: "Bid in real-time. Manage your budget wisely!",
+            details: [
+                "Dynamic real-time bidding interface with synchronized timers.",
+                "Purse management: Keep an eye on your remaining budget as you bid.",
+                "Visual alerts and sound effects for high-stakes bidding moments."
+            ]
+        },
+        {
+            title: "Build the Squad",
+            desc: "Aim for 15-25 players with valid team composition.",
+            details: [
+                "Strict squad requirements: 15-25 players total.",
+                "Composition rules: Minimum 1 Wicket Keeper and 4 Bowlers.",
+                "Overseas limit: Max 8 non-Indian players per squad."
+            ]
+        }
     ];
+
+    const [selectedStep, setSelectedStep] = React.useState(null);
+    const [isManualModalOpen, setIsManualModalOpen] = React.useState(false);
+
+    const openStepDetail = (step, index) => {
+        setSelectedStep({ ...step, index });
+        setIsManualModalOpen(true);
+    };
 
     const rules = [
         { label: "Squad Size", val: "15 - 25 Players", icon: Users },
@@ -118,7 +167,13 @@ const Portal = () => {
                     </h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {steps.map((step, i) => (
-                            <div key={i} className="p-8 bg-slate-900/60 border border-white/5 rounded-3xl hover:border-primary/30 transition-all group relative overflow-hidden">
+                            <motion.button
+                                key={i}
+                                whileHover={{ scale: 1.02, y: -5 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => openStepDetail(step, i)}
+                                className="text-left p-8 bg-slate-900/60 border border-white/5 rounded-3xl hover:border-primary/30 transition-all group relative overflow-hidden"
+                            >
                                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition-opacity">
                                     <span className="text-8xl font-black italic">{i + 1}</span>
                                 </div>
@@ -131,9 +186,18 @@ const Portal = () => {
                                 <p className="text-slate-300 text-sm leading-relaxed font-medium">
                                     {step.desc}
                                 </p>
-                            </div>
+                                <div className="mt-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                    View Details <ArrowRight size={12} />
+                                </div>
+                            </motion.button>
                         ))}
                     </div>
+
+                    <ManualDetailModal
+                        isOpen={isManualModalOpen}
+                        onClose={() => setIsManualModalOpen(false)}
+                        stepData={selectedStep}
+                    />
                 </section>
 
                 {/* 4. Official Rules */}
