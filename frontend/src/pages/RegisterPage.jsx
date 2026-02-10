@@ -120,7 +120,7 @@ const RegisterPage = () => {
                                 <input
                                     type="email"
                                     value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value.toLowerCase() })}
                                     className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
                                     placeholder="you@example.com"
                                     required

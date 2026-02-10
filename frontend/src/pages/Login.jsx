@@ -17,7 +17,8 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const value = e.target.name === 'email' ? e.target.value.toLowerCase() : e.target.value;
+        setFormData({ ...formData, [e.target.name]: value });
         setError('');
     };
 

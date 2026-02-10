@@ -201,7 +201,7 @@ const ManagerAuth = () => {
                                     type="button"
                                     onClick={() => {
                                         const authUser = JSON.parse(sessionStorage.getItem('authUser') || '{}');
-                                        const email = authUser.email || '';
+                                        const email = (authUser.email || '').toLowerCase();
                                         navigate(`/reset-password?type=manager&roomId=${formData.roomId}&email=${encodeURIComponent(email)}`);
                                     }}
                                     className="block w-full text-amber-500 hover:underline text-xs text-center transition-colors"
