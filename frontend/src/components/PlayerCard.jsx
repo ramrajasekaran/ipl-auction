@@ -35,11 +35,16 @@ const PlayerCard = ({ player, currentBid, lastSoldPlayer, currentBidderName }) =
         }
 
         return (
-            <div className="min-h-[300px] w-full max-w-sm glass-panel rounded-2xl flex items-center justify-center flex-col text-slate-500 animate-pulse">
-                <div className="w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center mb-4 border-4 border-slate-700">
-                    <User size={64} className="text-slate-600" />
+            <div className="min-h-[300px] w-full max-w-sm glass-panel rounded-2xl flex items-center justify-center flex-col text-slate-200 animate-pulse border-white/5 bg-white/5">
+                <div className="w-24 h-24 md:w-32 md:h-32 bg-slate-700/50 rounded-full flex items-center justify-center mb-4 border-2 border-white/10 shadow-lg shadow-white/5">
+                    <User className="w-12 h-12 md:w-16 md:h-16 text-slate-300" strokeWidth={1} />
                 </div>
-                <p className="text-lg font-bold text-slate-500">Waiting for Next Player...</p>
+                <p className="text-base md:text-lg font-black uppercase tracking-widest text-slate-200 text-shadow-sm">Waiting for Next Player...</p>
+                <div className="mt-4 flex gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.3s]"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.15s]"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce"></div>
+                </div>
             </div>
         );
     }
