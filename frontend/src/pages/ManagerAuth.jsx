@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Save, Play, Lock, Hash, DollarSign } from 'lucide-react';
+import { ArrowLeft, Save, Play, Lock, Hash, IndianRupee } from 'lucide-react';
 import { useGame } from '../context/GameContext';
 
 const ManagerAuth = () => {
@@ -88,13 +88,17 @@ const ManagerAuth = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-slate-400 mb-2">Auction Budget (Cr)</label>
                                     <div className="relative">
-                                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                                        <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                         <input
-                                            type="number"
-                                            min="90"
-                                            max="120"
+                                            type="text"
+                                            inputMode="decimal"
                                             value={formData.budget}
-                                            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                if (val === '' || /^\d*\.?\d*$/.test(val)) {
+                                                    setFormData({ ...formData, budget: val });
+                                                }
+                                            }}
                                             className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-600"
                                             placeholder="90-120"
                                             required
