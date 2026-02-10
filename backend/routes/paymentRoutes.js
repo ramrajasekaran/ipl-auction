@@ -4,8 +4,8 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Protected routes to ensure only logged-in users can pay (optional, but good practice)
-router.post('/order', protect, createOrder);
-router.post('/verify', protect, verifyPayment);
+// Public routes - allow anyone to make payments
+router.post('/order', createOrder);
+router.post('/verify', verifyPayment);
 
 export default router;
