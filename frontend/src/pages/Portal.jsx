@@ -277,11 +277,11 @@ const Portal = () => {
 
                     <div className="mt-16 text-center space-y-4">
                         <div className="flex items-center justify-center gap-8 text-[10px] font-black text-slate-600 uppercase tracking-[0.5em]">
-                            <span>ENCRYPTED</span>
+                            <span>AUTHENTICATED ACCESS</span>
                             <div className="w-1 h-1 bg-slate-800 rounded-full" />
-                            <span>v1.2.0</span>
+                            <span>ELITE EDITION v1.2.0</span>
                             <div className="w-1 h-1 bg-slate-800 rounded-full" />
-                            <span>SERVER ACTIVE</span>
+                            <span>STATUS: PEAK PERFORMANCE</span>
                         </div>
                     </div>
                 </footer>
