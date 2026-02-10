@@ -170,7 +170,7 @@ const Portal = () => {
                     className="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-colors text-sm font-semibold shadow-lg shadow-pink-600/20"
                 >
                     <Heart size={16} className="fill-current" />
-                    Fund Dev
+                    Support Developer
                 </button>
             </nav>
 
