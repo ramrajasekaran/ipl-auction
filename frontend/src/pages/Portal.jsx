@@ -156,18 +156,18 @@ const Portal = () => {
             {/* Arena Background Decor */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-ipl-blue/20 blur-[120px] rounded-full mix-blend-screen" />
-                <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[40%] bg-gold/10 blur-[100px] rounded-full mix-blend-overlay" />
+                <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[40%] bg-ipl-blue/10 blur-[100px] rounded-full mix-blend-overlay" />
             </div>
 
             {/* Top Navigation / Corner Branding */}
             <nav className="relative z-50 px-4 md:px-6 py-4 md:py-6 flex items-center justify-between max-w-7xl mx-auto">
                 <div className="flex items-center gap-2">
-                    <Trophy className="text-gold" size={20} />
-                    <span className="font-black italic tracking-tighter text-base md:text-lg uppercase text-slate-200">IPL <span className="text-gold">Arena</span></span>
+                    <Trophy className="text-ipl-blue" size={20} />
+                    <span className="font-black italic tracking-tighter text-base md:text-lg uppercase text-slate-200">IPL <span className="text-ipl-blue">Arena</span></span>
                 </div>
                 <button
                     onClick={handleFundDeveloper}
-                    className="px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-yellow-500 text-white rounded-lg transition-all text-xs md:text-sm font-bold shadow-lg shadow-gold/20 whitespace-nowrap"
+                    className="px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-ipl-blue to-blue-600 hover:from-blue-500 hover:to-blue-600 text-white rounded-lg transition-all text-xs md:text-sm font-bold shadow-lg shadow-blue-900/40 whitespace-nowrap"
                 >
                     <span className="hidden sm:inline">Support Developer</span>
                     <span className="sm:hidden">Support</span>
@@ -227,19 +227,19 @@ const Portal = () => {
                             whileHover={{ scale: 1.02, y: -5 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => navigate('/register')}
-                            className="flex items-center justify-between p-5 md:p-8 bg-arena-dark/50 hover:bg-arena-dark/80 rounded-3xl border border-white/10 transition-all group backdrop-blur-md hover:border-gold/30"
+                            className="flex items-center justify-between p-5 md:p-8 bg-arena-dark/50 hover:bg-arena-dark/80 rounded-3xl border border-white/10 transition-all group backdrop-blur-md hover:border-ipl-blue/30"
                         >
                             <div className="flex items-center gap-4 md:gap-6">
                                 <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
-                                    <UserPlus size={24} className="md:text-3xl text-gold" />
+                                    <UserPlus size={24} className="md:text-3xl text-ipl-blue" />
                                 </div>
                                 <div className="text-left">
                                     <h3 className="font-black uppercase italic tracking-widest text-xl md:text-2xl text-white">Enrollment</h3>
                                     <p className="text-slate-400 text-[10px] md:text-[11px] font-bold uppercase tracking-widest mt-1">New Official Registration</p>
                                 </div>
                             </div>
-                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gold/10 transition-colors">
-                                <Zap size={18} className="text-slate-500 group-hover:text-gold transition-colors" />
+                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-ipl-blue/10 transition-colors">
+                                <Zap size={18} className="text-slate-500 group-hover:text-ipl-blue transition-colors" />
                             </div>
                         </motion.button>
                     </div>
@@ -258,7 +258,7 @@ const Portal = () => {
                                 whileHover={{ scale: 1.02, y: -5 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => openStepDetail(step, i)}
-                                className="text-left p-6 md:p-8 bg-arena-dark/60 border border-white/5 rounded-3xl hover:border-gold/30 transition-all group relative overflow-hidden shadow-lg"
+                                className="text-left p-6 md:p-8 bg-arena-dark/60 border border-white/5 rounded-3xl hover:border-ipl-blue/30 transition-all group relative overflow-hidden shadow-lg"
                             >
                                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition-opacity">
                                     <span className="text-8xl font-black italic">{i + 1}</span>
@@ -294,14 +294,14 @@ const Portal = () => {
                     </h2>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {rules.map((rule, i) => (
-                            <div key={i} className="flex items-center justify-between p-6 bg-arena-dark/80 border border-white/5 rounded-2xl hover:border-gold/20 transition-colors">
+                            <div key={i} className="flex items-center justify-between p-6 bg-arena-dark/80 border border-white/5 rounded-2xl hover:border-ipl-blue/20 transition-colors">
                                 <div className="flex items-center gap-4">
                                     <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400">
                                         <rule.icon size={20} />
                                     </div>
                                     <span className="text-slate-300 font-bold uppercase text-[10px] tracking-widest">{rule.label}</span>
                                 </div>
-                                <span className="text-gold font-black italic">{rule.val}</span>
+                                <span className="text-ipl-blue font-black italic">{rule.val}</span>
                             </div>
                         ))}
                     </div>
