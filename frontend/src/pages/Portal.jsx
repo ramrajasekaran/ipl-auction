@@ -280,7 +280,7 @@ const Portal = () => {
                             >
                                 <div className="flex flex-col items-start leading-none">
                                     <span className="text-[10px] font-black uppercase tracking-widest text-white/70 mb-1">Start Mail</span>
-                                    <span className="text-sm font-black uppercase italic tracking-wider">iplarena.app@gmail.com</span>
+                                    <span className="text-sm font-black italic tracking-wider">iplarena.app@gmail.com</span>
                                 </div>
                                 <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover/btn:bg-white/20 transition-colors">
                                     <Mail size={20} />
