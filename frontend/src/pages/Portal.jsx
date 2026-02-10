@@ -36,12 +36,15 @@ const Portal = () => {
         const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
 
         if (!res) {
-            alert('Razorpay SDK failed to load. Are you online?');
+            console.error('Razorpay SDK failed to load');
+            alert('Razorpay SDK failed to load. Please check your internet connection.');
             return;
         }
 
         try {
+            console.log('Creating payment order...');
             const data = await createPaymentOrderAPI(500); // 500 INR
+            console.log('Payment order created:', data);
 
             const options = {
                 key: data.key_id,
@@ -57,9 +60,10 @@ const Portal = () => {
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature
                         });
-                        alert(verifyRes.message);
+                        alert(verifyRes.message || 'Payment successful!');
                     } catch (error) {
-                        alert('Payment verification failed');
+                        console.error('Payment verification error:', error);
+                        alert('Payment verification failed. Please contact support.');
                     }
                 },
                 prefill: {
@@ -75,8 +79,9 @@ const Portal = () => {
             const paymentObject = new window.Razorpay(options);
             paymentObject.open();
         } catch (error) {
-            console.error(error);
-            alert('Failed to initiate payment');
+            console.error('Payment initiation error:', error);
+            const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
+            alert(`Failed to initiate payment: ${errorMessage}\n\nPlease check the browser console for details.`);
         }
     };
 
