@@ -50,7 +50,7 @@ const ManagerAuth = () => {
                 onClick={() => navigate('/welcome')}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="absolute top-8 left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+                className="absolute top-4 left-4 md:top-8 md:left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-50"
             >
                 <ArrowLeft />
             </motion.button>
