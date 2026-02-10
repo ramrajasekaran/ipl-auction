@@ -13,12 +13,72 @@ import {
     Users,
     PlayCircle,
     Handshake,
-    ArrowRight
+    ArrowRight,
+    Heart
 } from 'lucide-react';
 import ManualDetailModal from '../components/ManualDetailModal';
+import { createPaymentOrderAPI, verifyPaymentAPI } from '../services/api';
 
 const Portal = () => {
     const navigate = useNavigate();
+
+    const loadScript = (src) => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
+
+    const handleFundDeveloper = async () => {
+        const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+
+        if (!res) {
+            alert('Razorpay SDK failed to load. Are you online?');
+            return;
+        }
+
+        try {
+            const data = await createPaymentOrderAPI(500); // 500 INR
+
+            const options = {
+                key: data.key_id,
+                amount: data.order.amount,
+                currency: data.order.currency,
+                name: "IPL Auction",
+                description: "Support the Developer",
+                order_id: data.order.id,
+                handler: async function (response) {
+                    try {
+                        const verifyRes = await verifyPaymentAPI({
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        });
+                        alert(verifyRes.message);
+                    } catch (error) {
+                        alert('Payment verification failed');
+                    }
+                },
+                prefill: {
+                    name: "Supporter",
+                    email: "support@iplarena.com",
+                    contact: "9999999999"
+                },
+                theme: {
+                    color: "#ec4899"
+                }
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.open();
+        } catch (error) {
+            console.error(error);
+            alert('Failed to initiate payment');
+        }
+    };
 
     const steps = [
         {
@@ -100,6 +160,13 @@ const Portal = () => {
                     <Trophy className="text-gold" size={24} />
                     <span className="font-black italic tracking-tighter text-lg uppercase text-slate-200">IPL <span className="text-gold">Arena</span></span>
                 </div>
+                <button
+                    onClick={handleFundDeveloper}
+                    className="flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-colors text-sm font-semibold shadow-lg shadow-pink-600/20"
+                >
+                    <Heart size={16} className="fill-current" />
+                    Fund Dev
+                </button>
             </nav>
 
             <main className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
