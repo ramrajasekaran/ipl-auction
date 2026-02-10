@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Trophy, Lock, Users } from 'lucide-react';
+import { ArrowRight, Trophy, Lock, Users, IndianRupee } from 'lucide-react';
 import { continueGame } from '../services/miniAuctionAPI';
 
 const ContinueGamePage = () => {
@@ -124,12 +124,20 @@ const ContinueGamePage = () => {
                                 Mini Auction Budget (Optional - Manager Only)
                             </label>
                             <div className="relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                                <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                 <input
-                                    type="number"
+                                    type="text"
+                                    inputMode="decimal"
                                     value={formData.budget || ''}
-                                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-8 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        if (val === '' || /^\d*\.?\d*$/.test(val)) {
+                                            if (val === '' || parseFloat(val) <= 25) {
+                                                setFormData({ ...formData, budget: val });
+                                            }
+                                        }
+                                    }}
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
                                     placeholder="25"
                                     min="1"
                                     max="25"
