@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, LogIn, UserPlus, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { loginAPI } from '../services/api';
 
 const LoginPage = () => {
@@ -40,6 +40,17 @@ const LoginPage = () => {
 
     return (
         <div className="h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
+            {/* Exit Button */}
+            <motion.button
+                onClick={() => navigate('/portal')}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="absolute top-8 left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-50"
+                title="Back to Portal"
+            >
+                <ArrowLeft size={24} />
+            </motion.button>
+
             {/* Background Effects */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-[-20%] left-[20%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full" />

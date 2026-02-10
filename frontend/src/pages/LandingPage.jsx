@@ -1,16 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Gavel, User, Trophy, PlayCircle } from 'lucide-react';
+import { Gavel, User, Trophy, PlayCircle, ArrowLeft } from 'lucide-react';
 
 const LandingPage = () => {
+    const navigate = useNavigate();
     return (
         <div className="h-screen flex flex-col items-center justify-center p-4 relative z-10 overflow-hidden">
             <motion.button
-                onClick={() => { window.location.href = '/' }} // Force full nav or useHook, stick to Link/UserHook inside component.
-                // Better: import useNavigate
-                className="absolute top-8 left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-50">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>
+                onClick={() => navigate('/welcome')}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="absolute top-8 left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-50"
+                title="Back to Home"
+            >
+                <ArrowLeft size={24} />
             </motion.button>
 
             {/* Background elements */}
