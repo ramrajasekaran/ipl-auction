@@ -15,11 +15,9 @@ import {
     Handshake,
     ArrowRight
 } from 'lucide-react';
-import MailOptionsModal from '../components/MailOptionsModal';
 
 const Portal = () => {
     const navigate = useNavigate();
-    const [isMailModalOpen, setIsMailModalOpen] = React.useState(false);
 
     const steps = [
         { title: "Register & Access", desc: "Create your official IPL Arena account to start your journey." },
@@ -179,11 +177,13 @@ const Portal = () => {
                         <p className="text-slate-300 text-base mb-8 max-w-xl mx-auto font-medium italic">
                             Technical issues or feedback? Contact the official team.
                         </p>
-                        <button
-                            onClick={() => setIsMailModalOpen(true)}
+                        <a
+                            href="https://mail.google.com/mail/?view=cm&fs=1&to=iplarena.app@gmail.com&su=IPL Arena Support - Feedback/Query"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="inline-flex flex-col items-center gap-2 px-10 py-5 bg-white/5 hover:bg-primary text-white border border-white/10 rounded-2xl font-black transition-all shadow-2xl group min-w-[320px]"
                         >
-                            <div className="flex items-center gap-3 text-2xl">
+                            <div className="flex items-center gap-3 text-2xl" id="start-conversation">
                                 <Mail size={32} />
                                 Start Conversation
                                 <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
@@ -191,11 +191,7 @@ const Portal = () => {
                             <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 group-hover:text-white/70">
                                 iplarena.app@gmail.com
                             </span>
-                        </button>
-                        <MailOptionsModal
-                            isOpen={isMailModalOpen}
-                            onClose={() => setIsMailModalOpen(false)}
-                        />
+                        </a>
                         <footer className="mt-20">
                             <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
                                 IPL ARENA • SECURE SYSTEM
