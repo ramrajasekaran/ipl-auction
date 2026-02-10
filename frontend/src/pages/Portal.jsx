@@ -120,43 +120,56 @@ const Portal = () => {
                     </motion.div>
                 </header>
 
-                {/* 2. Left-Aligned Auth Buttons */}
-                <section className="mb-20">
-                    <div className="max-w-md">
-                        <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-6 border-l-2 border-primary pl-4">Gateway Access</h2>
-                        <div className="flex flex-col gap-4">
-                            <motion.button
-                                whileHover={{ scale: 1.02, x: 10 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => navigate('/login')}
-                                className="flex items-center justify-between p-6 bg-ipl-blue rounded-2xl shadow-xl shadow-ipl-blue/20 border border-ipl-blue/50 group hover:shadow-ipl-blue/40 neon-border-blue"
-                            >
-                                <div className="flex items-center gap-4">
-                                    <LogIn size={28} />
-                                    <div className="text-left">
-                                        <h3 className="font-black uppercase italic tracking-widest text-lg">Sign In</h3>
-                                        <p className="text-white/90 text-[10px] font-black uppercase tracking-widest leading-none">Access your existing dashboard</p>
-                                    </div>
-                                </div>
-                                <Zap size={20} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </motion.button>
+                {/* 2. Gateway Access Section */}
+                <section className="mb-20 max-w-4xl mx-auto">
+                    <div className="flex items-center justify-center mb-10">
+                        <div className="h-px w-12 bg-white/10" />
+                        <h2 className="mx-4 text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Gateway Access</h2>
+                        <div className="h-px w-12 bg-white/10" />
+                    </div>
 
-                            <motion.button
-                                whileHover={{ scale: 1.02, x: 10 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => navigate('/register')}
-                                className="flex items-center justify-between p-6 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 transition-all group"
-                            >
-                                <div className="flex items-center gap-4">
-                                    <UserPlus size={28} className="text-primary" />
-                                    <div className="text-left">
-                                        <h3 className="font-black uppercase italic tracking-widest text-lg">Enrollment</h3>
-                                        <p className="text-slate-300 text-[10px] font-black uppercase tracking-widest leading-none">Join the league as a new official</p>
-                                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <motion.button
+                            whileHover={{ scale: 1.02, y: -5 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => navigate('/login')}
+                            className="flex items-center justify-between p-8 bg-ipl-blue rounded-3xl shadow-2xl shadow-ipl-blue/20 border border-ipl-blue/50 group hover:shadow-ipl-blue/40 neon-border-blue relative overflow-hidden"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                            <div className="flex items-center gap-6 relative z-10">
+                                <div className="w-16 h-16 rounded-2xl bg-black/20 flex items-center justify-center backdrop-blur-sm">
+                                    <LogIn size={32} className="text-white" />
                                 </div>
-                                <Zap size={20} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </motion.button>
-                        </div>
+                                <div className="text-left">
+                                    <h3 className="font-black uppercase italic tracking-widest text-2xl text-white">Sign In</h3>
+                                    <p className="text-blue-100 text-[11px] font-bold uppercase tracking-widest mt-1">Access Dashboard</p>
+                                </div>
+                            </div>
+                            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                <ArrowRight size={20} className="text-white" />
+                            </div>
+                        </motion.button>
+
+                        <motion.button
+                            whileHover={{ scale: 1.02, y: -5 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => navigate('/register')}
+                            className="flex items-center justify-between p-8 bg-arena-dark/50 hover:bg-arena-dark/80 rounded-3xl border border-white/10 transition-all group backdrop-blur-md hover:border-gold/30"
+                        >
+                            <div className="flex items-center gap-6">
+                                <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
+                                    <UserPlus size={32} className="text-gold" />
+                                </div>
+                                <div className="text-left">
+                                    <h3 className="font-black uppercase italic tracking-widest text-2xl text-white">Enrollment</h3>
+                                    <p className="text-slate-400 text-[11px] font-bold uppercase tracking-widest mt-1">New Official Registration</p>
+                                </div>
+                            </div>
+                            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gold/10 transition-colors">
+                                <Zap size={20} className="text-slate-500 group-hover:text-gold transition-colors" />
+                            </div>
+                        </motion.button>
                     </div>
                 </section>
 
