@@ -227,42 +227,64 @@ const Portal = () => {
                     </div>
                 </section>
 
-                {/* 5. Contact Section */}
-                <section id="contact" className="text-center pt-8 pb-20">
-                    <motion.div
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20">
-                            <Handshake size={32} className="text-primary" />
-                        </div>
-                        <h2 className="text-3xl font-black text-white mb-3 uppercase italic tracking-tighter">Support</h2>
-                        <p className="text-slate-300 text-base mb-8 max-w-xl mx-auto font-medium italic">
-                            Technical issues or feedback? Contact the official team.
-                        </p>
-                        <a
-                            href="https://mail.google.com/mail/?view=cm&fs=1&to=iplarena.app@gmail.com&su=IPL Arena Support - Feedback/Query"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex flex-col items-center gap-2 px-10 py-5 bg-white/5 hover:bg-primary text-white border border-white/10 rounded-2xl font-black transition-all shadow-2xl group min-w-[320px]"
-                        >
-                            <div className="flex items-center gap-3 text-2xl" id="start-conversation">
-                                <Mail size={32} />
-                                Start Conversation
-                                <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
+                {/* 5. Tournament Footer (Integrated Support) */}
+                <footer className="mt-8 border-t border-white/5 pt-16">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-12 bg-slate-900/40 p-10 rounded-[2.5rem] border border-white/5 backdrop-blur-xl relative overflow-hidden group">
+                        {/* Decorative background for footer */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -mr-32 -mt-32 group-hover:bg-primary/10 transition-colors duration-700" />
+
+                        {/* Left: Branding & Status */}
+                        <div className="text-left relative z-10">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="p-2 bg-primary/10 rounded-lg">
+                                    <Trophy size={20} className="text-primary" />
+                                </div>
+                                <span className="font-black italic tracking-tighter text-xl uppercase">IPL <span className="text-primary">ARENA</span></span>
                             </div>
-                            <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 group-hover:text-white/70">
-                                iplarena.app@gmail.com
-                            </span>
-                        </a>
-                        <footer className="mt-20">
-                            <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.6em] mb-4">
-                                IPL ARENA • SECURE SYSTEM
+                            <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.4em] mb-2">SECURE AUCTION SYSTEM</p>
+                            <p className="text-slate-500 text-[10px] font-medium max-w-xs leading-relaxed italic">
+                                The official high-performance platform for real-time player bidding and squad management.
                             </p>
-                        </footer>
-                    </motion.div>
-                </section>
+                        </div>
+
+                        {/* Center: Contact / Support CTA */}
+                        <div className="flex flex-col items-center md:items-end gap-6 relative z-10 w-full md:w-auto">
+                            <div className="text-center md:text-right">
+                                <h3 className="text-white font-black italic uppercase tracking-tight text-xl mb-1 flex items-center gap-2 justify-center md:justify-end">
+                                    <Handshake className="text-primary" size={24} /> Technical Support
+                                </h3>
+                                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Feedback & Queries</p>
+                            </div>
+
+                            <motion.a
+                                whileHover={{ scale: 1.05, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                href="https://mail.google.com/mail/?view=cm&fs=1&to=iplarena.app@gmail.com&su=IPL Arena Support - Feedback/Query"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-4 bg-primary px-8 py-4 rounded-2xl shadow-2xl shadow-primary/20 hover:shadow-primary/40 transition-all group/btn"
+                            >
+                                <div className="flex flex-col items-start leading-none">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-white/70 mb-1">Start Mail</span>
+                                    <span className="text-sm font-black uppercase italic tracking-wider">iplarena.app@gmail.com</span>
+                                </div>
+                                <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover/btn:bg-white/20 transition-colors">
+                                    <Mail size={20} />
+                                </div>
+                            </motion.a>
+                        </div>
+                    </div>
+
+                    <div className="mt-16 text-center space-y-4">
+                        <div className="flex items-center justify-center gap-8 text-[10px] font-black text-slate-600 uppercase tracking-[0.5em]">
+                            <span>ENCRYPTED</span>
+                            <div className="w-1 h-1 bg-slate-800 rounded-full" />
+                            <span>v1.2.0</span>
+                            <div className="w-1 h-1 bg-slate-800 rounded-full" />
+                            <span>SERVER ACTIVE</span>
+                        </div>
+                    </div>
+                </footer>
             </main>
         </div>
     );
