@@ -52,7 +52,7 @@ const ContestantAuth = () => {
                 onClick={() => navigate('/welcome')}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="absolute top-4 left-4 md:top-8 md:left-8 p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-50"
+                className="absolute top-4 left-4 md:top-8 md:left-8 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 text-slate-400 hover:text-white transition-colors z-50 lg:bg-transparent lg:border-none lg:backdrop-blur-none"
             >
                 <ArrowLeft />
             </motion.button>
