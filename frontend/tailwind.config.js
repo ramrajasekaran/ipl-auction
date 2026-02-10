@@ -65,10 +65,15 @@ export default {
                     800: '#4d3900',
                     900: '#1a1300',
                 },
-                'ipl-blue': {
-                    DEFAULT: '#004BA0', // Royal Blue
-                    dark: '#002D62', // Navy
-                    light: '#1976D2',
+                'ipl-cyan': {
+                    DEFAULT: '#00E5FF', // Electric Cyan
+                    dark: '#00B8D4', // Darker Cyan
+                    light: '#84FFFF', // Light Cyan
+                },
+                'ipl-blue': { // Kept for safe fallback, updated to Cyan-ish Blue
+                    DEFAULT: '#00E5FF',
+                    dark: '#00B8D4',
+                    light: '#84FFFF',
                 },
                 'arena-dark': '#0f172a', // Deep slate/navy background
             },

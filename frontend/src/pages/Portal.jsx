@@ -90,7 +90,7 @@ const Portal = () => {
             {/* Background Decor */}
             {/* Arena Background Decor */}
             <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-ipl-blue/20 blur-[120px] rounded-full mix-blend-screen" />
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-ipl-cyan/20 blur-[120px] rounded-full mix-blend-screen" />
                 <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[40%] bg-gold/10 blur-[100px] rounded-full mix-blend-overlay" />
             </div>
 
@@ -112,7 +112,7 @@ const Portal = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter mb-4 uppercase drop-shadow-2xl">
-                            IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-ipl-blue-light to-white drop-shadow-[0_0_15px_rgba(0,75,160,0.8)]">Arena</span>
+                            IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-ipl-cyan-light to-white drop-shadow-[0_0_15px_rgba(0,229,255,0.8)]">Arena</span>
                         </h1>
                         <p className="text-slate-200 font-bold uppercase tracking-[0.3em] text-sm md:text-base">
                             The Ultimate Live Auction Experience
@@ -129,7 +129,7 @@ const Portal = () => {
                                 whileHover={{ scale: 1.02, x: 10 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => navigate('/login')}
-                                className="flex items-center justify-between p-6 bg-ipl-blue rounded-2xl shadow-xl shadow-ipl-blue/20 border border-ipl-blue/50 group hover:shadow-ipl-blue/40 neon-border-blue"
+                                className="flex items-center justify-between p-6 bg-ipl-cyan rounded-2xl shadow-xl shadow-ipl-cyan/20 border border-ipl-cyan/50 group hover:shadow-ipl-cyan/40 neon-border-cyan"
                             >
                                 <div className="flex items-center gap-4">
                                     <LogIn size={28} />
