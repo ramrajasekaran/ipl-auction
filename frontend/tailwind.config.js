@@ -54,7 +54,23 @@ export default {
                 gold: {
                     DEFAULT: "hsl(var(--gold))",
                     foreground: "hsl(var(--gold-foreground))",
-                }
+                    50: '#fff9e6',
+                    100: '#ffefbf',
+                    200: '#ffdf80',
+                    300: '#ffcf40',
+                    400: '#ffbf00', // IPL Gold
+                    500: '#e6ac00',
+                    600: '#b38600',
+                    700: '#806000',
+                    800: '#4d3900',
+                    900: '#1a1300',
+                },
+                'ipl-blue': {
+                    DEFAULT: '#004BA0', // Royal Blue
+                    dark: '#002D62', // Navy
+                    light: '#1976D2',
+                },
+                'arena-dark': '#0f172a', // Deep slate/navy background
             },
             borderRadius: {
                 lg: "var(--radius)",

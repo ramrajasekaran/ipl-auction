@@ -52,9 +52,10 @@ const LoginPage = () => {
             </motion.button>
 
             {/* Background Effects */}
+            {/* Arena Background Effects */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-[-20%] left-[20%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-20%] right-[20%] w-[50%] h-[50%] bg-purple-600/10 blur-[120px] rounded-full" />
+                <div className="absolute top-[-20%] left-[20%] w-[50%] h-[50%] bg-ipl-blue/20 blur-[120px] rounded-full mix-blend-screen" />
+                <div className="absolute bottom-[-20%] right-[20%] w-[50%] h-[50%] bg-gold/10 blur-[120px] rounded-full mix-blend-overlay" />
             </div>
 
             <motion.div

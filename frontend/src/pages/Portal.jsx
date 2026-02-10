@@ -88,16 +88,17 @@ const Portal = () => {
     return (
         <div className="min-h-screen bg-slate-950 text-white font-outfit selection:bg-primary/30 overflow-x-hidden">
             {/* Background Decor */}
+            {/* Arena Background Decor */}
             <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[40%] bg-purple-600/10 blur-[100px] rounded-full" />
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-ipl-blue/20 blur-[120px] rounded-full mix-blend-screen" />
+                <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[40%] bg-gold/10 blur-[100px] rounded-full mix-blend-overlay" />
             </div>
 
             {/* Top Navigation / Corner Branding */}
             <nav className="relative z-50 px-6 py-6 flex items-center justify-between max-w-7xl mx-auto">
                 <div className="flex items-center gap-2">
-                    <Trophy className="text-primary" size={24} />
-                    <span className="font-black italic tracking-tighter text-lg uppercase text-slate-200">IPL <span className="text-primary">Arena</span></span>
+                    <Trophy className="text-gold" size={24} />
+                    <span className="font-black italic tracking-tighter text-lg uppercase text-slate-200">IPL <span className="text-gold">Arena</span></span>
                 </div>
             </nav>
 
@@ -110,8 +111,8 @@ const Portal = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter mb-4 uppercase">
-                            IPL <span className="text-primary drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">Arena</span>
+                        <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter mb-4 uppercase drop-shadow-2xl">
+                            IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-ipl-blue-light to-white drop-shadow-[0_0_15px_rgba(0,75,160,0.8)]">Arena</span>
                         </h1>
                         <p className="text-slate-200 font-bold uppercase tracking-[0.3em] text-sm md:text-base">
                             The Ultimate Live Auction Experience
@@ -128,7 +129,7 @@ const Portal = () => {
                                 whileHover={{ scale: 1.02, x: 10 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => navigate('/login')}
-                                className="flex items-center justify-between p-6 bg-primary rounded-2xl shadow-xl shadow-primary/20 border border-primary/50 group"
+                                className="flex items-center justify-between p-6 bg-ipl-blue rounded-2xl shadow-xl shadow-ipl-blue/20 border border-ipl-blue/50 group hover:shadow-ipl-blue/40 neon-border-blue"
                             >
                                 <div className="flex items-center gap-4">
                                     <LogIn size={28} />
@@ -172,7 +173,7 @@ const Portal = () => {
                                 whileHover={{ scale: 1.02, y: -5 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => openStepDetail(step, i)}
-                                className="text-left p-8 bg-slate-900/60 border border-white/5 rounded-3xl hover:border-primary/30 transition-all group relative overflow-hidden"
+                                className="text-left p-8 bg-arena-dark/60 border border-white/5 rounded-3xl hover:border-gold/30 transition-all group relative overflow-hidden shadow-lg"
                             >
                                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition-opacity">
                                     <span className="text-8xl font-black italic">{i + 1}</span>
@@ -208,14 +209,14 @@ const Portal = () => {
                     </h2>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {rules.map((rule, i) => (
-                            <div key={i} className="flex items-center justify-between p-6 bg-slate-900/40 border border-white/5 rounded-2xl">
+                            <div key={i} className="flex items-center justify-between p-6 bg-arena-dark/80 border border-white/5 rounded-2xl hover:border-gold/20 transition-colors">
                                 <div className="flex items-center gap-4">
                                     <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400">
                                         <rule.icon size={20} />
                                     </div>
                                     <span className="text-slate-300 font-bold uppercase text-[10px] tracking-widest">{rule.label}</span>
                                 </div>
-                                <span className="text-primary font-black italic">{rule.val}</span>
+                                <span className="text-gold font-black italic">{rule.val}</span>
                             </div>
                         ))}
                     </div>
