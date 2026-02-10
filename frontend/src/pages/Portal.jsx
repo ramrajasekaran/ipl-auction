@@ -112,7 +112,7 @@ const Portal = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter mb-4 uppercase drop-shadow-2xl">
-                            IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-ipl-blue-light to-white drop-shadow-[0_0_15px_rgba(0,75,160,0.8)]">Arena</span>
+                            IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-ipl-blue to-white drop-shadow-[0_0_15px_rgba(0,75,160,0.8)]">Arena</span>
                         </h1>
                         <p className="text-slate-200 font-bold uppercase tracking-[0.3em] text-sm md:text-base">
                             The Ultimate Live Auction Experience
