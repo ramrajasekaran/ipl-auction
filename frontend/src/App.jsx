@@ -61,7 +61,7 @@ const RootRedirect = () => {
 
 function App() {
     return (
-        <div className="min-h-screen bg-arena-dark text-foreground antialiased font-outfit overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-ipl-cyan-dark/20 via-arena-dark to-black relative">
+        <div className="min-h-screen bg-arena-dark text-foreground antialiased font-outfit overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-ipl-blue-dark/20 via-arena-dark to-black relative">
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
             <GameProvider>
                 <Router>

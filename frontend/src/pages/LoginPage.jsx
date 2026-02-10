@@ -54,7 +54,7 @@ const LoginPage = () => {
             {/* Background Effects */}
             {/* Arena Background Effects */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-[-20%] left-[20%] w-[50%] h-[50%] bg-ipl-cyan/20 blur-[120px] rounded-full mix-blend-screen" />
+                <div className="absolute top-[-20%] left-[20%] w-[50%] h-[50%] bg-ipl-blue/20 blur-[120px] rounded-full mix-blend-screen" />
                 <div className="absolute bottom-[-20%] right-[20%] w-[50%] h-[50%] bg-gold/10 blur-[120px] rounded-full mix-blend-overlay" />
             </div>
 

@@ -20,7 +20,7 @@ const LandingPage = () => {
             {/* Arena Background elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {/* Stadium Lights Effect */}
-                <div className="absolute top-[-20%] left-[20%] w-[60%] h-[50%] bg-ipl-cyan/30 blur-[120px] rounded-full mix-blend-screen" />
+                <div className="absolute top-[-20%] left-[20%] w-[60%] h-[50%] bg-ipl-blue/30 blur-[120px] rounded-full mix-blend-screen" />
                 <div className="absolute top-[-10%] left-[10%] w-[30%] h-[30%] bg-white/10 blur-[80px] rounded-full mix-blend-overlay" />
                 <div className="absolute top-[-10%] right-[10%] w-[30%] h-[30%] bg-gold/20 blur-[80px] rounded-full mix-blend-overlay" />
             </div>
@@ -49,20 +49,20 @@ const LandingPage = () => {
                     <motion.div
                         whileHover={{ y: -5 }}
                         whileTap={{ scale: 0.98 }}
-                        className="h-full glass-panel arena-glass p-8 rounded-2xl flex flex-col items-center text-center transition-all group-hover:border-ipl-cyan/50 group-hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] relative overflow-hidden"
+                        className="h-full glass-panel arena-glass p-8 rounded-2xl flex flex-col items-center text-center transition-all group-hover:border-ipl-blue/50 group-hover:shadow-[0_0_30px_rgba(0,75,160,0.3)] relative overflow-hidden"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-b from-ipl-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-ipl-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                        <div className="w-20 h-20 bg-gradient-to-br from-ipl-cyan to-ipl-cyan-dark rounded-2xl rotate-3 flex items-center justify-center mb-6 text-white shadow-lg shadow-black/40 group-hover:rotate-0 transition-all duration-300">
+                        <div className="w-20 h-20 bg-gradient-to-br from-ipl-blue to-ipl-blue-dark rounded-2xl rotate-3 flex items-center justify-center mb-6 text-white shadow-lg shadow-black/40 group-hover:rotate-0 transition-all duration-300">
                             <Gavel size={40} className="drop-shadow-md" />
                         </div>
                         <h2 className="text-2xl font-bold text-white mb-2 uppercase tracking-wider">Manager Zone</h2>
-                        <div className="h-1 w-12 bg-ipl-cyan rounded-full mb-4 group-hover:w-24 transition-all duration-300" />
+                        <div className="h-1 w-12 bg-ipl-blue rounded-full mb-4 group-hover:w-24 transition-all duration-300" />
 
                         <p className="text-slate-300 mb-8 font-light text-sm">
                             Create auction rooms, set budgets, and control the hammer.
                         </p>
-                        <span className="mt-auto px-8 py-3 rounded-xl bg-ipl-cyan hover:bg-ipl-cyan-light text-black font-semibold transition-all shadow-lg shadow-ipl-cyan/30 w-full">
+                        <span className="mt-auto px-8 py-3 rounded-xl bg-ipl-blue hover:bg-ipl-blue-light text-white font-semibold transition-all shadow-lg shadow-ipl-blue/30 w-full">
                             Create Room
                         </span>
                     </motion.div>
