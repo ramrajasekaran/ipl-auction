@@ -160,7 +160,7 @@ const Portal = () => {
             </div>
 
             {/* Top Navigation / Corner Branding */}
-            <nav className="relative z-50 px-4 md:px-6 py-4 md:py-6 flex items-center justify-between max-w-7xl mx-auto">
+            <nav className="sticky top-0 z-50 px-4 md:px-6 py-4 md:py-6 flex items-center justify-between max-w-7xl mx-auto bg-slate-950/80 backdrop-blur-md">
                 <div className="flex items-center gap-2">
                     <Trophy className="text-ipl-blue" size={20} />
                     <span className="font-black italic tracking-tighter text-base md:text-lg uppercase text-slate-200">IPL <span className="text-ipl-blue">Arena</span></span>
