@@ -54,13 +54,6 @@ const WelcomeScreen = () => {
                         </button>
                     )}
                     <button
-                        onClick={() => navigate('/portal', { replace: true })}
-                        className="px-4 py-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-full transition-all text-sm font-medium border border-transparent hover:border-white/10"
-                        title="Back to Portal"
-                    >
-                        Exit
-                    </button>
-                    <button
                         onClick={handleLogout}
                         className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all flex items-center gap-2"
                         title="Logout"
