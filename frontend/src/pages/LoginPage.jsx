@@ -65,14 +65,6 @@ const LoginPage = () => {
             >
                 {/* Logo/Header */}
                 <div className="text-center mb-8">
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.2, type: "spring" }}
-                        className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-purple-600 mb-4 shadow-lg shadow-primary/30"
-                    >
-                        {/* Icon removed as per request */}
-                    </motion.div>
                     <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
                     <p className="text-slate-400">Sign in to access IPL Auction</p>
                 </div>
