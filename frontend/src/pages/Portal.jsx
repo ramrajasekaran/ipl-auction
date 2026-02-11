@@ -23,11 +23,11 @@ const Portal = () => {
     const navigate = useNavigate();
     const { scrollY } = useScroll();
 
-    // Dynamic values based on scroll
-    const navPadding = useTransform(scrollY, [0, 100], ["24px", "12px"]);
-    const navBg = useTransform(scrollY, [0, 100], ["rgba(2, 6, 23, 0)", "rgba(2, 6, 23, 0.8)"]);
-    const navBlur = useTransform(scrollY, [0, 100], ["blur(0px)", "blur(12px)"]);
-    const navBorder = useTransform(scrollY, [0, 100], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.05)"]);
+    // Persistent values for navigation
+    const navPadding = "12px";
+    const navBg = "rgba(2, 6, 23, 0.8)";
+    const navBlur = "blur(12px)";
+    const navBorder = "rgba(255, 255, 255, 0.05)";
 
     const loadScript = (src) => {
         return new Promise((resolve) => {
@@ -175,8 +175,7 @@ const Portal = () => {
                         WebkitBackdropFilter: navBlur,
                         paddingTop: navPadding,
                         paddingBottom: navPadding,
-                        borderBottom: `1px solid`,
-                        borderBottomColor: navBorder
+                        borderBottom: `1px solid ${navBorder}`
                     }}
                     className="w-full px-4 md:px-12 flex items-center justify-between transition-all duration-300"
                 >
