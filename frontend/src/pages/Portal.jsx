@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
     LogIn,
     UserPlus,
@@ -21,6 +21,13 @@ import { createPaymentOrderAPI, verifyPaymentAPI } from '../services/api';
 
 const Portal = () => {
     const navigate = useNavigate();
+    const { scrollY } = useScroll();
+
+    // Dynamic values based on scroll
+    const navPadding = useTransform(scrollY, [0, 100], ["24px", "12px"]);
+    const navBg = useTransform(scrollY, [0, 100], ["rgba(2, 6, 23, 0)", "rgba(2, 6, 23, 0.8)"]);
+    const navBlur = useTransform(scrollY, [0, 100], ["blur(0px)", "blur(12px)"]);
+    const navBorder = useTransform(scrollY, [0, 100], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.05)"]);
 
     const loadScript = (src) => {
         return new Promise((resolve) => {
@@ -160,19 +167,32 @@ const Portal = () => {
             </div>
 
             {/* Top Navigation / Corner Branding */}
-            <nav className="sticky top-0 z-50 px-4 md:px-6 py-4 md:py-6 flex items-center justify-between max-w-7xl mx-auto bg-slate-950/80 backdrop-blur-md">
-                <div className="flex items-center gap-2">
-                    <Trophy className="text-ipl-blue" size={20} />
-                    <span className="font-black italic tracking-tighter text-base md:text-lg uppercase text-slate-200">IPL <span className="text-ipl-blue">Arena</span></span>
-                </div>
-                <button
-                    onClick={handleFundDeveloper}
-                    className="px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-ipl-blue to-blue-600 hover:from-blue-500 hover:to-blue-600 text-white rounded-lg transition-all text-xs md:text-sm font-bold shadow-lg shadow-blue-900/40 whitespace-nowrap"
+            <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
+                <motion.nav
+                    style={{
+                        backgroundColor: navBg,
+                        backdropFilter: navBlur,
+                        WebkitBackdropFilter: navBlur,
+                        paddingTop: navPadding,
+                        paddingBottom: navPadding,
+                        borderBottom: `1px solid`,
+                        borderBottomColor: navBorder
+                    }}
+                    className="w-full px-4 md:px-12 flex items-center justify-between transition-all duration-300"
                 >
-                    <span className="hidden sm:inline">Support Developer</span>
-                    <span className="sm:hidden">Support</span>
-                </button>
-            </nav>
+                    <div className="flex items-center gap-2">
+                        <Trophy className="text-ipl-blue" size={20} />
+                        <span className="font-black italic tracking-tighter text-base md:text-lg uppercase text-slate-200">IPL <span className="text-ipl-blue">Arena</span></span>
+                    </div>
+                    <button
+                        onClick={handleFundDeveloper}
+                        className="px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-ipl-blue to-blue-600 hover:from-blue-500 hover:to-blue-600 text-white rounded-lg transition-all text-xs md:text-sm font-bold shadow-lg shadow-blue-900/40 whitespace-nowrap"
+                    >
+                        <span className="hidden sm:inline">Support Developer</span>
+                        <span className="sm:hidden">Support</span>
+                    </button>
+                </motion.nav>
+            </div>
 
             <main className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
 
