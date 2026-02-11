@@ -250,7 +250,6 @@ const Portal = () => {
                         >
                             <div className="flex items-center gap-4 md:gap-6">
                                 <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
-                                    <UserPlus size={24} className="md:text-3xl text-ipl-blue" />
                                 </div>
                                 <div className="text-left">
                                     <h3 className="font-black uppercase italic tracking-widest text-xl md:text-2xl text-white">Enrollment</h3>
@@ -258,7 +257,7 @@ const Portal = () => {
                                 </div>
                             </div>
                             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-ipl-blue/10 transition-colors">
-                                <Zap size={18} className="text-slate-500 group-hover:text-ipl-blue transition-colors" />
+                                <ArrowRight size={18} className="text-slate-500 group-hover:text-ipl-blue transition-colors" />
                             </div>
                         </motion.button>
                     </div>

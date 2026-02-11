@@ -58,7 +58,7 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
+        <div className="min-h-screen flex flex-col items-center justify-center p-4 py-20 overflow-y-auto">
             {/* Exit Button */}
             <motion.button
                 onClick={() => navigate('/portal')}
@@ -93,12 +93,11 @@ const RegisterPage = () => {
                         <div>
                             <label className="block text-sm font-medium text-slate-400 mb-2">Full Name</label>
                             <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                 <input
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
                                     placeholder="Your full name"
                                     required
                                 />
@@ -108,12 +107,11 @@ const RegisterPage = () => {
                         <div>
                             <label className="block text-sm font-medium text-slate-400 mb-2">Email</label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                 <input
                                     type="email"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value.toLowerCase() })}
-                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
                                     placeholder="you@example.com"
                                     required
                                 />
@@ -123,19 +121,18 @@ const RegisterPage = () => {
                         <div>
                             <label className="block text-sm font-medium text-slate-400 mb-2">Password</label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-12 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
                                     placeholder="Create a password"
                                     required
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
                                 >
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
@@ -146,12 +143,11 @@ const RegisterPage = () => {
                         <div>
                             <label className="block text-sm font-medium text-slate-400 mb-2">Confirm Password</label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                                 <input
                                     type={showConfirmPassword ? "text" : "password"}
                                     value={formData.confirmPassword}
                                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-10 pr-12 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-white focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all placeholder:text-slate-600"
                                     placeholder="Confirm your password"
                                     required
                                 />
