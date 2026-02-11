@@ -71,7 +71,7 @@ const LoginPage = () => {
                         transition={{ delay: 0.2, type: "spring" }}
                         className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-purple-600 mb-4 shadow-lg shadow-primary/30"
                     >
-                        <LogIn size={40} className="text-white" />
+                        {/* Icon removed as per request */}
                     </motion.div>
                     <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
                     <p className="text-slate-400">Sign in to access IPL Auction</p>
@@ -142,7 +142,6 @@ const LoginPage = () => {
                             disabled={loading}
                             className="w-full py-4 bg-primary rounded-xl text-white font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:bg-primary/90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                         >
-                            <LogIn size={20} />
                             {loading ? 'Signing in...' : 'Sign In'}
                         </button>
                     </form>
