@@ -76,8 +76,8 @@ const WelcomeScreen = () => {
                 transition={{ duration: 0.8 }}
                 className="text-center mb-10 space-y-2 relative z-10"
             >
-                <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-2 uppercase italic">
-                    IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Auction</span>
+                <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-2 uppercase italic px-2">
+                    IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-500 pr-1">Auction</span>
                 </h1>
                 <div className="flex flex-col items-center gap-3">
                     <p className="text-slate-400 text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.4em] uppercase">Select Your Game Mode</p>
