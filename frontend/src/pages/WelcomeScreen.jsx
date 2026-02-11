@@ -26,9 +26,9 @@ const WelcomeScreen = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-start p-4 md:p-6 relative overflow-x-hidden">
+        <div className="h-screen bg-slate-950 flex flex-col items-center justify-start p-4 md:p-6 relative overflow-hidden">
             {/* Header / Nav */}
-            <div className="w-full max-w-7xl flex items-center justify-between mb-4 relative z-10 px-4">
+            <div className="w-full max-w-7xl flex items-center justify-between mb-8 relative z-10 px-4">
                 <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
                         <Trophy className="text-white" size={28} />
@@ -74,17 +74,13 @@ const WelcomeScreen = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-center mb-6 space-y-2 relative z-10"
+                className="text-center mb-10 space-y-2 relative z-10"
             >
-                <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-1 uppercase italic">
+                <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-2 uppercase italic">
                     IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Auction</span>
                 </h1>
-                <div className="flex flex-col items-center gap-2">
-                    <p className="text-slate-400 text-xl tracking-widest uppercase">Select Your Game Mode</p>
-                    <div className="px-4 py-1 bg-green-500/10 border border-green-500/20 rounded-full flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                        <span className="text-green-500 text-xs font-bold uppercase tracking-widest">Authentication Active</span>
-                    </div>
+                <div className="flex flex-col items-center gap-3">
+                    <p className="text-slate-400 text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.4em] uppercase">Select Your Game Mode</p>
                     <p className="text-slate-500 text-sm max-w-md">
                         Your global session is active. To start bidding or hosting, please enter a specific <b>Auction Room</b> using the cards below.
                     </p>
