@@ -26,7 +26,7 @@ const WelcomeScreen = () => {
     };
 
     return (
-        <div className="h-screen bg-slate-950 flex flex-col items-center justify-start p-4 md:p-6 relative overflow-hidden">
+        <div className="min-h-screen md:h-screen bg-slate-950 flex flex-col items-center justify-start p-4 md:p-6 relative overflow-y-auto md:overflow-hidden">
             {/* Header / Nav */}
             <div className="w-full max-w-7xl flex items-center justify-between mb-8 relative z-10 px-4">
                 <div className="flex items-center gap-3">
