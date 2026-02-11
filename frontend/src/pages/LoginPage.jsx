@@ -28,7 +28,7 @@ const LoginPage = () => {
                 sessionStorage.setItem('authUser', JSON.stringify(data.user));
 
                 // Redirect to welcome screen
-                navigate('/');
+                navigate('/', { replace: true });
             }
         } catch (err) {
             const msg = err.response?.data?.message || err.message || 'Login failed. Please try again.';
