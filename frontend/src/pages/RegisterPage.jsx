@@ -82,15 +82,7 @@ const RegisterPage = () => {
                 className="w-full max-w-md relative z-10"
             >
                 {/* Logo/Header */}
-                <div className="text-center mb-8">
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.2, type: "spring" }}
-                        className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-teal-600 mb-4 shadow-lg shadow-green-500/30"
-                    >
-                        <UserPlus size={40} className="text-white" />
-                    </motion.div>
+                <div className="text-center mb-10">
                     <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
                     <p className="text-slate-400">Join IPL Auction as a participant</p>
                 </div>
@@ -193,7 +185,6 @@ const RegisterPage = () => {
                             disabled={loading}
                             className="w-full py-4 bg-green-600 rounded-xl text-white font-semibold shadow-lg shadow-green-600/25 hover:shadow-green-600/40 hover:bg-green-500 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                         >
-                            <UserPlus size={20} />
                             {loading ? 'Creating Account...' : 'Create Account'}
                         </button>
                     </form>
