@@ -196,7 +196,7 @@ const Portal = () => {
             <main className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
 
                 {/* 1. Centered Title Section */}
-                <header className="pt-8 md:pt-12 pb-10 md:pb-16 text-center">
+                <header className="pt-24 md:pt-32 pb-10 md:pb-16 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
