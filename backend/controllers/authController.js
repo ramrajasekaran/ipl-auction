@@ -19,37 +19,20 @@ export const register = async (req, res) => {
             });
         }
 
-        // Create user (no teamName required at registration - set when joining room)
-        const verificationToken = crypto.randomBytes(20).toString('hex');
-        const verificationExpire = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
-
+        // Create user (auto-verified since no custom email domain available)
         const user = await User.create({
             name,
             email,
             password,
             role: role || 'USER',
-            verificationToken,
-            verificationExpire
+            isVerified: true
         });
 
-        // Send verification email
-        let emailSent = false;
-        try {
-            await sendVerificationEmail(user.email, verificationToken);
-            emailSent = true;
-            console.log(`✅ Verification email sent to ${user.email}`);
-        } catch (emailError) {
-            console.error('❌ Registration email error:', emailError.message || emailError);
-            if (emailError.body) console.error('❌ MailerSend response body:', JSON.stringify(emailError.body));
-            if (emailError.statusCode) console.error('❌ MailerSend status code:', emailError.statusCode);
-        }
+        console.log(`✅ User registered and auto-verified: ${user.email}`);
 
         res.status(201).json({
             success: true,
-            emailSent,
-            message: emailSent
-                ? 'Registration successful! Please check your email to verify your account.'
-                : 'Registration successful but verification email could not be sent. Please use the Resend Verification option.'
+            message: 'Registration successful! You can now log in.'
         });
     } catch (error) {
 
@@ -107,12 +90,11 @@ export const login = async (req, res) => {
             });
         }
 
-        // Check if email is verified
+        // Auto-verify any unverified users (legacy accounts)
         if (!user.isVerified) {
-            return res.status(403).json({
-                success: false,
-                message: 'Please verify your email address to access your account'
-            });
+            user.isVerified = true;
+            await user.save();
+            console.log(`✅ Auto-verified legacy user: ${user.email}`);
         }
 
 
