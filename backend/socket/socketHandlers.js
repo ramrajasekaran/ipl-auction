@@ -94,8 +94,28 @@ export const setupSocketHandlers = (io) => {
             if (!player) { console.error('HandleSold: Player not found'); return null; }
 
             // Idempotency Check: Prevent duplicate sales
+            // BUT: If the player is ALREADY sold, but the auction is STILL active with this player, 
+            // we MUST clear the auction state to unblock the UI.
             if (player.status === 'SOLD') {
-                console.log(`[Socket] Skipped Sold: Player ${player.name} already sold.`);
+                console.log(`[Socket] Player ${player.name} is already SOLD.`);
+
+                // CRITICAL FIX: Check if this "Sold" player is blocking the auction
+                if (auction.currentPlayer && auction.currentPlayer.toString() === player._id.toString()) {
+                    console.log(`[Socket] FIX: Clearing generic auction state for already sold player ${player.name}`);
+                    auction.currentPlayer = null;
+                    auction.currentBid = { amount: 0, team: null, placedBy: null };
+                    auction.status = 'IDLE';
+                    auction.timer = { isRunning: false, remaining: 0, startedAt: null };
+                    await auction.save();
+
+                    // Notify frontend to reset
+                    io.to(`auction:${aId}`).emit('auction:player-sold', {
+                        player, // Send the player data so frontend knows who it was
+                        team: { _id: player.soldTo || teamId, name: 'Already Sold', currentPurse: 0 }, // Mock or fetch real if needed
+                        price: player.soldPrice || price,
+                        timestamp: new Date()
+                    });
+                }
                 return null;
             }
 
@@ -140,34 +160,39 @@ export const setupSocketHandlers = (io) => {
     const handleUnsold = async (auctionId, playerId) => {
         const aId = str(auctionId);
         console.log(`[Socket] handleUnsold: ${aId}`);
-        const player = await RoomPlayer.findById(str(playerId));
-        if (player) {
-            player.status = 'UNSOLD';
-            await player.save();
+        try {
+            const player = await RoomPlayer.findById(str(playerId));
+            if (player) {
+                player.status = 'UNSOLD';
+                await player.save();
+            }
+
+            const auction = await updateAnyAuction(
+                aId,
+                {
+                    currentPlayer: null,
+                    currentBid: { amount: 0, team: null, placedBy: null },
+                    status: 'IDLE',
+                    timer: { isRunning: false, remaining: 0, startedAt: null }
+                },
+                { new: true }
+            );
+
+            // OPTIMIZATION: Lightweight emit
+            io.to(`auction:${aId}`).emit('auction:player-unsold', {
+                player,
+                timestamp: new Date()
+            });
+
+            if (timerIntervals[aId]) {
+                clearInterval(timerIntervals[aId]);
+                delete timerIntervals[aId];
+            }
+            return auction;
+        } catch (error) {
+            console.error(`[Socket] handleUnsold Error:`, error);
+            return null;
         }
-
-        const auction = await updateAnyAuction(
-            aId,
-            {
-                currentPlayer: null,
-                currentBid: { amount: 0, team: null, placedBy: null },
-                status: 'IDLE',
-                timer: { isRunning: false, remaining: 0, startedAt: null }
-            },
-            { new: true }
-        );
-
-        // OPTIMIZATION: Lightweight emit
-        io.to(`auction:${aId}`).emit('auction:player-unsold', {
-            player,
-            timestamp: new Date()
-        });
-
-        if (timerIntervals[aId]) {
-            clearInterval(timerIntervals[aId]);
-            delete timerIntervals[aId];
-        }
-        return auction;
     };
 
     // RECOVERY LOGIC: Resume timers on server restart

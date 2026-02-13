@@ -153,6 +153,15 @@ export const GameProvider = ({ children }) => {
                     // 1. Update Teams (Purse & Squad)
                     teams: prev.teams.map(t => {
                         if (t._id === team._id || t.id === team._id) {
+                            // Check for duplicates before adding
+                            const alreadyHasPlayer = t.players?.some(p => (p.player?._id || p.player) === (player._id || player.id));
+                            if (alreadyHasPlayer) {
+                                return {
+                                    ...t,
+                                    currentPurse: team.currentPurse // Update purse even if player exists (sync)
+                                };
+                            }
+
                             return {
                                 ...t,
                                 currentPurse: team.currentPurse,
