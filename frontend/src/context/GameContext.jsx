@@ -150,6 +150,7 @@ export const GameProvider = ({ children }) => {
                 // 1. Update Team Purse & functionality (Add player to team list in UI)
                 setRoomData(prev => ({
                     ...prev,
+                    // 1. Update Teams (Purse & Squad)
                     teams: prev.teams.map(t => {
                         if (t._id === team._id || t.id === team._id) {
                             return {
@@ -162,6 +163,18 @@ export const GameProvider = ({ children }) => {
                             };
                         }
                         return t;
+                    }),
+                    // 2. Update Player Status in Master List
+                    players: (prev.players || []).map(p => {
+                        if ((p._id || p.id) === (player._id || player.id)) {
+                            return {
+                                ...p,
+                                status: 'SOLD',
+                                soldTo: team._id,
+                                soldPrice: price / 100
+                            };
+                        }
+                        return p;
                     })
                 }));
             }
@@ -182,6 +195,17 @@ export const GameProvider = ({ children }) => {
         function onPlayerUnsold({ player, auction }) {
             if (auction) {
                 updateLocalState(auction);
+            } else {
+                // Lightweight Path
+                setRoomData(prev => ({
+                    ...prev,
+                    players: prev.players.map(p => {
+                        if ((p._id || p.id) === (player._id || player.id)) {
+                            return { ...p, status: 'UNSOLD' };
+                        }
+                        return p;
+                    })
+                }));
             }
 
             // Store unsold player for announcement
