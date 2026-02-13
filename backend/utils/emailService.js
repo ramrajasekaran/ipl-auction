@@ -1,4 +1,4 @@
-import { Resend } from 'resend';
+import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -10,43 +10,44 @@ const __dirname = path.dirname(__filename);
 // Load .env from backend root directory
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-// Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY || '');
+// Initialize MailerSend client
+const mailerSend = new MailerSend({
+    apiKey: process.env.MAILERSEND_API_KEY || '',
+});
 
 // Check if API key is configured
-if (!process.env.RESEND_API_KEY) {
-    console.log('⚠️ RESEND_API_KEY not configured. Email sending will fail.');
-    console.log('   Get your free API key at: https://resend.com');
+if (!process.env.MAILERSEND_API_KEY) {
+    console.log('⚠️ MAILERSEND_API_KEY not configured. Email sending will fail.');
 } else {
-    console.log('✅ Email service ready (Resend)');
+    console.log('✅ Email service ready (MailerSend)');
 }
 
 // ============================================================
 // CORE: Single email sending function used by ALL email types
 // ============================================================
-const sendEmail = async (toEmail, subject, htmlContent) => {
-    const senderEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+const sendMailerSendEmail = async (toEmail, subject, htmlContent) => {
+    const senderEmail = process.env.MAILERSEND_FROM_EMAIL || 'noreply@trial-3vz9dle1eqdgkj50.mlsender.net';
 
     console.log('📧 [EMAIL] Sending email:');
     console.log('   📤 From:', senderEmail);
     console.log('   📥 To:', toEmail);
     console.log('   📝 Subject:', subject);
+    console.log('   🔐 API Key configured:', !!process.env.MAILERSEND_API_KEY);
 
-    const { data, error } = await resend.emails.send({
-        from: `IPL Arena <${senderEmail}>`,
-        to: [toEmail],
-        subject: subject,
-        html: htmlContent,
-    });
+    const sentFrom = new Sender(senderEmail, 'IPL Arena');
+    const recipients = [new Recipient(toEmail)];
 
-    if (error) {
-        console.error('❌ Resend API error:', JSON.stringify(error));
-        throw new Error(error.message || 'Failed to send email');
-    }
+    const emailParams = new EmailParams()
+        .setFrom(sentFrom)
+        .setTo(recipients)
+        .setSubject(subject)
+        .setHtml(htmlContent);
 
-    console.log('✅ Email sent successfully via Resend');
-    console.log('   📨 Email ID:', data?.id || 'N/A');
-    return { success: true, messageId: data?.id || 'sent' };
+    const response = await mailerSend.email.send(emailParams);
+
+    console.log('✅ Email sent successfully via MailerSend');
+    console.log('   📨 Message ID:', response?.headers?.['x-message-id'] || 'N/A');
+    return { success: true, messageId: response?.headers?.['x-message-id'] || 'sent' };
 };
 
 // Generate 6-digit OTP
@@ -102,7 +103,7 @@ export const sendOTPEmail = async (email, code, type = 'password reset') => {
     `;
 
     try {
-        const result = await sendEmail(
+        const result = await sendMailerSendEmail(
             email,
             `Your IPL Arena Verification Code: ${code}`,
             htmlContent
@@ -115,17 +116,13 @@ export const sendOTPEmail = async (email, code, type = 'password reset') => {
     }
 };
 
-// Send Verification Email (link-based)
+// Send Verification Email (link-based) — kept for future use with custom domain
 export const sendVerificationEmail = async (email, token) => {
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
     const verificationUrl = `${frontendUrl}/verify-email/${token}`;
 
     console.log('🔗 [DEBUG] FRONTEND_URL:', frontendUrl);
     console.log('🔑 [DEBUG] Verification URL:', verificationUrl);
-
-    if (frontendUrl === 'http://localhost:5173') {
-        console.warn('⚠️ WARNING: FRONTEND_URL is not set! Verification link will point to localhost.');
-    }
 
     const htmlContent = `
         <!DOCTYPE html>
@@ -177,7 +174,7 @@ export const sendVerificationEmail = async (email, token) => {
     `;
 
     try {
-        const result = await sendEmail(
+        const result = await sendMailerSendEmail(
             email,
             'Verify your IPL Arena Account',
             htmlContent
@@ -189,4 +186,4 @@ export const sendVerificationEmail = async (email, token) => {
     }
 };
 
-export default resend;
+export default mailerSend;
