@@ -93,7 +93,7 @@ export const sendOTPEmail = async (email, code, type = 'password reset') => {
                                 <td style="padding: 36px 40px 20px 40px; text-align: center;">
                                     <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: 1px;">
                                         <span style="color: #ffffff;">IPL</span>
-                                        <span style="color: #f59e0b;"> Arena</span>
+                                        <span style="color: #1976D2;"> Arena</span>
                                     </h1>
                                 </td>
                             </tr>
