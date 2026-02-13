@@ -23,6 +23,34 @@ if (!process.env.MAILERSEND_API_KEY) {
     console.log('✅ Email service ready (MailerSend)');
 }
 
+// ============================================================
+// CORE: Single email sending function used by ALL email types
+// ============================================================
+const sendMailerSendEmail = async (toEmail, subject, htmlContent) => {
+    const senderEmail = process.env.MAILERSEND_FROM_EMAIL || 'noreply@trial-3vz9dle1eqdgkj50.mlsender.net';
+
+    console.log('📧 [EMAIL] Sending email:');
+    console.log('   📤 From:', senderEmail);
+    console.log('   📥 To:', toEmail);
+    console.log('   📝 Subject:', subject);
+    console.log('   🔐 API Key configured:', !!process.env.MAILERSEND_API_KEY);
+
+    const sentFrom = new Sender(senderEmail, 'IPL Arena');
+    const recipients = [new Recipient(toEmail)];
+
+    const emailParams = new EmailParams()
+        .setFrom(sentFrom)
+        .setTo(recipients)
+        .setSubject(subject)
+        .setHtml(htmlContent);
+
+    const response = await mailerSend.email.send(emailParams);
+
+    console.log('✅ Email sent successfully via MailerSend');
+    console.log('   📨 Message ID:', response?.headers?.['x-message-id'] || 'N/A');
+    return { success: true, messageId: response?.headers?.['x-message-id'] || 'sent' };
+};
+
 // Generate 6-digit OTP
 export const generateOTP = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -76,35 +104,32 @@ export const sendOTPEmail = async (email, code, type = 'password reset') => {
     `;
 
     try {
-        // Use your MailerSend trial domain or verified domain
-        const sentFrom = new Sender(
-            process.env.MAILERSEND_FROM_EMAIL || 'noreply@trial-3vz9dle1eqdgkj50.mlsender.net',
-            'IPL Arena'
+        const result = await sendMailerSendEmail(
+            email,
+            `Your IPL Arena Verification Code: ${code}`,
+            htmlContent
         );
-
-        const recipients = [new Recipient(email)];
-
-        const emailParams = new EmailParams()
-            .setFrom(sentFrom)
-            .setTo(recipients)
-            .setSubject(`Your IPL Arena Verification Code: ${code}`)
-            .setHtml(htmlContent);
-
-        const response = await mailerSend.email.send(emailParams);
-
-        console.log('📧 OTP email sent via MailerSend');
         console.log('🔑 [DEBUG] OTP Verification Code:', code);
-        return { success: true, messageId: response.headers?.['x-message-id'] || 'sent' };
+        return result;
     } catch (error) {
         console.error('❌ Failed to send OTP email:', error.message || error);
+        if (error.body) console.error('❌ MailerSend API response:', JSON.stringify(error.body));
+        if (error.statusCode) console.error('❌ MailerSend status code:', error.statusCode);
         throw error;
     }
 };
 
-// Send Verification Email via MailerSend
+// Send Verification Email via MailerSend (link-based)
 export const sendVerificationEmail = async (email, token) => {
-    const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${token}`;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const verificationUrl = `${frontendUrl}/verify-email/${token}`;
+
+    console.log('🔗 [DEBUG] FRONTEND_URL:', frontendUrl);
     console.log('🔑 [DEBUG] Verification URL:', verificationUrl);
+
+    if (frontendUrl === 'http://localhost:5173') {
+        console.warn('⚠️ WARNING: FRONTEND_URL is not set! Verification link will point to localhost.');
+    }
 
     const htmlContent = `
         <!DOCTYPE html>
@@ -156,25 +181,16 @@ export const sendVerificationEmail = async (email, token) => {
     `;
 
     try {
-        const sentFrom = new Sender(
-            process.env.MAILERSEND_FROM_EMAIL || 'noreply@trial-3vz9dle1eqdgkj50.mlsender.net',
-            'IPL Arena'
+        const result = await sendMailerSendEmail(
+            email,
+            'Verify your IPL Arena Account',
+            htmlContent
         );
-
-        const recipients = [new Recipient(email)];
-
-        const emailParams = new EmailParams()
-            .setFrom(sentFrom)
-            .setTo(recipients)
-            .setSubject(`Verify your IPL Arena Account`)
-            .setHtml(htmlContent);
-
-        const response = await mailerSend.email.send(emailParams);
-
-        console.log('📧 Verification email sent via MailerSend');
-        return { success: true };
+        return result;
     } catch (error) {
         console.error('❌ Failed to send verification email:', error.message || error);
+        if (error.body) console.error('❌ MailerSend API response:', JSON.stringify(error.body));
+        if (error.statusCode) console.error('❌ MailerSend status code:', error.statusCode);
         throw error;
     }
 };

@@ -33,16 +33,23 @@ export const register = async (req, res) => {
         });
 
         // Send verification email
+        let emailSent = false;
         try {
             await sendVerificationEmail(user.email, verificationToken);
+            emailSent = true;
+            console.log(`✅ Verification email sent to ${user.email}`);
         } catch (emailError) {
-            console.error('Registration email error:', emailError);
-            // We don't delete user if email fails, they can resend later
+            console.error('❌ Registration email error:', emailError.message || emailError);
+            if (emailError.body) console.error('❌ MailerSend response body:', JSON.stringify(emailError.body));
+            if (emailError.statusCode) console.error('❌ MailerSend status code:', emailError.statusCode);
         }
 
         res.status(201).json({
             success: true,
-            message: 'Registration successful! Please check your email to verify your account.'
+            emailSent,
+            message: emailSent
+                ? 'Registration successful! Please check your email to verify your account.'
+                : 'Registration successful but verification email could not be sent. Please use the Resend Verification option.'
         });
     } catch (error) {
 
@@ -519,14 +526,18 @@ export const resendVerification = async (req, res) => {
         // Send email
         try {
             await sendVerificationEmail(user.email, verificationToken);
+            console.log(`✅ Verification email resent to ${user.email}`);
             res.status(200).json({
                 success: true,
                 message: 'Verification email resent! Please check your inbox.'
             });
         } catch (emailError) {
+            console.error('❌ Resend verification email error:', emailError.message || emailError);
+            if (emailError.body) console.error('❌ MailerSend response body:', JSON.stringify(emailError.body));
+            if (emailError.statusCode) console.error('❌ MailerSend status code:', emailError.statusCode);
             res.status(500).json({
                 success: false,
-                message: 'Failed to send verification email. Please try again later.'
+                message: `Failed to send verification email: ${emailError.message || 'Unknown error'}. Please try again later.`
             });
         }
     } catch (error) {
