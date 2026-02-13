@@ -251,13 +251,11 @@ export const sendPasswordResetOTP = async (req, res) => {
                 message: 'OTP sent to your email. It will expire in 10 minutes.'
             });
         } catch (emailError) {
-            // Dev Mode Fallback: Return OTP in response when email fails
-
-            res.status(200).json({
-                success: true,
-                message: `DEV MODE: Email sending failed. Your OTP is: ${code}`,
-                devMode: true,
-                otp: code
+            // Clean up OTP if email fails
+            await OTP.deleteMany({ email: email.toLowerCase(), type: type || 'USER' });
+            res.status(500).json({
+                success: false,
+                message: 'Failed to send OTP email. Please try again later.'
             });
         }
 
