@@ -225,6 +225,9 @@ export const GameProvider = ({ children }) => {
         socket.on('auction:toast', ({ message }) => {
             alert(message); // Simple alert for now, can be replaced with better toast
         });
+        socket.on('bid:error', ({ message }) => {
+            alert(`⚠️ Bid Failed: ${message}`);
+        });
 
         return () => {
             socket.off('connect', onConnect);
@@ -239,6 +242,7 @@ export const GameProvider = ({ children }) => {
             socket.off('auction:timer-update', onTimerUpdate);
             socket.off('auction:refresh-request');
             socket.off('auction:toast');
+            socket.off('bid:error');
         };
     }, []);
 

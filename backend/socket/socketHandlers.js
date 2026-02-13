@@ -426,6 +426,14 @@ export const setupSocketHandlers = (io) => {
                     return;
                 }
 
+                // Validation 5: Check squad size limit (maximum 25 players)
+                const currentSquadSize = team.players ? team.players.length : 0;
+                if (currentSquadSize >= 25) {
+                    console.log(`[Bid] Rejected: Squad full for ${team.name}`);
+                    socket.emit('bid:error', { message: `Squad full! Maximum 25 players allowed.` });
+                    return;
+                }
+
                 // All validations passed - accept bid
                 auction.currentBid = { amount, team: team._id, placedBy: team.owner };
 
@@ -434,6 +442,15 @@ export const setupSocketHandlers = (io) => {
                 auction.timer.isRunning = false;
                 auction.timer.remaining = 0;
                 await auction.save();
+
+                // Create Bid History Record
+                await Bid.create({
+                    auction: aId,
+                    player: auction.currentPlayer,
+                    team: team._id,
+                    bidder: team.owner, // Using team owner as bidder
+                    amount
+                });
 
                 // OPTIMIZATION: Lightweight Emit
                 // const updatedAuction = await getPopulatedAuction(aId); // AVOID
