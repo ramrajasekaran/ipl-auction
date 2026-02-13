@@ -104,6 +104,7 @@ export const sendOTPEmail = async (email, code, type = 'password reset') => {
 // Send Verification Email via MailerSend
 export const sendVerificationEmail = async (email, token) => {
     const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${token}`;
+    console.log('🔑 [DEBUG] Verification URL:', verificationUrl);
 
     const htmlContent = `
         <!DOCTYPE html>
