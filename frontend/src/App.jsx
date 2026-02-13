@@ -12,6 +12,7 @@ import PlayerSelection from './pages/PlayerSelection';
 import ResetPassword from './pages/ResetPassword';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import VerifyEmail from './pages/VerifyEmail';
 import AdminPanel from './pages/AdminPanel'; // Import
 import ContinueGamePage from './pages/ContinueGamePage'; // Mini Auction
 import PlayerReleasePage from './pages/PlayerReleasePage'; // Mini Auction
@@ -70,6 +71,7 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/portal" element={<Portal />} />
+                        <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
                         {/* Root Redirect */}
                         <Route path="/" element={<RootRedirect />} />

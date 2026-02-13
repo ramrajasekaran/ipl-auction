@@ -101,4 +101,81 @@ export const sendOTPEmail = async (email, code, type = 'password reset') => {
     }
 };
 
+// Send Verification Email via MailerSend
+export const sendVerificationEmail = async (email, token) => {
+    const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${token}`;
+
+    const htmlContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a0f1c; color: #fff; margin: 0; padding: 20px; }
+                .container { max-width: 500px; margin: 0 auto; background: linear-gradient(135deg, #1a1f3c 0%, #0d1117 100%); border-radius: 16px; padding: 40px; border: 1px solid rgba(255,255,255,0.1); }
+                .logo { text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 30px; color: #fff; }
+                .logo span { color: #fbbf24; }
+                .button { 
+                    display: inline-block; 
+                    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); 
+                    color: white; 
+                    padding: 15px 30px; 
+                    text-decoration: none; 
+                    border-radius: 12px; 
+                    font-weight: bold; 
+                    margin: 30px 0;
+                    text-align: center;
+                }
+                .message { color: #94a3b8; line-height: 1.6; text-align: center; }
+                .footer { text-align: center; color: #475569; font-size: 12px; margin-top: 30px; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="logo">IPL <span>Arena</span></div>
+                
+                <p class="message">
+                    Welcome to IPL Arena! Please verify your email address to complete your registration.
+                </p>
+                
+                <div style="text-align: center;">
+                    <a href="${verificationUrl}" class="button">Verify Email Address</a>
+                </div>
+                
+                <p class="message">
+                    If the button doesn't work, you can also copy and paste this link into your browser:<br>
+                    <span style="word-break: break-all; font-size: 12px; color: #6366f1;">${verificationUrl}</span>
+                </p>
+                
+                <div class="footer">
+                    IPL Arena 2026
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+
+    try {
+        const sentFrom = new Sender(
+            process.env.MAILERSEND_FROM_EMAIL || 'noreply@trial-3vz9dle1eqdgkj50.mlsender.net',
+            'IPL Arena'
+        );
+
+        const recipients = [new Recipient(email)];
+
+        const emailParams = new EmailParams()
+            .setFrom(sentFrom)
+            .setTo(recipients)
+            .setSubject(`Verify your IPL Arena Account`)
+            .setHtml(htmlContent);
+
+        const response = await mailerSend.email.send(emailParams);
+
+        console.log('📧 Verification email sent via MailerSend');
+        return { success: true };
+    } catch (error) {
+        console.error('❌ Failed to send verification email:', error.message || error);
+        throw error;
+    }
+};
+
 export default mailerSend;

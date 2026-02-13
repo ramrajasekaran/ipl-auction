@@ -38,6 +38,16 @@ export const logoutAPI = async () => {
     return response.data;
 };
 
+export const verifyEmailAPI = async (token) => {
+    const response = await api.get(`/auth/verify-email/${token}`);
+    return response.data;
+};
+
+export const resendVerificationAPI = async (email) => {
+    const response = await api.post('/auth/resend-verification', { email });
+    return response.data;
+};
+
 export const createGameAPI = async (budget, password) => {
     const response = await api.post('/games/create', { budget, password });
     return response.data;

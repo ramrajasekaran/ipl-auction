@@ -116,9 +116,26 @@ const LoginPage = () => {
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm text-center flex flex-col gap-1"
+                                className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm text-center flex flex-col gap-2"
                             >
                                 <span>⚠️ {error}</span>
+                                {error.toLowerCase().includes('verify') && (
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            try {
+                                                const { resendVerificationAPI } = await import('../services/api');
+                                                await resendVerificationAPI(formData.email);
+                                                alert('Verification email resent! Please check your inbox.');
+                                            } catch (err) {
+                                                alert(err.response?.data?.message || 'Failed to resend verification email.');
+                                            }
+                                        }}
+                                        className="text-xs text-primary hover:underline font-bold"
+                                    >
+                                        Click here to resend verification email
+                                    </button>
+                                )}
                                 {error.toLowerCase().includes('password') && (
                                     <Link to={`/reset-password?type=user&email=${formData.email}`} className="text-xs text-primary hover:underline font-bold">
                                         Click here to reset your password
